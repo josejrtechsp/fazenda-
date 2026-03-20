@@ -1951,6 +1951,7 @@ if (!inRange && !alreadyConfirmed) {
   const [editVacDate, setEditVacDate] = useState("");
   const [editVacNext, setEditVacNext] = useState("");
   const [editNote, setEditNote] = useState("");
+  const [editView, setEditView] = useState("resumo");
 
   useEffect(() => {
     if (!editOpen) return;
@@ -2238,6 +2239,7 @@ if (!inRange && !alreadyConfirmed) {
     setEditVacDate(h.vacDate || "");
     setEditVacNext(h.vacNext || "");
     setEditNote(h.note || "");
+    setEditView("resumo");
     setEditOpen(true);
   }
 
@@ -4511,188 +4513,270 @@ useEffect(() => {
               </div>
             </div>
 
+            <div className="faz-subtabs faz-modalTabs" style={{ marginTop: 12 }}>
+              <button type="button" className={"faz-subtab" + (editView === "resumo" ? " is-active" : "")} onClick={() => setEditView("resumo")}>
+                Resumo
+              </button>
+              <button type="button" className={"faz-subtab" + (editView === "reproducao" ? " is-active" : "")} onClick={() => setEditView("reproducao")}>
+                Reprodução
+              </button>
+              <button type="button" className={"faz-subtab" + (editView === "sanidade" ? " is-active" : "")} onClick={() => setEditView("sanidade")}>
+                Sanidade
+              </button>
+              <button type="button" className={"faz-subtab" + (editView === "pesagens" ? " is-active" : "")} onClick={() => setEditView("pesagens")}>
+                Pesagens
+              </button>
+            </div>
+
             {editAnimalData ? (
               <>
-                <div className="faz-modalSummary">
-                  <div className="faz-stat">
-                    <div className="k">Brinco</div>
-                    <div className="v">{editAnimalData.ear}</div>
-                    <div className="s">{editAnimalData.sexoLabel}</div>
-                  </div>
-                  <div className="faz-stat">
-                    <div className="k">Lote</div>
-                    <div className="v">{editAnimalData.loteLabel}</div>
-                    <div className="s">{editAnimalData.categoriaLabel}</div>
-                  </div>
-                  <div className="faz-stat">
-                    <div className="k">Peso atual</div>
-                    <div className="v">{fmtKg(editAnimalData.pesoKg)}</div>
-                    <div className="s">
-                      {editAnimalData.pesoArroba == null ? "Sem arroba calculada" : `${fmtArroba(editAnimalData.pesoArroba)} @`}
+                {editView === "resumo" ? (
+                  <>
+                    <div className="faz-modalSummary">
+                      <div className="faz-stat">
+                        <div className="k">Brinco</div>
+                        <div className="v">{editAnimalData.ear}</div>
+                        <div className="s">{editAnimalData.sexoLabel}</div>
+                      </div>
+                      <div className="faz-stat">
+                        <div className="k">Lote</div>
+                        <div className="v">{editAnimalData.loteLabel}</div>
+                        <div className="s">{editAnimalData.categoriaLabel}</div>
+                      </div>
+                      <div className="faz-stat">
+                        <div className="k">Peso atual</div>
+                        <div className="v">{fmtKg(editAnimalData.pesoKg)}</div>
+                        <div className="s">
+                          {editAnimalData.pesoArroba == null ? "Sem arroba calculada" : `${fmtArroba(editAnimalData.pesoArroba)} @`}
+                        </div>
+                      </div>
+                      <div className={"faz-stat " + (editAnimalData.gmdGeral != null && editAnimalData.gmdGeral >= 0 ? "is-pos" : "")}>
+                        <div className="k">GMD geral</div>
+                        <div className="v">
+                          {editAnimalData.gmdGeral == null ? "—" : `${editAnimalData.gmdGeral > 0 ? "+" : ""}${editAnimalData.gmdGeral.toFixed(2)} kg`}
+                        </div>
+                        <div className="s">por dia</div>
+                      </div>
+                      <div className="faz-stat">
+                        <div className="k">Idade</div>
+                        <div className="v">{editAnimalData.idadeAtual}</div>
+                        <div className="s">
+                          {editAnimalData.health.birth ? fmtDateShort(editAnimalData.health.birth) : "Nascimento não informado"}
+                        </div>
+                      </div>
+                      <div className={"faz-stat " + (editAnimalData.vacStatus === "Atrasada" ? "is-warn" : "")}>
+                        <div className="k">Vacina</div>
+                        <div className="v">{editAnimalData.vacStatus}</div>
+                        <div className="s">
+                          {editAnimalData.health.vacName
+                            ? `${editAnimalData.health.vacName} • ${fmtDateShort(editAnimalData.health.vacDate)}`
+                            : "Sem registro"}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div className={"faz-stat " + (editAnimalData.gmdGeral != null && editAnimalData.gmdGeral >= 0 ? "is-pos" : "")}>
-                    <div className="k">GMD geral</div>
-                    <div className="v">
-                      {editAnimalData.gmdGeral == null ? "—" : `${editAnimalData.gmdGeral > 0 ? "+" : ""}${editAnimalData.gmdGeral.toFixed(2)} kg`}
-                    </div>
-                    <div className="s">por dia</div>
-                  </div>
-                  <div className="faz-stat">
-                    <div className="k">Idade</div>
-                    <div className="v">{editAnimalData.idadeAtual}</div>
-                    <div className="s">
-                      {editAnimalData.health.birth ? fmtDateShort(editAnimalData.health.birth) : "Nascimento não informado"}
-                    </div>
-                  </div>
-                  <div className={"faz-stat " + (editAnimalData.vacStatus === "Atrasada" ? "is-warn" : "")}>
-                    <div className="k">Vacina</div>
-                    <div className="v">{editAnimalData.vacStatus}</div>
-                    <div className="s">
-                      {editAnimalData.health.vacName
-                        ? `${editAnimalData.health.vacName} • ${fmtDateShort(editAnimalData.health.vacDate)}`
-                        : "Sem registro"}
-                    </div>
-                  </div>
-                </div>
 
-                <div className="faz-modalFacts">
-                  <div className="faz-modalSection">
-                    <div className="faz-modalSectionTitle">Leitura operacional</div>
-                    <div className="faz-modalInfoGrid">
-                      <div className="faz-modalInfoItem">
-                        <span className="lbl">Raça</span>
-                        <strong>{editAnimalData.raca}</strong>
-                      </div>
-                      <div className="faz-modalInfoItem">
-                        <span className="lbl">Data da última pesagem</span>
-                        <strong>{fmtDateShort(editAnimalData.dataPeso)}</strong>
-                      </div>
-                      <div className="faz-modalInfoItem">
-                        <span className="lbl">Situação reprodutiva</span>
-                        <strong>{editAnimalData.situacaoReprodutiva}</strong>
-                      </div>
-                      <div className="faz-modalInfoItem">
-                        <span className="lbl">Número da mãe</span>
-                        <strong>{editAnimalData.numeroMae}</strong>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="faz-modalSection">
-                    <div className="faz-modalSectionTitle">Alertas e próximos passos</div>
-                    <div className="faz-badges">
-                      <span className={"faz-badge " + (editAnimalData.situacaoReprodutiva === "Prenha" ? "is-ok" : "is-warn")}>
-                        Reprodução: {editAnimalData.situacaoReprodutiva}
-                      </span>
-                      <span className={"faz-badge " + (editAnimalData.vacStatus === "Atrasada" ? "is-bad" : "is-ok")}>
-                        Vacina: {editAnimalData.vacStatus}
-                      </span>
-                      <span className="faz-badge">
-                        Última pesagem: {fmtDateShort(editAnimalData.dataPeso)}
-                      </span>
-                      {editAnimalData.dpp ? (
-                        <span className="faz-badge is-ok">DPP estimada: {fmtDateShort(editAnimalData.dpp)}</span>
-                      ) : null}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="faz-ficha-grid faz-modalPanels">
-                  <div className="faz-panel">
-                    <div className="faz-modalSectionTitle">Pesagens recentes</div>
-                    {editAnimalHistory.weighs.length ? (
-                      <div className="faz-historyList">
-                        {editAnimalHistory.weighs.map((row) => (
-                          <div key={row.key} className="faz-historyRow">
-                            <div>
-                              <div className="main">{fmtDateShort(row.date)}</div>
-                              <div className="sub">
-                                {row.arroba == null ? "Sem arroba" : `${fmtArroba(row.arroba)} @`}
-                                {row.delta == null ? "" : ` • ${row.delta >= 0 ? "+" : ""}${fmtKg1(row.delta)}`}
-                              </div>
-                            </div>
-                            <div className="value">{fmtKg(row.kg)}</div>
+                    <div className="faz-modalFacts">
+                      <div className="faz-modalSection">
+                        <div className="faz-modalSectionTitle">Leitura operacional</div>
+                        <div className="faz-modalInfoGrid">
+                          <div className="faz-modalInfoItem">
+                            <span className="lbl">Raça</span>
+                            <strong>{editAnimalData.raca}</strong>
                           </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="faz-emptyNice">Ainda não há histórico de pesagem para este animal.</div>
-                    )}
-                  </div>
-
-                  <div className="faz-panel">
-                    <div className="faz-modalSectionTitle">Linha do tempo</div>
-                    {editAnimalHistory.timeline.length ? (
-                      editAnimalHistory.timeline.map((item) => (
-                        <div key={item.key} className="faz-timeline-row">
-                          <span className="dot" />
-                          <div>
-                            <div style={{ fontWeight: 900 }}>{item.label}</div>
-                            <div className="texto-suave">
-                              {fmtDateShort(item.date)}
-                              {item.detail ? ` • ${item.detail}` : ""}
-                            </div>
+                          <div className="faz-modalInfoItem">
+                            <span className="lbl">Data da última pesagem</span>
+                            <strong>{fmtDateShort(editAnimalData.dataPeso)}</strong>
+                          </div>
+                          <div className="faz-modalInfoItem">
+                            <span className="lbl">Situação reprodutiva</span>
+                            <strong>{editAnimalData.situacaoReprodutiva}</strong>
+                          </div>
+                          <div className="faz-modalInfoItem">
+                            <span className="lbl">Número da mãe</span>
+                            <strong>{editAnimalData.numeroMae}</strong>
                           </div>
                         </div>
-                      ))
-                    ) : (
-                      <div className="faz-emptyNice">Sem eventos registrados ainda para este animal.</div>
-                    )}
+                      </div>
+
+                      <div className="faz-modalSection">
+                        <div className="faz-modalSectionTitle">Alertas e próximos passos</div>
+                        <div className="faz-badges">
+                          <span className={"faz-badge " + (editAnimalData.situacaoReprodutiva === "Prenha" ? "is-ok" : "is-warn")}>
+                            Reprodução: {editAnimalData.situacaoReprodutiva}
+                          </span>
+                          <span className={"faz-badge " + (editAnimalData.vacStatus === "Atrasada" ? "is-bad" : "is-ok")}>
+                            Vacina: {editAnimalData.vacStatus}
+                          </span>
+                          <span className="faz-badge">
+                            Última pesagem: {fmtDateShort(editAnimalData.dataPeso)}
+                          </span>
+                          {editAnimalData.dpp ? (
+                            <span className="faz-badge is-ok">DPP estimada: {fmtDateShort(editAnimalData.dpp)}</span>
+                          ) : null}
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ) : null}
+
+                {editView === "reproducao" ? (
+                  <div className="faz-modalFacts">
+                    <div className="faz-modalSection">
+                      <div className="faz-modalSectionTitle">Situação reprodutiva</div>
+                      <div className="faz-modalInfoGrid">
+                        <div className="faz-modalInfoItem">
+                          <span className="lbl">Situação atual</span>
+                          <strong>{editAnimalData.situacaoReprodutiva}</strong>
+                        </div>
+                        <div className="faz-modalInfoItem">
+                          <span className="lbl">Número da mãe</span>
+                          <strong>{editAnimalData.numeroMae}</strong>
+                        </div>
+                        <div className="faz-modalInfoItem">
+                          <span className="lbl">Cobertura / IA</span>
+                          <strong>{fmtDateShort(editPregStart)}</strong>
+                        </div>
+                        <div className="faz-modalInfoItem">
+                          <span className="lbl">DPP estimada</span>
+                          <strong>{fmtDateShort(editPregStart ? dppIso(editPregStart) : "")}</strong>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="faz-modalGrid">
+                      <div>
+                        <label className="form-label">Situação reprodutiva</label>
+                        <select className="input" value={editPreg} onChange={(e) => setEditPreg(e.target.value)}>
+                          <option value="ND">Não informado</option>
+                          <option value="VAZIA">Vazia</option>
+                          <option value="PRENHA">Prenha</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="form-label">Data IA/Cobertura</label>
+                        <input
+                          className="input"
+                          type="date"
+                          value={editPregStart}
+                          onChange={(e) => setEditPregStart(e.target.value)}
+                          disabled={String(editPreg || "").toUpperCase() !== "PRENHA"}
+                        />
+                        <div className="texto-suave" style={{ marginTop: 6 }}>
+                          Se estiver prenha, o sistema calcula DPP em 283 dias.
+                        </div>
+                      </div>
+
+                      <div style={{ gridColumn: "1 / -1" }}>
+                        <label className="form-label">Observação reprodutiva</label>
+                        <input className="input" value={editNote} onChange={(e) => setEditNote(e.target.value)} placeholder="Ex.: confirmar prenhez no próximo manejo" />
+                      </div>
+                    </div>
                   </div>
-                </div>
+                ) : null}
+
+                {editView === "sanidade" ? (
+                  <div className="faz-modalFacts">
+                    <div className="faz-modalSection">
+                      <div className="faz-modalSectionTitle">Status sanitário</div>
+                      <div className="faz-badges">
+                        <span className={"faz-badge " + (editAnimalData.vacStatus === "Atrasada" ? "is-bad" : "is-ok")}>
+                          Vacina: {editAnimalData.vacStatus}
+                        </span>
+                        <span className="faz-badge">
+                          Última aplicação: {fmtDateShort(editVacDate)}
+                        </span>
+                        <span className="faz-badge">
+                          Próxima dose: {fmtDateShort(editVacNext)}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="faz-modalGrid">
+                      <div>
+                        <label className="form-label">Vacina (nome)</label>
+                        <input className="input" value={editVacName} onChange={(e) => setEditVacName(e.target.value)} placeholder="Ex.: Aftosa" />
+                      </div>
+
+                      <div>
+                        <label className="form-label">Data da vacina</label>
+                        <input className="input" type="date" value={editVacDate} onChange={(e) => setEditVacDate(e.target.value)} />
+                      </div>
+
+                      <div>
+                        <label className="form-label">Próxima vacina</label>
+                        <input className="input" type="date" value={editVacNext} onChange={(e) => setEditVacNext(e.target.value)} />
+                      </div>
+
+                      <div style={{ gridColumn: "1 / -1" }}>
+                        <label className="form-label">Observação sanitária</label>
+                        <input className="input" value={editNote} onChange={(e) => setEditNote(e.target.value)} placeholder="Ex.: reforçar vacina no lote todo" />
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
+
+                {editView === "pesagens" ? (
+                  <div className="faz-ficha-grid faz-modalPanels">
+                    <div className="faz-panel">
+                      <div className="faz-modalSectionTitle">Pesagens recentes</div>
+                      {editAnimalHistory.weighs.length ? (
+                        <div className="faz-historyList">
+                          {editAnimalHistory.weighs.map((row) => (
+                            <div key={row.key} className="faz-historyRow">
+                              <div>
+                                <div className="main">{fmtDateShort(row.date)}</div>
+                                <div className="sub">
+                                  {row.arroba == null ? "Sem arroba" : `${fmtArroba(row.arroba)} @`}
+                                  {row.delta == null ? "" : ` • ${row.delta >= 0 ? "+" : ""}${fmtKg1(row.delta)}`}
+                                </div>
+                              </div>
+                              <div className="value">{fmtKg(row.kg)}</div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="faz-emptyNice">Ainda não há histórico de pesagem para este animal.</div>
+                      )}
+                    </div>
+
+                    <div className="faz-panel">
+                      <div className="faz-modalSectionTitle">Linha do tempo</div>
+                      {editAnimalHistory.timeline.length ? (
+                        editAnimalHistory.timeline.map((item) => (
+                          <div key={item.key} className="faz-timeline-row">
+                            <span className="dot" />
+                            <div>
+                              <div style={{ fontWeight: 900 }}>{item.label}</div>
+                              <div className="texto-suave">
+                                {fmtDateShort(item.date)}
+                                {item.detail ? ` • ${item.detail}` : ""}
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="faz-emptyNice">Sem eventos registrados ainda para este animal.</div>
+                      )}
+                    </div>
+                  </div>
+                ) : null}
               </>
             ) : null}
 
-            <div className="faz-modalGrid">
-              <div>
-                <label className="form-label">Data de nascimento</label>
-                <input className="input" type="date" value={editBirth} onChange={(e) => setEditBirth(e.target.value)} />
-              </div>
+            {editView === "resumo" ? (
+              <div className="faz-modalGrid">
+                <div>
+                  <label className="form-label">Data de nascimento</label>
+                  <input className="input" type="date" value={editBirth} onChange={(e) => setEditBirth(e.target.value)} />
+                </div>
 
-              <div>
-                <label className="form-label">Situação reprodutiva</label>
-                <select className="input" value={editPreg} onChange={(e) => setEditPreg(e.target.value)}>
-                  <option value="ND">Não informado</option>
-                  <option value="VAZIA">Vazia</option>
-                  <option value="PRENHA">Prenha</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="form-label">Data IA/Cobertura</label>
-                <input
-                  className="input"
-                  type="date"
-                  value={editPregStart}
-                  onChange={(e) => setEditPregStart(e.target.value)}
-                  disabled={String(editPreg || "").toUpperCase() !== "PRENHA"}
-                />
-                <div className="texto-suave" style={{ marginTop: 6 }}>
-                  Se estiver prenha, o sistema calcula DPP (283 dias).
+                <div>
+                  <label className="form-label">Observação geral</label>
+                  <input className="input" value={editNote} onChange={(e) => setEditNote(e.target.value)} placeholder="Ex.: confirmar dados no próximo manejo" />
                 </div>
               </div>
-
-              <div>
-                <label className="form-label">Vacina (nome)</label>
-                <input className="input" value={editVacName} onChange={(e) => setEditVacName(e.target.value)} placeholder="Ex.: Aftosa" />
-              </div>
-
-              <div>
-                <label className="form-label">Data da vacina</label>
-                <input className="input" type="date" value={editVacDate} onChange={(e) => setEditVacDate(e.target.value)} />
-              </div>
-
-              <div>
-                <label className="form-label">Próxima vacina</label>
-                <input className="input" type="date" value={editVacNext} onChange={(e) => setEditVacNext(e.target.value)} />
-              </div>
-
-              <div style={{ gridColumn: "1 / -1" }}>
-                <label className="form-label">Observação (opcional)</label>
-                <input className="input" value={editNote} onChange={(e) => setEditNote(e.target.value)} placeholder="Ex.: vacinar lote todo em março" />
-              </div>
-            </div>
+            ) : null}
 
             <div className="faz-modalActions">
               <button className="faz-btn primary" type="button" onClick={saveEdit}>
