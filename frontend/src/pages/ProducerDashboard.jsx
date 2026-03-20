@@ -2036,6 +2036,28 @@ export default function ProducerDashboard({ monthKey, onNavigate }) {
       tone: totalOverdueCount > 0 || totalApprovalPendingCount > 0 ? "is-warn" : "is-ok",
     },
   ];
+  const operationLeadText =
+    pendingCounts.operationalTotal > 0
+      ? `Existem ${formatNumber(pendingCounts.operationalTotal)} pendência(s) operacionais no rebanho. O foco é limpar pesos, vacina e lotes com maior impacto.`
+      : `Rebanho com ${formatNumber(overviewData.activeHeads)} cabeça(s) ativa(s), sem pendência operacional crítica aberta.`;
+  const financeLeadText =
+    totalOverdueCount > 0
+      ? `Há ${formatNumber(totalOverdueCount)} título(s) vencido(s). O caixa do mês precisa de ação imediata em pagar e receber.`
+      : openPayableCount > 0 || openReceivableCount > 0
+      ? `O mês segue aberto com ${formatNumber(openPayableCount + openReceivableCount)} título(s) em acompanhamento.`
+      : "Sem título vencido nem fila financeira relevante no período.";
+  const executiveDecisionText =
+    balanceTotal < 0
+      ? "Prioridade do mês: proteger caixa, segurar as categorias que puxaram custo e atacar vencidos."
+      : totalOverdueCount > 0
+      ? "O mês ainda não está limpo. Vale resolver vencidos antes de consolidar qualquer leitura de resultado."
+      : pendingCounts.operationalTotal > 0
+      ? "A operação está pedindo conferência. Limpar pendências do rebanho melhora a confiança do painel."
+      : "O mês está estável. O próximo passo é consolidar resultado e acompanhar produtividade por arroba.";
+  const executiveRiskText =
+    topExpenseGroups[0]
+      ? `${topExpenseGroups[0].label} segue como maior pressão de custo em ${formatBRL(topExpenseGroups[0].value)}.`
+      : "Ainda não existe despesa relevante lançada para apontar um vetor de custo.";
 
   return (
     <div className="faz-page faz-producer-dashboard">
@@ -2204,6 +2226,22 @@ export default function ProducerDashboard({ monthKey, onNavigate }) {
                 <h3>Operação da Fazenda</h3>
                 <span className="pdOverview-tag">Rebanho</span>
               </div>
+              <p className="pdOverview-cardLead">{operationLeadText}</p>
+
+              <div className="pdOverview-signalRow">
+                <div className={`pdOverview-signal ${pendingCounts.operationalTotal > 0 ? "is-warn" : "is-ok"}`}>
+                  <span>Pendências</span>
+                  <b>{formatNumber(pendingCounts.operationalTotal)}</b>
+                </div>
+                <div className={`pdOverview-signal ${healthSummary.overdueVaccineCount > 0 ? "is-warn" : "is-ok"}`}>
+                  <span>Vacina atrasada</span>
+                  <b>{formatNumber(healthSummary.overdueVaccineCount)}</b>
+                </div>
+                <div className="pdOverview-signal">
+                  <span>Matrizes prenhas</span>
+                  <b>{formatNumber(healthSummary.pregCount)}</b>
+                </div>
+              </div>
 
               <div className="pdOverview-miniGrid">
                 <div><span>Propriedades</span><b>{formatNumber(overviewData.propertyCount)}</b></div>
@@ -2291,6 +2329,22 @@ export default function ProducerDashboard({ monthKey, onNavigate }) {
               <div className="pdOverview-head">
                 <h3>Financeiro do Mês</h3>
                 <span className="pdOverview-tag">Resultados</span>
+              </div>
+              <p className="pdOverview-cardLead">{financeLeadText}</p>
+
+              <div className="pdOverview-signalRow">
+                <div className={`pdOverview-signal ${balanceTotal >= 0 ? "is-ok" : "is-warn"}`}>
+                  <span>Balanço</span>
+                  <b>{formatBRL(balanceTotal)}</b>
+                </div>
+                <div className={`pdOverview-signal ${totalOverdueCount > 0 ? "is-warn" : "is-ok"}`}>
+                  <span>Vencidos</span>
+                  <b>{formatNumber(totalOverdueCount)}</b>
+                </div>
+                <div className={`pdOverview-signal ${totalApprovalPendingCount > 0 ? "is-warn" : "is-ok"}`}>
+                  <span>Em aprovação</span>
+                  <b>{formatNumber(totalApprovalPendingCount)}</b>
+                </div>
               </div>
 
               <div className="pdOverview-finGrid">
@@ -2488,9 +2542,10 @@ export default function ProducerDashboard({ monthKey, onNavigate }) {
 
             <section className="pdOverview-card pdOverview-card--wide">
               <div className="pdOverview-head">
-                <h3>Leitura rápida para decisão</h3>
+                <h3>Decisão do mês</h3>
                 <span className="pdOverview-tag">Resumo executivo</span>
               </div>
+              <p className="pdOverview-cardLead">{executiveDecisionText}</p>
 
               <div className="pdOverview-summary">
                 <div className="pdOverview-summaryItem">
@@ -2504,6 +2559,25 @@ export default function ProducerDashboard({ monthKey, onNavigate }) {
                 <div className="pdOverview-summaryItem">
                   <span>Resultado do mês</span>
                   <b className={balanceTotal >= 0 ? "is-pos" : "is-neg"}>{formatBRL(balanceTotal)}</b>
+                </div>
+              </div>
+
+              <div className="pdOverview-decisionBand">
+                <div className="pdOverview-decisionItem">
+                  <span>Próxima ação</span>
+                  <b>{executiveDecisionText}</b>
+                </div>
+                <div className="pdOverview-decisionItem">
+                  <span>Maior risco</span>
+                  <b>{executiveRiskText}</b>
+                </div>
+                <div className="pdOverview-decisionItem">
+                  <span>Fechamento</span>
+                  <b>
+                    {totalOverdueCount > 0 || totalApprovalPendingCount > 0 || totalReconciliationPendingCount > 0
+                      ? "Ainda exige conferência"
+                      : "Pode consolidar o mês"}
+                  </b>
                 </div>
               </div>
 

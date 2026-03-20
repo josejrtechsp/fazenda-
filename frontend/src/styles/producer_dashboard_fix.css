@@ -1298,6 +1298,13 @@
   color: var(--pd-ink);
 }
 
+.faz-producer-dashboard .pdOverview-cardLead{
+  margin: 10px 0 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: rgba(71,85,105,.95);
+}
+
 .faz-producer-dashboard .pdOverview-tag{
   border: 1px solid rgba(226,232,240,.92);
   border-radius: 999px;
@@ -1308,6 +1315,46 @@
   font-weight: 900;
   color: var(--pd-muted);
   background: rgba(248,250,252,.8);
+}
+
+.faz-producer-dashboard .pdOverview-signalRow{
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.faz-producer-dashboard .pdOverview-signal{
+  border: 1px solid rgba(226,232,240,.92);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: rgba(248,250,252,.8);
+  display: grid;
+  gap: 6px;
+}
+
+.faz-producer-dashboard .pdOverview-signal span{
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  font-weight: 900;
+  color: var(--pd-muted);
+}
+
+.faz-producer-dashboard .pdOverview-signal b{
+  font-size: 20px;
+  line-height: 1.05;
+  color: var(--pd-ink);
+}
+
+.faz-producer-dashboard .pdOverview-signal.is-warn{
+  border-color: rgba(251,113,133,.28);
+  background: rgba(255,241,242,.82);
+}
+
+.faz-producer-dashboard .pdOverview-signal.is-ok{
+  border-color: rgba(52,211,153,.24);
+  background: rgba(236,253,245,.78);
 }
 
 .faz-producer-dashboard .pdOverview-miniGrid{
@@ -1606,6 +1653,36 @@
   gap: 8px;
 }
 
+.faz-producer-dashboard .pdOverview-decisionBand{
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.faz-producer-dashboard .pdOverview-decisionItem{
+  border: 1px solid rgba(226,232,240,.92);
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: grid;
+  gap: 6px;
+  background: rgba(248,250,252,.82);
+}
+
+.faz-producer-dashboard .pdOverview-decisionItem span{
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  font-weight: 900;
+  color: var(--pd-muted);
+}
+
+.faz-producer-dashboard .pdOverview-decisionItem b{
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--pd-ink);
+}
+
 .faz-producer-dashboard .pdOverview-summaryItem{
   border: 1px solid rgba(226,232,240,.92);
   border-radius: 10px;
@@ -1672,6 +1749,14 @@
 
   .faz-producer-dashboard .pdOverview-card{
     grid-column: span 12;
+  }
+
+  .faz-producer-dashboard .pdOverview-signalRow{
+    grid-template-columns: 1fr;
+  }
+
+  .faz-producer-dashboard .pdOverview-decisionBand{
+    grid-template-columns: 1fr;
   }
 }
 
