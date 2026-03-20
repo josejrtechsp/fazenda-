@@ -1512,6 +1512,95 @@
   color: rgba(71,85,105,1);
 }
 
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-recon-checklist{
+  margin-top: 0;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-recon-summary-grid{
+  display:grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap:8px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-recon-summary-grid .item{
+  border:1px solid rgba(226,232,240,.92);
+  border-radius:12px;
+  background: rgba(248,250,252,.82);
+  padding:10px 12px;
+  display:grid;
+  gap:4px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-recon-summary-grid .item span{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-weight:900;
+  color: rgba(100,116,139,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-recon-summary-grid .item b{
+  font-size:24px;
+  line-height:1;
+  color: rgba(15,23,42,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-recon-summary-grid .item.ok{
+  border-color: rgba(34,197,94,.22);
+  background: rgba(240,253,244,.92);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-recon-summary-grid .item.warn{
+  border-color: rgba(245,158,11,.28);
+  background: rgba(255,251,235,.92);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-recon-summary-grid .item.bad{
+  border-color: rgba(239,68,68,.22);
+  background: rgba(254,242,242,.95);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-recon-summary-grid .item.rec{
+  border-color: rgba(59,130,246,.22);
+  background: rgba(239,246,255,.95);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-recon-table-lead{
+  border:1px dashed rgba(203,213,225,.92);
+  border-radius:12px;
+  background: rgba(248,250,252,.86);
+  padding:12px 14px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-recon-table-lead span{
+  display:block;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-weight:900;
+  color: rgba(100,116,139,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-recon-table-lead b{
+  display:block;
+  margin-top:4px;
+  font-size:14px;
+  line-height:1.4;
+  color: rgba(15,23,42,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-recon-table-lead small{
+  max-width: 380px;
+  font-size:12px;
+  line-height:1.5;
+  color: rgba(71,85,105,1);
+}
+
 .cras-ui-v2 .faz-financeiro-v2 .faz-fin-recon-textarea{
   min-height: 110px;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -1562,6 +1651,9 @@
   .cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-grid{
     grid-template-columns: 1fr;
   }
+  .cras-ui-v2 .faz-financeiro-v2 .faz-fin-recon-summary-grid{
+    grid-template-columns: 1fr 1fr;
+  }
   .cras-ui-v2 .faz-financeiro-v2 .faz-fin-launch-checklist{
     grid-template-columns: 1fr;
   }
@@ -1603,6 +1695,9 @@
   }
   .cras-ui-v2 .faz-financeiro-v2 .faz-fin-aging-grid{
     grid-template-columns: 1fr 1fr;
+  }
+  .cras-ui-v2 .faz-financeiro-v2 .faz-fin-recon-summary-grid{
+    grid-template-columns: 1fr;
   }
   .cras-ui-v2 .faz-financeiro-v2 .faz-fin-concentration-card .metrics,
   .cras-ui-v2 .faz-financeiro-v2 .faz-fin-concentration-card .row{

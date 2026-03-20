@@ -4719,149 +4719,249 @@ export default function Financeiro() {
     </>
   );
 
-  const renderFluxo = () => (
-    <>
-      <div className="faz-fin-card faz-fin-recon-card">
-        <div className="faz-fin-recon-head">
-          <div>
-            <h4>Conciliação por extrato CSV</h4>
-            <p>Importe o extrato bancário para sugerir e aplicar conciliação automática em títulos já baixados.</p>
-          </div>
-          <span className="chip">Perfil: {approverRoleLabel(approverRole)}</span>
-        </div>
-        <div className="faz-fin-filters faz-fin-filters-4">
-          <input className="faz-input" type="file" accept=".csv,text/csv" onChange={onReconFileChange} />
-          <input
-            className="faz-input"
-            value={reconTolerance}
-            onChange={(e) => setReconTolerance(e.target.value)}
-            placeholder="Tolerância (R$)"
-          />
-          <input
-            className="faz-input"
-            value={reconWindowDays}
-            onChange={(e) => setReconWindowDays(e.target.value)}
-            placeholder="Janela de datas (dias)"
-          />
-          <div className="faz-fin-switches">
-            <button type="button" className="btn-back" disabled={reconBusy || reconApplyBusy} onClick={previewReconciliationImport}>
-              {reconBusy ? "Processando..." : "Gerar prévia"}
-            </button>
-            <button type="button" className="btn-refresh" disabled={reconBusy || reconApplyBusy} onClick={applyReconciliationImport}>
-              {reconApplyBusy ? "Aplicando..." : "Aplicar matches"}
-            </button>
-          </div>
-        </div>
-        <textarea
-          className="faz-input faz-fin-recon-textarea"
-          value={reconCsvText}
-          onChange={(e) => setReconCsvText(e.target.value)}
-          placeholder="Cole aqui o CSV do extrato (colunas: data, histórico, documento, valor)."
-        />
-        {reconMsg ? <div className={`chip ${reconMsg.includes("✅") ? "ok" : "bad"}`}>{reconMsg}</div> : null}
-        {reconPreview?.summary ? (
-          <div className="faz-fin-switches">
-            <span className="chip rec">Linhas: {toNum(reconPreview.summary.rows || 0, 0)}</span>
-            <span className="chip ok">Match: {toNum(reconPreview.summary.matched || 0, 0)}</span>
-            <span className="chip warn">Ambíguas: {toNum(reconPreview.summary.ambiguous || 0, 0)}</span>
-            <span className="chip bad">Sem match: {toNum(reconPreview.summary.unmatched || 0, 0)}</span>
-            {reconSelectionStats.ambiguous > 0 ? (
-              <span className={`chip ${reconSelectionStats.selected === reconSelectionStats.ambiguous ? "ok" : "warn"}`}>
-                Seleção manual: {toNum(reconSelectionStats.selected, 0)}/{toNum(reconSelectionStats.ambiguous, 0)}
-              </span>
-            ) : null}
-          </div>
-        ) : null}
-        {Array.isArray(reconPreview?.items) && reconPreview.items.length ? (
-          <div className="faz-fin-tableWrap">
-            <table className="faz-fin-table">
-              <thead>
-                <tr>
-                  <th>Linha</th>
-                  <th>Data</th>
-                  <th>Valor</th>
-                  <th>Direção</th>
-                  <th>Status</th>
-                  <th>Título sugerido</th>
-                  <th>Resolver ambígua</th>
-                </tr>
-              </thead>
-              <tbody>
-                {reconPreview.items.slice(0, 120).map((row) => {
-                  const st = String(row?.status || "unmatched");
-                  const chipClass = st === "matched" ? "ok" : st === "ambiguous" ? "warn" : "bad";
-                  const options = Array.isArray(row?.alternatives) ? row.alternatives : [];
-                  const selectedKey = reconSelections[String(row?.row_index || "")] || "";
-                  const selectedParsed = parseReconMatchKey(selectedKey);
-                  return (
-                    <tr key={`recon-${row.row_index}`}>
-                      <td>{row.row_index}</td>
-                      <td>{row.movement_date || "—"}</td>
-                      <td>{toBRL(row.amount_brl)}</td>
-                      <td>{row.direction === "payable" ? "Saída" : "Entrada"}</td>
-                      <td><span className={`chip ${chipClass}`}>{st === "matched" ? "Match" : st === "ambiguous" ? "Ambígua" : "Sem match"}</span></td>
-                      <td>
-                        {row.match ? (
-                          <span>
-                            #{row.match.event_id} • {row.match.kind === "payable" ? "Pagar" : "Receber"} • {row.match.person_name || "—"}
-                          </span>
-                        ) : (
-                          "—"
-                        )}
-                      </td>
-                      <td>
-                        {st === "ambiguous" ? (
-                          <select
-                            className="faz-input faz-fin-recon-select"
-                            value={selectedKey}
-                            onChange={(e) =>
-                              setReconSelections((prev) => ({
-                                ...prev,
-                                [String(row.row_index)]: e.target.value,
-                              }))
-                            }
-                          >
-                            <option value="">Selecionar título...</option>
-                            {options.map((opt) => {
-                              const optKey = reconMatchKey(opt);
-                              return (
-                                <option key={`${row.row_index}-${optKey}`} value={optKey}>
-                                  #{opt.event_id} • {opt.kind === "payable" ? "Pagar" : "Receber"} • {opt.person_name || "—"} • score {toNum(opt.score, 0)}
-                                </option>
-                              );
-                            })}
-                          </select>
-                        ) : st === "matched" ? (
-                          <span className="chip ok">Automático</span>
-                        ) : (
-                          "—"
-                        )}
-                        {st === "ambiguous" && selectedParsed ? (
-                          <div className="faz-fin-approval-required">
-                            Selecionado: #{selectedParsed.event_id} • {selectedParsed.kind === "payable" ? "Pagar" : "Receber"}
-                          </div>
-                        ) : null}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        ) : null}
-      </div>
+  const renderFluxo = () => {
+    const reconSummary = reconPreview?.summary || null;
+    const reconRows = toNum(reconSummary?.rows || 0, 0);
+    const reconMatched = toNum(reconSummary?.matched || 0, 0);
+    const reconAmbiguous = toNum(reconSummary?.ambiguous || 0, 0);
+    const reconUnmatched = toNum(reconSummary?.unmatched || 0, 0);
+    const reconHasCsv = String(reconCsvText || "").trim().length > 0;
+    const reconHasPreview = Boolean(reconSummary && reconRows > 0);
+    const reconManualPending = Math.max(reconSelectionStats.ambiguous - reconSelectionStats.selected, 0);
+    const reconReadyMatches = reconMatched + reconSelectionStats.selected;
+    const reconNextAction = !reconHasCsv
+      ? "Carregue o extrato para começar."
+      : !reconHasPreview
+      ? "Gerar a prévia para o sistema procurar títulos baixados."
+      : reconManualPending > 0
+      ? `Resolver ${toNum(reconManualPending, 0)} linha(s) ambígua(s) antes de aplicar tudo com segurança.`
+      : reconReadyMatches > 0
+      ? `Aplicar ${toNum(reconReadyMatches, 0)} match(es) prontos na conciliação.`
+      : "Revisar as linhas sem match antes de concluir.";
+    const reconMainText = !reconHasCsv
+      ? "A tela ainda está vazia. Você pode subir um CSV do banco ou colar o conteúdo do extrato."
+      : !reconHasPreview
+      ? "Extrato carregado. O próximo passo é gerar a prévia para o sistema comparar data, valor e direção do movimento."
+      : reconManualPending > 0
+      ? `A prévia encontrou ${toNum(reconAmbiguous, 0)} linha(s) ambígua(s). Escolha manualmente qual título cada uma deve conciliar.`
+      : reconUnmatched > 0
+      ? `A conciliação já encontrou ${toNum(reconReadyMatches, 0)} match(es), mas ainda restam ${toNum(reconUnmatched, 0)} linha(s) sem sugestão.`
+      : "A prévia ficou limpa. Se os dados estiverem corretos, você já pode aplicar a conciliação.";
+    const reconTone = !reconHasCsv ? "rec" : !reconHasPreview ? "warn" : reconManualPending > 0 || reconUnmatched > 0 ? "warn" : "ok";
 
-      <div className="faz-pay-toolbar">
-        <div className="left">
-          <span className="chip rec">Mensal</span>
-          <span className="chip">{pagarPeriodLabel}</span>
-          <button type="button" className={`chip ${flowIncludePlanned ? "rec" : ""}`} onClick={() => setFlowIncludePlanned((v) => !v)}>
-            {flowIncludePlanned ? "Com previstos" : "Sem previstos"}
-          </button>
-        </div>
-      </div>
+    return (
+      <>
+        <div className="faz-fin-card faz-fin-recon-card">
+          <div className="faz-fin-recon-head">
+            <div>
+              <h4>Conciliação por extrato CSV</h4>
+              <p>Importe o extrato bancário para sugerir e aplicar conciliação automática em títulos já baixados.</p>
+            </div>
+            <span className="chip">Perfil: {approverRoleLabel(approverRole)}</span>
+          </div>
 
-      <div className="faz-fin-tableWrap flow-chart-wrap">
+          <div className={`faz-fin-launch-overview tone-${reconTone}`}>
+            <div className="main">
+              <span className="eyebrow">Conciliação guiada</span>
+              <h4>{reconNextAction}</h4>
+              <p>{reconMainText}</p>
+              <small>O sistema cruza valor, data e direção do movimento para sugerir se a linha pertence a pagar ou receber.</small>
+            </div>
+            <div className="metrics">
+              <div className="mini">
+                <span>Matches prontos</span>
+                <b>{toNum(reconReadyMatches, 0)}</b>
+                <small>{reconHasPreview ? "automáticos + seleções manuais" : "aguardando prévia"}</small>
+              </div>
+              <div className="mini">
+                <span>Pendências</span>
+                <b>{toNum(reconManualPending + reconUnmatched, 0)}</b>
+                <small>{reconManualPending > 0 ? "ambíguas e sem match" : "sem sugestão ou sem extrato"}</small>
+              </div>
+              <div className="mini">
+                <span>Parâmetros</span>
+                <b>{String(reconTolerance || "0,05")}</b>
+                <small>tolerância • {String(reconWindowDays || "7")} dias de janela</small>
+              </div>
+            </div>
+          </div>
+
+          <div className="faz-fin-launch-checklist faz-fin-recon-checklist">
+            <div className={`item ${reconHasCsv ? "ok" : "warn"}`}>
+              <span>1. Extrato</span>
+              <b>{reconHasCsv ? "Arquivo ou texto carregado" : "Ainda falta carregar o extrato CSV"}</b>
+            </div>
+            <div className={`item ${reconHasPreview ? "ok" : "warn"}`}>
+              <span>2. Prévia</span>
+              <b>{reconHasPreview ? `${reconRows} linha(s) analisada(s)` : "Gere a prévia para encontrar sugestões"}</b>
+            </div>
+            <div className={`item ${reconHasPreview && reconManualPending === 0 ? "ok" : "warn"}`}>
+              <span>3. Ambíguas</span>
+              <b>
+                {reconHasPreview
+                  ? reconManualPending === 0
+                    ? "Todas as linhas ambíguas já estão resolvidas"
+                    : `${toNum(reconManualPending, 0)} linha(s) ainda pedem escolha manual`
+                  : "Ainda não há ambíguas para revisar"}
+              </b>
+            </div>
+          </div>
+
+          <div className="faz-fin-filters faz-fin-filters-4">
+            <input className="faz-input" type="file" accept=".csv,text/csv" onChange={onReconFileChange} />
+            <input
+              className="faz-input"
+              value={reconTolerance}
+              onChange={(e) => setReconTolerance(e.target.value)}
+              placeholder="Tolerância (R$)"
+            />
+            <input
+              className="faz-input"
+              value={reconWindowDays}
+              onChange={(e) => setReconWindowDays(e.target.value)}
+              placeholder="Janela de datas (dias)"
+            />
+            <div className="faz-fin-switches">
+              <button type="button" className="btn-back" disabled={reconBusy || reconApplyBusy} onClick={previewReconciliationImport}>
+                {reconBusy ? "Processando..." : "Gerar prévia"}
+              </button>
+              <button type="button" className="btn-refresh" disabled={reconBusy || reconApplyBusy} onClick={applyReconciliationImport}>
+                {reconApplyBusy ? "Aplicando..." : "Aplicar matches"}
+              </button>
+            </div>
+          </div>
+          <textarea
+            className="faz-input faz-fin-recon-textarea"
+            value={reconCsvText}
+            onChange={(e) => setReconCsvText(e.target.value)}
+            placeholder="Cole aqui o CSV do extrato (colunas: data, histórico, documento, valor)."
+          />
+          {reconMsg ? <div className={`chip ${reconMsg.includes("✅") ? "ok" : "bad"}`}>{reconMsg}</div> : null}
+          {reconHasPreview ? (
+            <>
+              <div className="faz-fin-recon-summary-grid">
+                <div className="item rec">
+                  <span>Linhas do extrato</span>
+                  <b>{reconRows}</b>
+                </div>
+                <div className="item ok">
+                  <span>Match automático</span>
+                  <b>{reconMatched}</b>
+                </div>
+                <div className="item warn">
+                  <span>Ambíguas</span>
+                  <b>{reconAmbiguous}</b>
+                </div>
+                <div className="item bad">
+                  <span>Sem match</span>
+                  <b>{reconUnmatched}</b>
+                </div>
+                {reconSelectionStats.ambiguous > 0 ? (
+                  <div className={`item ${reconSelectionStats.selected === reconSelectionStats.ambiguous ? "ok" : "warn"}`}>
+                    <span>Seleção manual</span>
+                    <b>{toNum(reconSelectionStats.selected, 0)}/{toNum(reconSelectionStats.ambiguous, 0)}</b>
+                  </div>
+                ) : null}
+              </div>
+              <div className="faz-fin-recon-table-lead">
+                <div>
+                  <span>Resultado da prévia</span>
+                  <b>Revise o que o sistema encontrou antes de aplicar a conciliação.</b>
+                </div>
+                <small>As linhas em Match entram sozinhas. As Ambíguas precisam de escolha manual.</small>
+              </div>
+            </>
+          ) : null}
+          {Array.isArray(reconPreview?.items) && reconPreview.items.length ? (
+            <div className="faz-fin-tableWrap">
+              <table className="faz-fin-table">
+                <thead>
+                  <tr>
+                    <th>Linha</th>
+                    <th>Data</th>
+                    <th>Valor</th>
+                    <th>Direção</th>
+                    <th>Status</th>
+                    <th>Título sugerido</th>
+                    <th>Resolver ambígua</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {reconPreview.items.slice(0, 120).map((row) => {
+                    const st = String(row?.status || "unmatched");
+                    const chipClass = st === "matched" ? "ok" : st === "ambiguous" ? "warn" : "bad";
+                    const options = Array.isArray(row?.alternatives) ? row.alternatives : [];
+                    const selectedKey = reconSelections[String(row?.row_index || "")] || "";
+                    const selectedParsed = parseReconMatchKey(selectedKey);
+                    return (
+                      <tr key={`recon-${row.row_index}`}>
+                        <td>{row.row_index}</td>
+                        <td>{row.movement_date || "—"}</td>
+                        <td>{toBRL(row.amount_brl)}</td>
+                        <td>{row.direction === "payable" ? "Saída" : "Entrada"}</td>
+                        <td><span className={`chip ${chipClass}`}>{st === "matched" ? "Match" : st === "ambiguous" ? "Ambígua" : "Sem match"}</span></td>
+                        <td>
+                          {row.match ? (
+                            <span>
+                              #{row.match.event_id} • {row.match.kind === "payable" ? "Pagar" : "Receber"} • {row.match.person_name || "—"}
+                            </span>
+                          ) : (
+                            "—"
+                          )}
+                        </td>
+                        <td>
+                          {st === "ambiguous" ? (
+                            <select
+                              className="faz-input faz-fin-recon-select"
+                              value={selectedKey}
+                              onChange={(e) =>
+                                setReconSelections((prev) => ({
+                                  ...prev,
+                                  [String(row.row_index)]: e.target.value,
+                                }))
+                              }
+                            >
+                              <option value="">Selecionar título...</option>
+                              {options.map((opt) => {
+                                const optKey = reconMatchKey(opt);
+                                return (
+                                  <option key={`${row.row_index}-${optKey}`} value={optKey}>
+                                    #{opt.event_id} • {opt.kind === "payable" ? "Pagar" : "Receber"} • {opt.person_name || "—"} • score {toNum(opt.score, 0)}
+                                  </option>
+                                );
+                              })}
+                            </select>
+                          ) : st === "matched" ? (
+                            <span className="chip ok">Automático</span>
+                          ) : (
+                            "—"
+                          )}
+                          {st === "ambiguous" && selectedParsed ? (
+                            <div className="faz-fin-approval-required">
+                              Selecionado: #{selectedParsed.event_id} • {selectedParsed.kind === "payable" ? "Pagar" : "Receber"}
+                            </div>
+                          ) : null}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          ) : null}
+        </div>
+
+        <div className="faz-pay-toolbar">
+          <div className="left">
+            <span className="chip rec">Mensal</span>
+            <span className="chip">{pagarPeriodLabel}</span>
+            <button type="button" className={`chip ${flowIncludePlanned ? "rec" : ""}`} onClick={() => setFlowIncludePlanned((v) => !v)}>
+              {flowIncludePlanned ? "Com previstos" : "Sem previstos"}
+            </button>
+          </div>
+        </div>
+
+        <div className="faz-fin-tableWrap flow-chart-wrap">
         <svg viewBox={`0 0 ${flowChart.width} ${flowChart.height}`} className="flow-svg" role="img" aria-label="Fluxo de caixa mensal">
           {flowChart.grid.map((g, i) => (
             <line key={`g-${i}`} x1={flowChart.padX} y1={g.yy} x2={flowChart.width - flowChart.padX} y2={g.yy} stroke="rgba(203,213,225,.8)" strokeWidth="1" />
@@ -4916,54 +5016,55 @@ export default function Financeiro() {
         </div>
       </div>
 
-      <div className="faz-fin-tableWrap">
-        <table className="faz-fin-table faz-flow-matrix">
-          <thead>
-            <tr>
-              <th>Categoria</th>
-              {flowYearRows.map((m) => (
-                <th key={`m-head-${m.month}`} colSpan={4}>{m.month.slice(5, 7)}/{m.month.slice(0, 4)}</th>
-              ))}
-            </tr>
-            <tr>
-              <th />
-              {flowYearRows.map((m) => (
-                <React.Fragment key={`sub-${m.month}`}>
-                  <th>Planejado</th>
-                  <th>Realizado</th>
-                  <th>Diferença</th>
-                  <th>%</th>
-                </React.Fragment>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {flowMatrixRows.map((row) => (
-              <tr key={row.key}>
-                <td className="flow-row-title">{row.label}</td>
-                {flowYearRows.map((m) => {
-                  const cell = row.pick(m);
-                  const planned = asNum(cell.planned);
-                  const realized = asNum(cell.realized);
-                  const diff = realized - planned;
-                  const pct = pctFrom(realized, planned);
-                  return (
-                    <React.Fragment key={`${row.key}-${m.month}`}>
-                      <td>{toBRL(planned)}</td>
-                      <td>{toBRL(realized)}</td>
-                      <td className={diff > 0 ? "flow-pos" : diff < 0 ? "flow-neg" : ""}>{toBRL(diff)}</td>
-                      <td className={pct > 0 ? "flow-pos" : pct < 0 ? "flow-neg" : ""}>{toNum(pct, 1)}%</td>
-                    </React.Fragment>
-                  );
-                })}
+        <div className="faz-fin-tableWrap">
+          <table className="faz-fin-table faz-flow-matrix">
+            <thead>
+              <tr>
+                <th>Categoria</th>
+                {flowYearRows.map((m) => (
+                  <th key={`m-head-${m.month}`} colSpan={4}>{m.month.slice(5, 7)}/{m.month.slice(0, 4)}</th>
+                ))}
               </tr>
-            ))}
-            {!flowYearRows.length ? <tr><td colSpan={49}>Sem dados de fluxo no período.</td></tr> : null}
-          </tbody>
-        </table>
-      </div>
-    </>
-  );
+              <tr>
+                <th />
+                {flowYearRows.map((m) => (
+                  <React.Fragment key={`sub-${m.month}`}>
+                    <th>Planejado</th>
+                    <th>Realizado</th>
+                    <th>Diferença</th>
+                    <th>%</th>
+                  </React.Fragment>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {flowMatrixRows.map((row) => (
+                <tr key={row.key}>
+                  <td className="flow-row-title">{row.label}</td>
+                  {flowYearRows.map((m) => {
+                    const cell = row.pick(m);
+                    const planned = asNum(cell.planned);
+                    const realized = asNum(cell.realized);
+                    const diff = realized - planned;
+                    const pct = pctFrom(realized, planned);
+                    return (
+                      <React.Fragment key={`${row.key}-${m.month}`}>
+                        <td>{toBRL(planned)}</td>
+                        <td>{toBRL(realized)}</td>
+                        <td className={diff > 0 ? "flow-pos" : diff < 0 ? "flow-neg" : ""}>{toBRL(diff)}</td>
+                        <td className={pct > 0 ? "flow-pos" : pct < 0 ? "flow-neg" : ""}>{toNum(pct, 1)}%</td>
+                      </React.Fragment>
+                    );
+                  })}
+                </tr>
+              ))}
+              {!flowYearRows.length ? <tr><td colSpan={49}>Sem dados de fluxo no período.</td></tr> : null}
+            </tbody>
+          </table>
+        </div>
+      </>
+    );
+  };
 
   const renderLcdpr = () => {
     const pendentes = lcdprRows.filter((r) => r.pendencias.length > 0);
