@@ -479,6 +479,83 @@ function buildCloseReadiness({ monthLocked, blockerPending, alertPending, pendin
   };
 }
 
+function buildConcentrationSummary(rows, field, label) {
+  const grouped = new Map();
+  (Array.isArray(rows) ? rows : []).forEach((row) => {
+    const rawKey = String(row?.[field] || "").trim();
+    const key = rawKey || "Sem classificação";
+    const amount = asNum(row?.total_brl);
+    if (amount <= 0) return;
+    grouped.set(key, (grouped.get(key) || 0) + amount);
+  });
+
+  const total = Array.from(grouped.values()).reduce((acc, value) => acc + value, 0);
+  const items = Array.from(grouped.entries())
+    .map(([key, amount]) => ({
+      key,
+      amount,
+      pct: total > 0 ? (amount / total) * 100 : 0,
+    }))
+    .sort((a, b) => b.amount - a.amount);
+
+  if (!items.length || total <= 0) {
+    return {
+      tone: "neutral",
+      label,
+      title: `Sem base para concentração por ${label}`,
+      summary: "Ainda não há valores suficientes no filtro atual para avaliar concentração.",
+      helper: "Quando houver lançamentos no período, o sistema mostrará o peso dos maiores grupos.",
+      total: 0,
+      top1Pct: 0,
+      top3Pct: 0,
+      items: [],
+    };
+  }
+
+  const top1Pct = items[0]?.pct || 0;
+  const top3Pct = items.slice(0, 3).reduce((acc, item) => acc + item.pct, 0);
+
+  let tone = "ok";
+  if (top1Pct >= 55 || top3Pct >= 80) tone = "bad";
+  else if (top1Pct >= 40 || top3Pct >= 65) tone = "warn";
+  else if (top1Pct >= 28 || top3Pct >= 50) tone = "rec";
+
+  const toneMeta = {
+    ok: {
+      title: `${label[0].toUpperCase()}${label.slice(1)} bem distribuído`,
+      helper: "A dependência está mais diluída dentro do filtro atual.",
+    },
+    rec: {
+      title: `Concentração moderada por ${label}`,
+      helper: "Vale acompanhar, mas ainda não parece um risco de dependência forte.",
+    },
+    warn: {
+      title: `Atenção para concentração por ${label}`,
+      helper: "Um grupo já tem peso relevante no período e merece monitoramento.",
+    },
+    bad: {
+      title: `Risco de dependência por ${label}`,
+      helper: "A concentração está alta e pode pressionar negociação, risco operacional ou previsibilidade.",
+    },
+    neutral: {
+      title: `Sem base para concentração por ${label}`,
+      helper: "Ainda não há base suficiente.",
+    },
+  };
+
+  return {
+    tone,
+    label,
+    title: toneMeta[tone].title,
+    summary: `${items[0].key} lidera com ${toNum(items[0].pct, 1)}% do total filtrado (${toBRL(items[0].amount)}).`,
+    helper: `${toneMeta[tone].helper} Top 3 concentram ${toNum(top3Pct, 1)}% de ${toBRL(total)}.`,
+    total,
+    top1Pct,
+    top3Pct,
+    items: items.slice(0, 3),
+  };
+}
+
 function closeDiffLabel(delta) {
   const n = asNum(delta);
   if (Math.abs(n) <= 0.009) return "Sem mudança";
@@ -3382,7 +3459,11 @@ export default function Financeiro() {
     );
   };
 
-  const renderPagar = () => (
+  const renderPagar = () => {
+    const payableSupplierConcentration = buildConcentrationSummary(filteredPayableRows, "person_name", "fornecedor");
+    const payableCenterConcentration = buildConcentrationSummary(filteredPayableRows, "center", "centro de custo");
+
+    return (
     <>
       <div className={`faz-fin-queueContext tone-${payContextSummary.tone}`}>
         <div className="main">
@@ -3459,6 +3540,46 @@ export default function Financeiro() {
             </div>
           ))}
         </div>
+      </div>
+      <div className="faz-fin-concentration-grid">
+        {[payableSupplierConcentration, payableCenterConcentration].map((card) => (
+          <div key={card.label} className={`faz-fin-concentration-card tone-${card.tone}`}>
+            <div className="head">
+              <div>
+                <div className="eyebrow">Concentração</div>
+                <h4>{card.title}</h4>
+                <p>{card.summary}</p>
+              </div>
+              <span className={`chip ${card.tone === "bad" ? "bad" : card.tone === "warn" ? "warn" : card.tone === "ok" ? "ok" : "rec"}`}>
+                Top 3: {toNum(card.top3Pct, 1)}%
+              </span>
+            </div>
+            <div className="metrics">
+              <div className="mini">
+                <span>Total analisado</span>
+                <b>{toBRL(card.total)}</b>
+              </div>
+              <div className="mini">
+                <span>Líder</span>
+                <b>{toNum(card.top1Pct, 1)}%</b>
+              </div>
+            </div>
+            <div className="list">
+              {card.items.length ? card.items.map((item, idx) => (
+                <div key={`${card.label}-${item.key}`} className="row">
+                  <span>{idx + 1}. {item.key}</span>
+                  <b>{toBRL(item.amount)}</b>
+                  <small>{toNum(item.pct, 1)}%</small>
+                </div>
+              )) : (
+                <div className="row empty">
+                  <span>Sem dados</span>
+                </div>
+              )}
+            </div>
+            <small className="helper">{card.helper}</small>
+          </div>
+        ))}
       </div>
       <div className="faz-pay-toolbar">
         <div className="left">
@@ -3649,9 +3770,14 @@ export default function Financeiro() {
         </table>
       </div>
     </>
-  );
+    );
+  };
 
-  const renderReceber = () => (
+  const renderReceber = () => {
+    const receivableClientConcentration = buildConcentrationSummary(filteredReceivableRows, "person_name", "cliente");
+    const receivableCenterConcentration = buildConcentrationSummary(filteredReceivableRows, "center", "centro de custo");
+
+    return (
     <>
       <div className={`faz-fin-queueContext tone-${recvContextSummary.tone}`}>
         <div className="main">
@@ -3734,6 +3860,46 @@ export default function Financeiro() {
             </div>
           ))}
         </div>
+      </div>
+      <div className="faz-fin-concentration-grid">
+        {[receivableClientConcentration, receivableCenterConcentration].map((card) => (
+          <div key={card.label} className={`faz-fin-concentration-card tone-${card.tone}`}>
+            <div className="head">
+              <div>
+                <div className="eyebrow">Concentração</div>
+                <h4>{card.title}</h4>
+                <p>{card.summary}</p>
+              </div>
+              <span className={`chip ${card.tone === "bad" ? "bad" : card.tone === "warn" ? "warn" : card.tone === "ok" ? "ok" : "rec"}`}>
+                Top 3: {toNum(card.top3Pct, 1)}%
+              </span>
+            </div>
+            <div className="metrics">
+              <div className="mini">
+                <span>Total analisado</span>
+                <b>{toBRL(card.total)}</b>
+              </div>
+              <div className="mini">
+                <span>Líder</span>
+                <b>{toNum(card.top1Pct, 1)}%</b>
+              </div>
+            </div>
+            <div className="list">
+              {card.items.length ? card.items.map((item, idx) => (
+                <div key={`${card.label}-${item.key}`} className="row">
+                  <span>{idx + 1}. {item.key}</span>
+                  <b>{toBRL(item.amount)}</b>
+                  <small>{toNum(item.pct, 1)}%</small>
+                </div>
+              )) : (
+                <div className="row empty">
+                  <span>Sem dados</span>
+                </div>
+              )}
+            </div>
+            <small className="helper">{card.helper}</small>
+          </div>
+        ))}
       </div>
       <div className="faz-pay-table-actions">
         <span className="chip">
@@ -3889,7 +4055,8 @@ export default function Financeiro() {
         </table>
       </div>
     </>
-  );
+    );
+  };
 
   const renderFechamentoMensal = () => {
     const close = closeSummary || {};
