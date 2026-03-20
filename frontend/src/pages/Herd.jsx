@@ -2155,6 +2155,73 @@ if (!inRange && !alreadyConfirmed) {
     };
   }, [activeAnimals, animals, editEar, health, weighs]);
 
+  const editAnimalHistory = useMemo(() => {
+    const ear = normEar(editEar);
+    if (!ear) return { weighs: [], timeline: [] };
+    const weighRows = (Array.isArray(weighs?.[ear]) ? weighs[ear] : [])
+      .slice()
+      .filter((row) => row && row.date)
+      .sort((a, b) => String(b.date || "").localeCompare(String(a.date || ""), "pt-BR"))
+      .map((row, idx, arr) => {
+        const currentKg = Number(row?.kg);
+        const prevKg = Number(arr[idx + 1]?.kg);
+        const delta = Number.isFinite(currentKg) && Number.isFinite(prevKg) ? currentKg - prevKg : null;
+        return {
+          key: `weigh-${row.date}-${idx}`,
+          date: row.date,
+          kg: Number.isFinite(currentKg) ? currentKg : null,
+          arroba: Number.isFinite(currentKg) ? Number((currentKg / 15).toFixed(2)) : null,
+          delta,
+        };
+      });
+
+    const opsRows = (Array.isArray(opsLog) ? opsLog : [])
+      .filter((item) => normEar(item?.ear) === ear)
+      .map((item, idx) => ({
+        key: `op-${String(item?.type || "log")}-${String(item?.date || item?.at || "")}-${idx}`,
+        type: String(item?.type || "log"),
+        date: String(item?.date || item?.at || "").slice(0, 10),
+        label:
+          item?.type === "move"
+            ? `Movido para ${item?.to || "outro lote"}`
+            : item?.type === "baixa"
+            ? `Baixa registrada${item?.reason ? ` • ${item.reason}` : ""}`
+            : item?.type === "weigh"
+            ? `Pesagem operacional${Number.isFinite(Number(item?.kg)) ? ` • ${fmtKg(item.kg)}` : ""}`
+            : "Registro operacional",
+        detail:
+          item?.type === "move"
+            ? item?.from && item?.to
+              ? `${item.from} → ${item.to}`
+              : item?.to || ""
+            : item?.note || item?.reason || "",
+      }))
+      .sort((a, b) => String(b.date || "").localeCompare(String(a.date || ""), "pt-BR"));
+
+    const h = healthFor(ear);
+    const manualEvents = [
+      h?.birth
+        ? { key: "birth", type: "birth", date: h.birth, label: "Nascimento informado", detail: fmtDateShort(h.birth) }
+        : null,
+      h?.pregStart && String(h?.pregStatus || "").toUpperCase() === "PRENHA"
+        ? { key: "preg", type: "preg", date: h.pregStart, label: "Cobertura / IA registrada", detail: `DPP estimada ${fmtDateShort(dppIso(h.pregStart))}` }
+        : null,
+      h?.vacDate
+        ? { key: "vac", type: "vac", date: h.vacDate, label: `Vacina: ${h.vacName || "Aplicada"}`, detail: h?.vacNext ? `Próxima: ${fmtDateShort(h.vacNext)}` : "" }
+        : null,
+    ].filter(Boolean);
+
+    const timeline = [...manualEvents, ...opsRows]
+      .filter((item) => item?.date)
+      .sort((a, b) => String(b.date || "").localeCompare(String(a.date || ""), "pt-BR"))
+      .slice(0, 8);
+
+    return {
+      weighs: weighRows.slice(0, 6),
+      timeline,
+    };
+  }, [editEar, weighs, opsLog, health]);
+
   function openEdit(ear) {
     const k = normEar(ear);
     if (!k) return;
@@ -4528,6 +4595,50 @@ useEffect(() => {
                         <span className="faz-badge is-ok">DPP estimada: {fmtDateShort(editAnimalData.dpp)}</span>
                       ) : null}
                     </div>
+                  </div>
+                </div>
+
+                <div className="faz-ficha-grid faz-modalPanels">
+                  <div className="faz-panel">
+                    <div className="faz-modalSectionTitle">Pesagens recentes</div>
+                    {editAnimalHistory.weighs.length ? (
+                      <div className="faz-historyList">
+                        {editAnimalHistory.weighs.map((row) => (
+                          <div key={row.key} className="faz-historyRow">
+                            <div>
+                              <div className="main">{fmtDateShort(row.date)}</div>
+                              <div className="sub">
+                                {row.arroba == null ? "Sem arroba" : `${fmtArroba(row.arroba)} @`}
+                                {row.delta == null ? "" : ` • ${row.delta >= 0 ? "+" : ""}${fmtKg1(row.delta)}`}
+                              </div>
+                            </div>
+                            <div className="value">{fmtKg(row.kg)}</div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="faz-emptyNice">Ainda não há histórico de pesagem para este animal.</div>
+                    )}
+                  </div>
+
+                  <div className="faz-panel">
+                    <div className="faz-modalSectionTitle">Linha do tempo</div>
+                    {editAnimalHistory.timeline.length ? (
+                      editAnimalHistory.timeline.map((item) => (
+                        <div key={item.key} className="faz-timeline-row">
+                          <span className="dot" />
+                          <div>
+                            <div style={{ fontWeight: 900 }}>{item.label}</div>
+                            <div className="texto-suave">
+                              {fmtDateShort(item.date)}
+                              {item.detail ? ` • ${item.detail}` : ""}
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="faz-emptyNice">Sem eventos registrados ainda para este animal.</div>
+                    )}
                   </div>
                 </div>
               </>

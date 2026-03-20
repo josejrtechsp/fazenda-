@@ -214,6 +214,42 @@
   gap:10px;
   margin-top:12px;
 }
+.faz-herd .faz-modalPanels{
+  margin-top:12px;
+}
+.faz-herd .faz-historyList{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.faz-herd .faz-historyRow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:10px 0;
+  border-bottom:1px solid rgba(241,245,249,.9);
+}
+.faz-herd .faz-historyRow:last-child{
+  border-bottom:none;
+  padding-bottom:0;
+}
+.faz-herd .faz-historyRow .main{
+  font-weight:900;
+  color:rgba(15,23,42,1);
+}
+.faz-herd .faz-historyRow .sub{
+  margin-top:4px;
+  font-size:12px;
+  color:rgba(100,116,139,1);
+  font-weight:650;
+}
+.faz-herd .faz-historyRow .value{
+  font-size:16px;
+  font-weight:950;
+  color:rgba(15,23,42,1);
+  white-space:nowrap;
+}
 .faz-herd .faz-modalSection{
   border:1px solid rgba(226,232,240,.95);
   border-radius:14px;
