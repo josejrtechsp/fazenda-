@@ -1,0 +1,22 @@
+/* V15I_TIGHT */
+/* Compactacao global (10-15% menor) */
+
+/* Header */
+.cras-ui-v2 .cras-top-v2{padding:8px 12px !important;}
+.cras-ui-v2 .idealPill{padding:4px 10px !important;font-size:10px !important;}
+.cras-ui-v2 .idealTagline{font-size:12px !important;}
+.cras-ui-v2 .fazBrandLockup{gap:8px !important;padding:5px 8px !important;}
+.cras-ui-v2 .fazBrandLogo{width:32px !important;height:32px !important;}
+
+/* Dashboard */
+.cras-ui-v2 .faz-kicker{font-size:10px !important;}
+.cras-ui-v2 .faz-title{font-size:26px !important;line-height:1.1 !important;}
+.cras-ui-v2 .faz-muted{font-size:12px !important;}
+.cras-ui-v2 .faz-grid-kpis{gap:10px !important;}
+.cras-ui-v2 .faz-kpi{padding:10px 12px !important;border-radius:16px !important;}
+.cras-ui-v2 .faz-kpi .v{font-size:20px !important;}
+.cras-ui-v2 .faz-kpi .k{font-size:10px !important;}
+.cras-ui-v2 .faz-panels2{gap:10px !important;}
+.cras-ui-v2 .faz-panel{padding:10px 12px !important;border-radius:16px !important;}
+.cras-ui-v2 .faz-chip{padding:6px 10px !important;font-size:12px !important;}
+.cras-ui-v2 .faz-btn{padding:9px 12px !important;font-size:13px !important;}

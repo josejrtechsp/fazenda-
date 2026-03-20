@@ -1,0 +1,85 @@
+/* ============================================================
+   CRAS UI V2 — APPLE-LIKE ACTIONS (V1)
+   Objetivo: deixar a coluna "Ações" limpa, alinhada e funcional:
+   - Mostra só a ação principal (ex.: Concluir)
+   - Ações secundárias (Editar/Excluir) aparecem ao passar o mouse
+   Escopo: somente .cras-ui-v2 dentro de tabelas em cards
+   ============================================================ */
+
+.cras-ui-v2 .card table th:last-child{
+  text-align: right;
+  padding-right: 16px;
+}
+
+.cras-ui-v2 .card table td:last-child{
+  text-align: right;
+  vertical-align: top;
+  padding-right: 12px;
+}
+
+/* Container (funciona mesmo se não tiver wrapper dedicado) */
+.cras-ui-v2 .card table td:last-child{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  min-width: 120px;
+}
+
+/* Botões da coluna Ações: tamanhos consistentes */
+.cras-ui-v2 .card table td:last-child :is(button,a){
+  height: 30px;
+  min-width: 98px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-weight: 800;
+  line-height: 28px;
+  box-sizing: border-box;
+}
+
+/* Secundários: mais discretos */
+.cras-ui-v2 .card table td:last-child :is(button,a):not(:first-child){
+  background: rgba(255,255,255,.9);
+  border: 1px solid rgba(226,232,240,.95);
+}
+
+/* Progressive disclosure: esconder secundários até hover na linha */
+.cras-ui-v2 .card table tbody tr td:last-child :is(button,a):not(:first-child){
+  opacity: 0;
+  transform: translateY(-2px);
+  pointer-events: none;
+  height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-width: 0;
+}
+
+.cras-ui-v2 .card table tbody tr:hover td:last-child :is(button,a):not(:first-child){
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  height: 30px;
+  border-width: 1px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* Micro-anim */
+.cras-ui-v2 .card table tbody tr td:last-child :is(button,a){
+  transition: opacity .12s ease, transform .12s ease, box-shadow .12s ease;
+}
+
+/* Botão primário: um pouco mais “Apple” (menos alto, mais limpo) */
+.cras-ui-v2 .card table td:last-child :is(button,a):first-child{
+  box-shadow: 0 10px 26px rgba(99,102,241,.16);
+}
+
+/* Evitar quebra estranha em telas menores */
+@media (max-width: 980px){
+  .cras-ui-v2 .card table td:last-child{
+    min-width: 104px;
+  }
+  .cras-ui-v2 .card table td:last-child :is(button,a){
+    min-width: 92px;
+  }
+}

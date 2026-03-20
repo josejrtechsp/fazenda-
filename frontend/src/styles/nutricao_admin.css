@@ -1,0 +1,270 @@
+/* Nutrição — layout refinado (somente escopo da tela) */
+
+.faz-nutri-admin {
+  --nt-ink: #0f172a;
+  --nt-muted: #64748b;
+  --nt-line: rgba(203, 213, 225, 0.82);
+  --nt-surface: #ffffff;
+  --nt-soft: #f8fafc;
+  --nt-grad-a: rgba(59, 130, 246, 0.34);
+  --nt-grad-b: rgba(16, 185, 129, 0.34);
+  --nt-shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+}
+
+.faz-nutri-admin .nt-shell {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--nt-surface), var(--nt-surface)) padding-box,
+    linear-gradient(135deg, var(--nt-grad-a), var(--nt-grad-b)) border-box;
+  border-radius: 18px;
+  box-shadow: var(--nt-shadow);
+}
+
+.faz-nutri-admin .nt-summaryShell {
+  padding: 14px;
+}
+
+.faz-nutri-admin .nt-summaryHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.faz-nutri-admin .nt-eyebrow {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 900;
+  color: var(--nt-muted);
+}
+
+.faz-nutri-admin .nt-summaryHead h3 {
+  margin: 6px 0 0;
+  font-size: 24px;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: var(--nt-ink);
+}
+
+.faz-nutri-admin .nt-kpiGrid {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.faz-nutri-admin .nt-kpi {
+  border: 1px solid var(--nt-line);
+  border-radius: 14px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  padding: 11px 12px;
+}
+
+.faz-nutri-admin .nt-kpi .k {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 900;
+  color: var(--nt-muted);
+}
+
+.faz-nutri-admin .nt-kpi .v {
+  margin-top: 6px;
+  font-size: 20px;
+  line-height: 1.05;
+  font-weight: 900;
+  color: var(--nt-ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.faz-nutri-admin .nt-kpi .s {
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--nt-muted);
+}
+
+.faz-nutri-admin .faz-alertBox {
+  margin-top: 10px;
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  border-radius: 14px;
+  background: rgba(255, 251, 235, 0.88);
+  padding: 12px;
+}
+
+.faz-nutri-admin .faz-alertBox .t {
+  font-size: 14px;
+  font-weight: 900;
+  color: #92400e;
+}
+
+.faz-nutri-admin .faz-alertBox .d {
+  margin-top: 4px;
+  color: #78350f;
+  line-height: 1.4;
+}
+
+.faz-nutri-admin .faz-segRow {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.faz-nutri-admin .faz-seg {
+  border: 1px solid var(--nt-line);
+  background: #f8fafc;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-weight: 900;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--nt-muted);
+  transition: all .15s ease;
+}
+
+.faz-nutri-admin .faz-seg.isActive {
+  background: rgba(59, 130, 246, 0.14);
+  border-color: rgba(59, 130, 246, 0.35);
+  color: #1d4ed8;
+}
+
+.faz-nutri-admin .faz-grid2 {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.faz-nutri-admin .faz-panel {
+  padding: 14px;
+}
+
+.faz-nutri-admin .faz-panel h3 {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: var(--nt-ink);
+}
+
+.faz-nutri-admin .faz-muted {
+  color: var(--nt-muted);
+}
+
+.faz-nutri-admin .faz-formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.faz-nutri-admin .faz-field {
+  display: grid;
+  gap: 5px;
+}
+
+.faz-nutri-admin .faz-fieldLabel {
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--nt-muted);
+}
+
+.faz-nutri-admin .faz-fieldHint {
+  font-size: 12px;
+  color: var(--nt-muted);
+}
+
+.faz-nutri-admin .faz-input {
+  width: 100%;
+  border: 1px solid var(--nt-line);
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px 12px;
+  outline: none;
+  transition: border-color .12s ease, box-shadow .12s ease;
+}
+
+.faz-nutri-admin .faz-input:focus {
+  border-color: rgba(59, 130, 246, 0.55);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+.faz-nutri-admin .faz-btn.primary {
+  border-radius: 10px;
+  padding: 9px 14px;
+  font-weight: 800;
+}
+
+.faz-nutri-admin .faz-table {
+  margin-top: 10px;
+  border: 1px solid var(--nt-line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.faz-nutri-admin .faz-tr {
+  display: grid;
+  grid-template-columns: 1.25fr .95fr .6fr .5fr .9fr;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(241, 245, 249, 1);
+  align-items: center;
+}
+
+.faz-nutri-admin .faz-tr:last-child {
+  border-bottom: 0;
+}
+
+.faz-nutri-admin .faz-th {
+  background: #f8fafc;
+  font-weight: 900;
+  color: var(--nt-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 11px;
+}
+
+.faz-nutri-admin .faz-tr:not(.faz-th):hover {
+  background: rgba(59, 130, 246, 0.05);
+}
+
+@media (max-width: 1200px) {
+  .faz-nutri-admin .nt-kpiGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 980px) {
+  .faz-nutri-admin .faz-grid2 {
+    grid-template-columns: 1fr;
+  }
+
+  .faz-nutri-admin .faz-panel h3,
+  .faz-nutri-admin .nt-summaryHead h3 {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 760px) {
+  .faz-nutri-admin .faz-formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .faz-nutri-admin .nt-kpiGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .faz-nutri-admin .faz-table {
+    overflow-x: auto;
+  }
+
+  .faz-nutri-admin .faz-tr {
+    min-width: 620px;
+  }
+}

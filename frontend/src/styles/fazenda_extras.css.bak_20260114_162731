@@ -1,0 +1,652 @@
+/* ============================================================
+   IDEAL FAZENDA — Extras (somente complementos; sem brigar com CRAS)
+   ============================================================ */
+
+.cras-ui-v2 
+.cras-ui-v2 .faz-grid-kpis{
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+@media (max-width: 1280px){
+  .cras-ui-v2 .faz-grid-kpis{ grid-template-columns: repeat(3, minmax(0,1fr)); }
+}
+
+@media (max-width: 820px){
+  .cras-ui-v2 .faz-grid-kpis{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+
+@media (max-width: 520px){
+  .cras-ui-v2 .faz-grid-kpis{ grid-template-columns: 1fr; }
+}
+.cras-ui-v2 .faz-kpi{
+  background: rgba(255,255,255,.92);
+  border: 1px solid rgba(226,232,240,.92);
+  border-radius: 18px;
+  padding: 14px 14px 12px;
+  box-shadow: 0 18px 60px rgba(15,23,42,.06);
+}
+
+.cras-ui-v2 .faz-kpi .label{
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: rgba(100,116,139,1);
+  font-weight: 900;
+}
+
+.cras-ui-v2 .faz-kpi .value{
+  margin-top: 6px;
+  font-size: 24px;
+  line-height: 1.1;
+  font-weight: 900;
+  color: rgba(15,23,42,1);
+}
+
+.cras-ui-v2 .faz-kpi .sub{
+  margin-top: 6px;
+  font-size: 12px;
+  color: rgba(100,116,139,1);
+}
+
+.cras-ui-v2 .faz-row{
+  display: grid;
+  grid-template-columns: 1.25fr .75fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+@media (max-width: 1180px){
+  .cras-ui-v2 .faz-row{ grid-template-columns: 1fr; }
+}
+
+.cras-ui-v2 .faz-panel{
+  background: rgba(255,255,255,.92);
+  border: 1px solid rgba(226,232,240,.92);
+  border-radius: 18px;
+  padding: 14px 16px;
+  box-shadow: 0 18px 60px rgba(15,23,42,.06);
+}
+
+.cras-ui-v2 .faz-panel h3{
+  margin: 0;
+  font-size: 14px;
+  font-weight: 900;
+  color: rgba(15,23,42,1);
+}
+
+.cras-ui-v2 .faz-muted{
+  color: rgba(100,116,139,1);
+}
+
+.cras-ui-v2 .faz-chart{
+  margin-top: 10px;
+  border-radius: 14px;
+  border: 1px dashed rgba(226,232,240,.92);
+  background: rgba(248,250,252,.8);
+  height: 220px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color: rgba(100,116,139,1);
+  font-weight: 800;
+}
+
+.cras-ui-v2 .faz-bars{
+  margin-top: 10px;
+  display:flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cras-ui-v2 .faz-bar{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+}
+
+.cras-ui-v2 .faz-bar .name{
+  width: 180px;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: rgba(15,23,42,1);
+}
+
+.cras-ui-v2 .faz-bar .track{
+  flex: 1;
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(226,232,240,.7);
+  overflow:hidden;
+}
+
+.cras-ui-v2 .faz-bar .fill{
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(99,102,241,.95), rgba(168,85,247,.92), rgba(236,72,153,.88));
+}
+
+.cras-ui-v2 .faz-bar .val{
+  width: 110px;
+  text-align: right;
+  font-size: 12px;
+  color: rgba(100,116,139,1);
+  font-weight: 900;
+}
+
+.cras-ui-v2 .faz-alerts{
+  margin-top: 12px;
+  display:flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cras-ui-v2 .faz-alert{
+  display:flex;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(226,232,240,.92);
+  background: rgba(255,255,255,.86);
+}
+
+.cras-ui-v2 .faz-alert .dot{
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  margin-top: 5px;
+  background: rgba(99,102,241,.95);
+  box-shadow: 0 8px 18px rgba(99,102,241,.18);
+}
+
+.cras-ui-v2 .faz-alert .txt{
+  font-size: 13px;
+  color: rgba(15,23,42,1);
+  font-weight: 700;
+}
+
+.cras-ui-v2 .faz-actions-row{
+  display:flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.cras-ui-v2 .faz-btn{
+  border: 1px solid rgba(226,232,240,.92);
+  background: rgba(255,255,255,.95);
+  border-radius: 999px;
+  padding: 10px 12px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.cras-ui-v2 .faz-btn.primary{
+  color: #fff;
+  border-color: rgba(99,102,241,.65);
+  background: linear-gradient(135deg, rgba(99,102,241,.95), rgba(168,85,247,.92), rgba(236,72,153,.88));
+  box-shadow: 0 18px 40px rgba(99,102,241,.20);
+}
+
+
+/* ============================================================
+   V4 FIX3: Produtor (baixo da tela) mais bonito e organizado
+   Escopo: .faz-producer
+   ============================================================ */
+
+.faz-producer .faz-topcost-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.faz-producer .faz-topcost-metrics{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+}
+
+.faz-producer .faz-miniMetric{
+  min-width: 92px;
+  border: 1px solid rgba(226,232,240,.92);
+  background: rgba(248,250,252,.86);
+  border-radius: 14px;
+  padding: 8px 10px;
+  text-align: right;
+}
+
+.faz-producer .faz-miniMetric .k{
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: rgba(100,116,139,1);
+  font-weight: 950;
+}
+
+.faz-producer .faz-miniMetric .v{
+  margin-top: 4px;
+  font-size: 13px;
+  color: rgba(15,23,42,1);
+  font-weight: 950;
+}
+
+.faz-producer .faz-bars-compact{ gap: 9px; }
+.faz-producer .faz-bars-compact .faz-bar .name{ width: 150px; }
+
+@media (max-width: 860px){
+  .faz-producer .faz-bars-compact .faz-bar .name{ width: 128px; }
+}
+
+.faz-producer .faz-empty{
+  margin-top: 10px;
+  display: flex;
+  gap: 12px;
+  border: 1px dashed rgba(226,232,240,.92);
+  background: rgba(248,250,252,.7);
+  border-radius: 18px;
+  padding: 12px;
+}
+
+.faz-producer .faz-empty .ic{
+  width: 34px;
+  height: 34px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: rgba(99,102,241,.10);
+  border: 1px solid rgba(199,210,254,.92);
+  font-size: 16px;
+}
+
+.faz-producer .faz-empty .t{
+  font-weight: 950;
+  color: rgba(15,23,42,1);
+}
+
+.faz-producer .faz-empty .d{
+  margin-top: 2px;
+  font-size: 13px;
+  color: rgba(100,116,139,1);
+  font-weight: 650;
+}
+
+/* Resumo + ações em 2 colunas */
+.faz-producer .faz-bottom-grid{
+  display: grid;
+  grid-template-columns: 1.25fr .85fr;
+  gap: 12px;
+  align-items: start;
+}
+
+@media (max-width: 980px){
+  .faz-producer .faz-bottom-grid{ grid-template-columns: 1fr; }
+}
+
+.faz-producer .faz-bottom-title{
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-weight: 950;
+  color: rgba(100,116,139,1);
+}
+
+.faz-producer .faz-summary-lines{
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.faz-producer .faz-sline{
+  display:flex;
+  gap: 10px;
+  align-items:flex-start;
+}
+
+.faz-producer .faz-sline .dot{
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  margin-top: 6px;
+  background: rgba(99,102,241,.95);
+  box-shadow: 0 8px 18px rgba(99,102,241,.14);
+}
+
+.faz-producer .faz-sline .t{
+  font-size: 13px;
+  color: rgba(15,23,42,1);
+  font-weight: 750;
+  line-height: 1.45;
+}
+
+/* Callout */
+.faz-producer .faz-callout{
+  display: flex;
+  gap: 10px;
+  border-radius: 16px;
+  padding: 10px 12px;
+  border: 1px solid rgba(226,232,240,.92);
+  background: rgba(255,255,255,.86);
+}
+
+.faz-producer .faz-callout .ic{
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-weight: 950;
+  font-size: 12px;
+  color: rgba(55,48,163,1);
+  background: rgba(99,102,241,.12);
+  border: 1px solid rgba(199,210,254,.92);
+}
+
+.faz-producer .faz-callout .tx{
+  font-size: 13px;
+  font-weight: 750;
+  color: rgba(15,23,42,1);
+  line-height: 1.4;
+}
+
+.faz-producer .faz-callout.info{
+  background: rgba(99,102,241,.08);
+  border-color: rgba(199,210,254,.92);
+}
+
+/* Alertas compactos em grade */
+.faz-producer .faz-alerts-compact{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+@media (max-width: 720px){
+  .faz-producer .faz-alerts-compact{ grid-template-columns: 1fr; }
+}
+
+.faz-producer .faz-alert-compact{ padding: 8px 10px; }
+
+/* Ações rápidas em grid */
+.faz-producer .faz-actions-grid{
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+@media (max-width: 520px){
+  .faz-producer .faz-actions-grid{ grid-template-columns: 1fr; }
+}
+
+.faz-producer .faz-btn.sm{
+  width: 100%;
+  padding: 9px 10px;
+  font-size: 13px;
+}
+
+/* KPI compactos (para reduzir altura do topo no iPad) */
+.cras-ui-v2 .faz-grid-kpis--compact .faz-kpi{
+  padding: 12px 12px 10px;
+  border-radius: 16px;
+}
+
+.cras-ui-v2 .faz-grid-kpis--compact .faz-kpi .value{
+  font-size: 22px;
+}
+
+.cras-ui-v2 .faz-grid-kpis--compact .faz-kpi .sub{
+  font-size: 11.5px;
+}
+
+/* ============================================================
+   V4 FIX3C: KPI grid + Mangas & Pasto (modo Mapa)
+   - Corrige KPI grid para não ficar preso em 1 coluna
+   - Mantém estilo CRAS/IDEAL
+   ============================================================ */
+
+.faz-grid-kpis{
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+@media (max-width: 560px){
+  .faz-grid-kpis{ grid-template-columns: 1fr; }
+}
+
+.faz-grid-kpis--compact .faz-kpi{
+  padding: 12px 12px 10px;
+  border-radius: 16px;
+}
+
+.faz-grid-kpis--compact .faz-kpi .label{
+  font-size: 11px;
+  letter-spacing: .14em;
+}
+
+.faz-grid-kpis--compact .faz-kpi .value{
+  font-size: 22px;
+  line-height: 1.15;
+}
+
+.faz-grid-kpis--compact .faz-kpi .sub{
+  font-size: 11.5px;
+}
+
+/* Toggle de visualização na tela de Mangas */
+.faz-view-toggle{
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+
+/* Modo Mapa: tiles compactos */
+.faz-mapGrid{
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
+  gap: 10px;
+}
+
+@media (max-width: 520px){
+  .faz-mapGrid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.faz-mapTile{
+  border: 1px solid rgba(226,232,240,.92);
+  background: rgba(255,255,255,.92);
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: 0 18px 60px rgba(15,23,42,.06);
+  cursor: pointer;
+  user-select: none;
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+}
+
+.faz-mapTile:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 22px 70px rgba(15,23,42,.09);
+  border-color: rgba(199,210,254,.92);
+}
+
+.faz-mapTile.has-alert{
+  border-color: rgba(236,72,153,.35);
+  box-shadow: 0 22px 70px rgba(236,72,153,.08);
+}
+
+.faz-mapTile .rowTop{
+  display:flex;
+  align-items:flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.faz-mapTile .num{
+  font-size: 18px;
+  font-weight: 950;
+  color: rgba(15,23,42,1);
+}
+
+.faz-mapTile .title{
+  font-size: 12px;
+  font-weight: 850;
+  color: rgba(100,116,139,1);
+  margin-top: 2px;
+}
+
+.faz-mapTile .meta{
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 850;
+  color: rgba(15,23,42,1);
+}
+
+.faz-mapTile .muted{
+  margin-top: 4px;
+  font-size: 12px;
+  color: rgba(100,116,139,1);
+}
+
+
+/* ============================================================
+   FIX4: refazer resumos (Dashboard + Mangas) — padrão CRAS/IDEAL
+   ============================================================ */
+
+.cras-ui-v2 .faz-statgrid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.cras-ui-v2 .faz-stat{
+  border: 1px solid rgba(226,232,240,.92);
+  background: rgba(248,250,252,.86);
+  border-radius: 16px;
+  padding: 10px 12px;
+}
+
+.cras-ui-v2 .faz-stat .k{
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-weight: 950;
+  color: rgba(100,116,139,1);
+}
+
+.cras-ui-v2 .faz-stat .v{
+  margin-top: 6px;
+  font-size: 18px;
+  font-weight: 950;
+  color: rgba(15,23,42,1);
+}
+
+.cras-ui-v2 .faz-stat .s{
+  margin-top: 2px;
+  font-size: 11px;
+  color: rgba(100,116,139,1);
+}
+
+.cras-ui-v2 .faz-empty{
+  display: flex;
+  gap: 12px;
+  border: 1px dashed rgba(226,232,240,.92);
+  background: rgba(248,250,252,.66);
+  border-radius: 18px;
+  padding: 14px 14px;
+}
+
+.cras-ui-v2 .faz-empty .ic{
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: rgba(99,102,241,.10);
+  border: 1px solid rgba(199,210,254,.92);
+}
+
+.cras-ui-v2 .faz-empty .t{
+  font-weight: 950;
+  color: rgba(15,23,42,1);
+}
+
+.cras-ui-v2 .faz-empty .d{
+  margin-top: 2px;
+  color: rgba(100,116,139,1);
+  font-size: 13px;
+}
+
+.cras-ui-v2 .faz-trendlist{ display: flex; flex-direction: column; gap: 10px; }
+.cras-ui-v2 .faz-trendrow{
+  display: grid;
+  grid-template-columns: 110px 1fr 92px;
+  gap: 10px;
+  align-items: center;
+}
+.cras-ui-v2 .faz-trendrow .m{ font-weight: 850; color: rgba(15,23,42,1); }
+.cras-ui-v2 .faz-trendrow .bar{
+  height: 10px;
+  background: rgba(226,232,240,.92);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.cras-ui-v2 .faz-trendrow .fill{
+  height: 10px;
+  background: linear-gradient(90deg, rgba(99,102,241,.75), rgba(168,85,247,.75));
+  border-radius: 999px;
+}
+.cras-ui-v2 .faz-trendrow .v{
+  text-align: right;
+  font-weight: 850;
+  color: rgba(15,23,42,1);
+  font-size: 12px;
+}
+
+.cras-ui-v2 .faz-summary3{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+@media (max-width: 980px){
+  .cras-ui-v2 .faz-summary3{ grid-template-columns: 1fr; }
+}
+
+.cras-ui-v2 .faz-miniKpi{
+  border: 1px solid rgba(226,232,240,.92);
+  background: rgba(248,250,252,.86);
+  border-radius: 18px;
+  padding: 12px 12px;
+}
+.cras-ui-v2 .faz-miniKpi .k{
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-weight: 950;
+  color: rgba(100,116,139,1);
+}
+.cras-ui-v2 .faz-miniKpi .v{
+  margin-top: 6px;
+  font-size: 18px;
+  font-weight: 950;
+  color: rgba(15,23,42,1);
+}
+.cras-ui-v2 .faz-miniKpi .s{
+  margin-top: 4px;
+  font-size: 12px;
+  color: rgba(100,116,139,1);
+}
+
+.cras-ui-v2 .faz-summary-split{
+  display: grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap: 12px;
+  align-items: start;
+}
+@media (max-width: 980px){
+  .cras-ui-v2 .faz-summary-split{ grid-template-columns: 1fr; }
+}

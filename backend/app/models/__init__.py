@@ -1,0 +1,143 @@
+# app.models package
+
+from app.models.nutrition import NutritionItem, NutritionPurchase
+from app.models.inventory import InventoryItem, InventoryItemPayload, InventoryBulkReplace
+from .event import Event, EventCreate, EventRead, EventUpdate
+from .accounting import ChartAccount
+from .people import Person, PersonCreate, PersonUpdate
+from .supplier_catalog import (
+    SupplierCategory,
+    SupplierCategoryCreate,
+    SupplierCategoryUpdate,
+    SupplierTag,
+    SupplierTagCreate,
+    SupplierTagUpdate,
+    SupplierTagLink,
+)
+from .cost_center import CostCenter, CostCenterCreate, CostCenterUpdate
+from .banking import BankAccount, BankAccountCreate, BankAccountUpdate
+from .payment_method import PaymentMethod, PaymentMethodCreate, PaymentMethodUpdate
+from .finance_approval_policy import FinanceApprovalPolicy
+from .finance_month_close import FinanceMonthClose
+from .finance_month_state import FinanceMonthState
+
+# Rebanho (modelo canonico usado no modulo Rebanho)
+from .herd import HerdLot, HerdAnimal, HerdAnimalProfile, HerdWeighing, HerdHealth
+from .operations import (
+    Machine,
+    MachineCreate,
+    MachineUpdate,
+    MachineMovement,
+    MachineMovementCreate,
+    ClimateRecord,
+    ClimateRecordCreate,
+    ClimateRecordUpdate,
+    DiscResult,
+    DiscResultCreate,
+    CulturalMapResult,
+    CulturalMapResultCreate,
+    Goal,
+    GoalCreate,
+    GoalUpdate,
+    Task,
+    TaskCreate,
+    TaskUpdate,
+    Notification,
+    Property,
+    PropertyCreate,
+    Season,
+    SeasonCreate,
+    SeasonUpdate,
+    LivestockMovement,
+    LivestockMovementCreate,
+    HerdMonthlyStock,
+    HerdMonthlyStockCreate,
+    HerdMonthlyStockUpdate,
+    ProductiveAreaMonthly,
+    ProductiveAreaMonthlyCreate,
+    ProductiveAreaMonthlyUpdate,
+    ReproductionEvent,
+    ReproductionEventCreate,
+    ReproductionEventUpdate,
+)
+
+# Compat: partes antigas importam Lot/Animal
+Lot = HerdLot
+Animal = HerdAnimal
+
+__all__ = [
+    "NutritionItem",
+    "NutritionPurchase",
+    "InventoryItem",
+    "InventoryItemPayload",
+    "InventoryBulkReplace",
+    "Event",
+    "EventCreate",
+    "EventRead",
+    "EventUpdate",
+    "ChartAccount",
+    "Person",
+    "PersonCreate",
+    "PersonUpdate",
+    "SupplierCategory",
+    "SupplierCategoryCreate",
+    "SupplierCategoryUpdate",
+    "SupplierTag",
+    "SupplierTagCreate",
+    "SupplierTagUpdate",
+    "SupplierTagLink",
+    "CostCenter",
+    "CostCenterCreate",
+    "CostCenterUpdate",
+    "BankAccount",
+    "BankAccountCreate",
+    "BankAccountUpdate",
+    "PaymentMethod",
+    "PaymentMethodCreate",
+    "PaymentMethodUpdate",
+    "FinanceApprovalPolicy",
+    "FinanceMonthClose",
+    "FinanceMonthState",
+    "HerdLot",
+    "HerdAnimal",
+    "HerdAnimalProfile",
+    "HerdWeighing",
+    "HerdHealth",
+    "Lot",
+    "Animal",
+    "Machine",
+    "MachineCreate",
+    "MachineUpdate",
+    "MachineMovement",
+    "MachineMovementCreate",
+    "ClimateRecord",
+    "ClimateRecordCreate",
+    "ClimateRecordUpdate",
+    "DiscResult",
+    "DiscResultCreate",
+    "CulturalMapResult",
+    "CulturalMapResultCreate",
+    "Goal",
+    "GoalCreate",
+    "GoalUpdate",
+    "Task",
+    "TaskCreate",
+    "TaskUpdate",
+    "Notification",
+    "Property",
+    "PropertyCreate",
+    "Season",
+    "SeasonCreate",
+    "SeasonUpdate",
+    "LivestockMovement",
+    "LivestockMovementCreate",
+    "HerdMonthlyStock",
+    "HerdMonthlyStockCreate",
+    "HerdMonthlyStockUpdate",
+    "ProductiveAreaMonthly",
+    "ProductiveAreaMonthlyCreate",
+    "ProductiveAreaMonthlyUpdate",
+    "ReproductionEvent",
+    "ReproductionEventCreate",
+    "ReproductionEventUpdate",
+]

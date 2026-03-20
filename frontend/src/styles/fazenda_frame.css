@@ -1,0 +1,21 @@
+/* Moldura geral: separa o sistema do "resto do site" */
+.fazAppFrame{
+  padding: 14px;
+}
+
+.fazAppFrameInner{
+  border-radius: 28px;
+  border: 1px solid rgba(226,232,240,.92);
+  background: rgba(255,255,255,.72);
+  box-shadow:
+    0 22px 70px rgba(15,23,42,.12),
+    0 6px 18px rgba(15,23,42,.06);
+  overflow: hidden;
+}
+
+/* fundo levemente diferente (opcional, mas dá o “separado”) */
+html, body{
+  background: radial-gradient(900px 420px at 14% 6%, rgba(99,102,241,.12), transparent 62%),
+              radial-gradient(900px 420px at 86% 6%, rgba(16,185,129,.10), transparent 62%),
+              #f6f7fb;
+}

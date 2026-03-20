@@ -1,0 +1,35 @@
+/* V15K — Harmony fine tuning (micro-ajustes)
+   Mantém os tamanhos do V15J e só harmoniza espaçamentos/alinhamentos.
+*/
+
+/* Header */
+.cras-ui-v2 .fazTopHero{padding: 10px 14px !important;}
+.cras-ui-v2 .fazTopHero .pill{padding: 5px 10px !important; font-size: 10px !important;}
+.cras-ui-v2 .fazTopHero h1{margin-top: 6px !important; line-height: 1.05 !important;}
+.cras-ui-v2 .fazTopHero .sub{margin-top: 6px !important; line-height: 1.2 !important;}
+
+/* lockup direita (logo + tagline) */
+.cras-ui-v2 .fazBrandLockup{gap: 10px !important; padding: 6px 10px !important;}
+.cras-ui-v2 .fazBrandLogo{width: 32px !important; height: 32px !important;}
+.cras-ui-v2 .idealTagline{font-size: 12px !important;}
+
+/* Dashboard containers */
+.cras-ui-v2 .faz-page{padding-bottom: 22px !important;}
+.cras-ui-v2 .faz-pageHead{padding: 10px 2px 6px !important; gap: 12px !important;}
+
+/* KPI grid */
+.cras-ui-v2 .faz-grid-kpis{margin-top: 8px !important; gap: 10px !important;}
+.cras-ui-v2 .faz-kpi{padding: 10px 12px !important; border-radius: 16px !important;}
+.cras-ui-v2 .faz-kpi .k{margin-bottom: 4px !important;}
+
+/* Panels grid */
+.cras-ui-v2 .faz-panels2{margin-top: 10px !important; gap: 10px !important;}
+.cras-ui-v2 .faz-panel{padding: 10px 12px !important; border-radius: 16px !important;}
+
+/* Summary section */
+.cras-ui-v2 .faz-summaryGrid{margin-top: 10px !important; gap: 10px !important;}
+.cras-ui-v2 .faz-quick{padding: 10px !important; border-radius: 16px !important;}
+.cras-ui-v2 .faz-quick-grid{gap: 8px !important;}
+
+/* Buttons density */
+.cras-ui-v2 .faz-btn.sm{padding: 8px 10px !important;}

@@ -1,0 +1,58 @@
+/* Fazenda Header Overrides (scoped)
+   FIX11:
+   - Remove o lockup da direita (logo + texto) por enquanto.
+   - Mantem o estilo do topo (App.css), mas com grid de 1 coluna.
+*/
+
+.app-header.app-header-fazenda{
+  margin-bottom: 10px;
+}
+
+.app-header-fazenda .app-header-inner{
+  grid-template-columns: 1fr !important;
+  grid-template-rows: auto auto;
+  align-items: start;
+}
+
+/* Garantia: se sobrar algum lockup antigo, esconde */
+.app-header-fazenda .faz-header-brand{
+  display: none !important;
+}
+
+/* UX V3 — botão Menu (iPad/mobile) */
+.app-header-fazenda .app-header-menuBtn{
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(226,232,240,.92);
+  background: rgba(255,255,255,.92);
+  box-shadow: 0 10px 24px rgba(15,23,42,.06);
+  font-weight: 900;
+  color: rgba(15,23,42,1);
+  cursor: pointer;
+  user-select: none;
+}
+.app-header-fazenda .app-header-menuBtn:hover{
+  transform: translateY(-1px);
+  border-color: rgba(199,210,254,.9);
+}
+.app-header-fazenda .app-header-menuIcon{ display:block; }
+.app-header-fazenda .app-header-menuText{ font-size: 12px; }
+
+@media (max-width: 980px){
+  .app-header-fazenda .app-header-inner-fazenda{
+    display: flex !important;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .app-header-fazenda .app-header-menuBtn{ display: inline-flex; }
+  .app-header-fazenda .app-header-title{ flex: 1; min-width: 0; }
+}
+
+@media (max-width: 420px){
+  .app-header-fazenda .app-header-menuText{ display: none; }
+  .app-header-fazenda .app-header-menuBtn{ padding: 8px; }
+}

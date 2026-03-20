@@ -1,0 +1,362 @@
+/* StartPage — clean/Apple-like, com cards e respiro */
+.faz-start{
+  padding: 8px;
+}
+
+.faz-start-hero{
+  padding: 14px;
+}
+
+.faz-start-row{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.faz-start-tag{
+  display: inline-flex;
+  font-weight: 900;
+  font-size: 11px;
+  letter-spacing: .06em;
+  color: rgba(15,23,42,.55);
+}
+
+.faz-start-title{
+  margin: 6px 0 0 0;
+  font-size: 26px;
+  line-height: 1.1;
+  font-weight: 1000;
+  color: rgba(15,23,42,1);
+}
+
+.faz-start-kpi{
+  min-width: 180px;
+  padding: 10px 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(226,232,240,.92);
+  background: rgba(248,250,252,.85);
+}
+
+.faz-start-kpiLabel{
+  font-weight: 900;
+  font-size: 12px;
+  color: rgba(15,23,42,.7);
+}
+
+.faz-start-kpiValue{
+  margin-top: 2px;
+  font-weight: 1000;
+  font-size: 26px;
+  color: rgba(15,23,42,1);
+}
+
+.faz-start-kpiValue.is-warn{
+  color: #b45309;
+}
+
+.faz-start-actions{
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+@media (max-width: 720px){
+  .faz-start-actions{grid-template-columns: 1fr;}
+}
+
+.faz-start-btn{
+  text-align: left;
+  border: 1px solid rgba(226,232,240,.92);
+  background: rgba(255,255,255,.98);
+  border-radius: 16px;
+  padding: 12px 12px;
+  cursor: pointer;
+  transition: transform .08s ease, box-shadow .12s ease, border-color .12s ease;
+  box-shadow: 0 10px 26px rgba(15,23,42,.06);
+}
+
+.faz-start-btn:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 14px 34px rgba(15,23,42,.10);
+  border-color: rgba(148,163,184,.9);
+}
+
+.faz-start-btn.primary{
+  border: 1px solid rgba(34,197,94,.35);
+  background: linear-gradient(135deg, rgba(124,58,237,.08), rgba(34,197,94,.08));
+}
+
+.faz-start-btnSub{
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(100,116,139,1);
+}
+
+.faz-start-grid{
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+
+@media (max-width: 980px){
+  .faz-start-grid{grid-template-columns: 1fr 1fr;}
+}
+@media (max-width: 640px){
+  .faz-start-grid{grid-template-columns: 1fr;}
+}
+
+.faz-start-card{
+  padding: 12px;
+}
+
+.faz-start-cardTop{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.faz-start-cardTitle{
+  font-weight: 1000;
+  color: rgba(15,23,42,1);
+}
+
+.faz-start-chip{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  border: 1px solid rgba(226,232,240,.92);
+  background: rgba(248,250,252,.85);
+  color: rgba(15,23,42,.75);
+}
+
+.faz-start-chip.is-warn{
+  border-color: rgba(245,158,11,.45);
+  background: rgba(245,158,11,.12);
+  color: #92400e;
+}
+
+.faz-start-cardActions{
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.faz-miniBtn{
+  border: 1px solid rgba(226,232,240,.92);
+  background: rgba(255,255,255,.98);
+  border-radius: 999px;
+  padding: 8px 10px;
+  font-weight: 900;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.faz-miniBtn.ghost{
+  background: rgba(248,250,252,.6);
+}
+
+.faz-start-steps{
+  margin: 8px 0 0 18px;
+  padding: 0;
+  color: rgba(100,116,139,1);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.faz-start-steps li{ margin: 5px 0; }
+
+/* V18 — Redesign Inicio (mais limpo, legivel e alinhado ao sistema) */
+.faz-start{
+  display: grid;
+  gap: 12px;
+  padding: 10px;
+}
+
+.faz-start-hero{
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  padding: 18px;
+  border: 1px solid rgba(226,232,240,.92);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.98), rgba(248,250,252,.92)) padding-box,
+    linear-gradient(120deg, rgba(59,130,246,.45), rgba(16,185,129,.30)) border-box;
+  box-shadow: 0 16px 42px rgba(15,23,42,.08);
+}
+
+.faz-start-hero::after{
+  content: "";
+  position: absolute;
+  top: -42px;
+  right: -52px;
+  width: 170px;
+  height: 170px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(59,130,246,.20) 0%, rgba(16,185,129,.10) 45%, rgba(255,255,255,0) 72%);
+  pointer-events: none;
+}
+
+.faz-start-row{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 14px;
+  align-items: start;
+}
+
+.faz-start-tag{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(59,130,246,.25);
+  background: rgba(239,246,255,.88);
+  color: rgba(29,78,216,1);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .08em;
+}
+
+.faz-start-title{
+  margin: 8px 0 0;
+  font-size: clamp(28px, 3.2vw, 38px);
+  line-height: 1;
+  letter-spacing: -.02em;
+}
+
+.faz-start-kpi{
+  min-width: 210px;
+  border-radius: 16px;
+  padding: 12px 14px;
+  border: 1px solid rgba(226,232,240,.92);
+  background: rgba(255,255,255,.95);
+  box-shadow: 0 10px 24px rgba(15,23,42,.06);
+}
+
+.faz-start-kpiLabel{
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.faz-start-kpiValue{
+  margin-top: 6px;
+  font-size: 40px;
+  line-height: 1;
+  letter-spacing: -.02em;
+}
+
+.faz-start-actions{
+  margin-top: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.faz-start-btn{
+  min-height: 82px;
+  border-radius: 16px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.faz-start-btn.primary{
+  border-color: rgba(59,130,246,.30);
+  background: linear-gradient(130deg, rgba(59,130,246,.12), rgba(16,185,129,.10));
+}
+
+.faz-start-btnSub{
+  margin-top: 6px;
+  font-size: 12px;
+  letter-spacing: .01em;
+}
+
+.faz-start-grid{
+  margin-top: 0;
+  gap: 12px;
+}
+
+.faz-start-card{
+  border-radius: 16px;
+  padding: 14px;
+  border: 1px solid rgba(226,232,240,.92);
+  background: rgba(255,255,255,.95);
+  box-shadow: 0 10px 26px rgba(15,23,42,.05);
+}
+
+.faz-start-cardTop{
+  margin-bottom: 8px;
+}
+
+.faz-start-cardTitle{
+  font-size: 18px;
+  letter-spacing: -.01em;
+}
+
+.faz-start-chip{
+  min-width: 38px;
+  height: 24px;
+  font-size: 12px;
+}
+
+.faz-start-cardActions{
+  margin-top: 12px;
+  gap: 9px;
+}
+
+.faz-miniBtn{
+  border-radius: 12px;
+  padding: 9px 12px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.faz-start-steps{
+  margin: 10px 0 0 18px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+@media (max-width: 980px){
+  .faz-start-row{
+    grid-template-columns: 1fr;
+  }
+
+  .faz-start-kpi{
+    min-width: 0;
+    width: 100%;
+  }
+}
+
+@media (max-width: 720px){
+  .faz-start{
+    padding: 8px;
+  }
+
+  .faz-start-hero{
+    padding: 14px;
+  }
+
+  .faz-start-title{
+    font-size: clamp(24px, 7vw, 32px);
+  }
+
+  .faz-start-actions{
+    grid-template-columns: 1fr;
+  }
+}

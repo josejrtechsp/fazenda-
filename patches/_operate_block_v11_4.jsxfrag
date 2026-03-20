@@ -1,0 +1,110 @@
+{tab === "operate" ? (
+  <div className="card">
+    <div className="card-header-row" style={{ alignItems: "flex-start" }}>
+      <div>
+        <div style={{ fontWeight: 900 }}>Operar por brinco</div>
+        <div className="card-subtitle">
+          Digite o brinco e faça pesagem/movimentação em segundos.
+        </div>
+      </div>
+
+      <div className="faz-actions-row" style={{ marginLeft: "auto" }}>
+        <button className="faz-btn primary" type="button" onClick={openQuickWeigh}>
+          Pesagem rápida
+        </button>
+        <button className="faz-btn" type="button" onClick={() => setTab("lots")}>
+          Ver lotes
+        </button>
+        <button className="faz-btn" type="button" onClick={seedDemo}>
+          Demo
+        </button>
+      </div>
+    </div>
+
+    <div style={{ marginTop: 12 }}>
+      <label className="form-label">Buscar brinco</label>
+      <input
+        className="input"
+        value={opQ}
+        onChange={(e) => setOpQ(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key !== "Enter") return;
+          const exact = opExact;
+          if (exact) openFicha(exact.ear_tag);
+        }}
+        placeholder="Ex.: A2402, N901, 7812..."
+      />
+      <div className="texto-suave" style={{ marginTop: 6 }}>
+        Dica: aperte <b>Enter</b> para abrir a ficha quando houver um match.
+      </div>
+    </div>
+
+    {Array.isArray(animalsAll) && animalsAll.length === 0 ? (
+      <div className="faz-emptyNice" style={{ marginTop: 12 }}>
+        Sem animais carregados no momento. Clique em <b>Demo</b> para preencher dados de exemplo.
+      </div>
+    ) : null}
+
+    {opQNorm && opMatches.length === 0 ? (
+      <div className="faz-emptyNice" style={{ marginTop: 12 }}>
+        Nenhum animal encontrado para <b>{opQNorm}</b>.
+      </div>
+    ) : null}
+
+    {opMatches.length > 0 ? (
+      <div className="faz-animals" style={{ marginTop: 12 }}>
+        {opMatches.map((a) => {
+          const lot = lotById.get(Number(a.lot_id));
+          const lotLabel = lot?.name || (a.lot_id != null ? "Lote " + a.lot_id : "—");
+          const ds = animalDays(a);
+          const stale = ds != null && ds > Number(staleDays);
+          const lastIso = animalLastDateIso(a);
+
+          return (
+            <div key={a.ear_tag} className={"faz-animal-row" + (stale ? " is-alert" : "")}>
+              <button type="button" className="link ear" onClick={() => openFicha(a.ear_tag)}>
+                {a.ear_tag}
+              </button>
+
+              <div className="meta">
+                <span className="ear">{a.category || "—"}</span>
+                {" • "}{lotLabel}
+                {" • "}{fmtKg(a.last_weight_kg)}
+                {lastIso ? " • " + fmtDateShort(lastIso) : ""}
+                {ds != null ? " • " + ds + " dias" : ""}
+              </div>
+
+              <button className="faz-btn" type="button" onClick={() => openFicha(a.ear_tag)}>
+                Ficha
+              </button>
+              <button className="faz-btn primary" type="button" onClick={() => openFichaWeigh(a.ear_tag)}>
+                Pesagem
+              </button>
+              <button
+                className="faz-btn"
+                type="button"
+                onClick={() =>
+                  onTransfer({
+                    mode: "animal",
+                    earTags: [a.ear_tag],
+                    notes: "Movimentação individual — " + a.ear_tag,
+                  })
+                }
+              >
+                Mover
+              </button>
+              <button className="faz-btn" type="button" onClick={() => openBaixa(a.ear_tag)}>
+                Baixa
+              </button>
+            </div>
+          );
+        })}
+      </div>
+    ) : (
+      <div className="texto-suave" style={{ marginTop: 12 }}>
+        Comece digitando um brinco acima para aparecer a lista de animais.
+      </div>
+    )}
+  </div>
+) : null}
+

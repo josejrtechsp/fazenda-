@@ -1,0 +1,66 @@
+/* Brand lockup (IDEAL - Soluções para Pecuária) */
+
+.fazBrandLockup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(226, 232, 240, 0.92);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.fazBrandLogo {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  /* nitidez */
+  image-rendering: -webkit-optimize-contrast;
+  transform: translateZ(0);
+  filter: none !important;
+}
+
+/* Texto em degradê roxo → verde */
+.idealTaglineGradient {
+  font-weight: 950;
+  letter-spacing: 0.02em;
+  background: linear-gradient(90deg, #7c3aed 0%, #22c55e 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  white-space: nowrap;
+}
+
+/* Mantém o layout do header sem o centro */
+.cras-top-v2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cras-top-v2-left .fazHome {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 999px;
+}
+
+.cras-top-v2-left .fazHomeText {
+  font-weight: 900;
+  color: rgba(15, 23, 42, 1);
+}
+
+.cras-top-v2-spacer {
+  flex: 1;
+}
+
+@media (max-width: 860px) {
+  .fazBrandLockup {
+    padding: 6px 8px;
+  }
+  .idealTaglineGradient {
+    display: none; /* em telas menores, mostra só o logo */
+  }
+}

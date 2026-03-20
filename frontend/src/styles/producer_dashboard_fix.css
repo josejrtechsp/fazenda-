@@ -1,0 +1,1545 @@
+/* ProducerDashboard FIX11 — scoped styling (nao afeta outras telas)
+   Objetivo:
+   - Diminuir ainda mais caixas e letras (dashboard mais "baixo" e harmônico)
+   - Manter fundo branco + borda gradiente roxo → verde
+*/
+
+.faz-producer-dashboard{
+  --pd-purple: #7c3aed;
+  --pd-green:  #22c55e;
+  --pd-ink:    rgba(15,23,42,1);
+  --pd-muted:  rgba(100,116,139,1);
+  --pd-grad:   linear-gradient(135deg, var(--pd-purple), var(--pd-green));
+
+  padding: 4px 4px 10px;
+  background: #fff;
+  border: 1px solid rgba(226,232,240,.92);
+  border-radius: 14px;
+}
+
+.faz-producer-dashboard .faz-pageHead{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:8px;
+  padding:8px 4px 4px;
+}
+
+.faz-producer-dashboard .faz-titleRow{
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+
+.faz-producer-dashboard .faz-kicker{
+  font-size:8px;
+  font-weight:950;
+  letter-spacing:.16em;
+  color:var(--pd-muted);
+  text-transform:uppercase;
+}
+
+.faz-producer-dashboard .faz-title{
+  margin:0;
+  font-size:18px;
+  font-weight:950;
+  letter-spacing:-.01em;
+  color:var(--pd-ink);
+}
+
+.faz-producer-dashboard .faz-muted{
+  font-size:10px;
+  font-weight:650;
+  color:var(--pd-muted);
+}
+
+.faz-producer-dashboard .faz-chipsRow{
+  margin-top:5px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+
+.faz-producer-dashboard .faz-headActions{
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+/* Botoes (apenas no dashboard) */
+.faz-producer-dashboard .faz-btn{
+  padding:7px 9px;
+  font-size:11px;
+}
+
+.faz-producer-dashboard .faz-btn.ghost{
+  border: 1px solid transparent;
+  background:
+    linear-gradient(#fff,#fff) padding-box,
+    var(--pd-grad) border-box;
+}
+
+.faz-producer-dashboard .faz-grid-kpis{
+  margin-top:7px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(175px,1fr));
+  gap:7px;
+}
+
+/* Cards com borda gradiente */
+.faz-producer-dashboard .faz-kpi,
+.faz-producer-dashboard .faz-panel,
+.faz-producer-dashboard .faz-metric,
+.faz-producer-dashboard .faz-quick{
+  border: 1px solid transparent !important;
+  background:
+    linear-gradient(#fff,#fff) padding-box,
+    var(--pd-grad) border-box !important;
+  box-shadow: 0 10px 28px rgba(15,23,42,.05);
+}
+
+.faz-producer-dashboard .faz-kpi{
+  border-radius:13px;
+  padding:7px 8px;
+}
+
+.faz-producer-dashboard .faz-kpi .k{
+  font-size:8px;
+  font-weight:950;
+  letter-spacing:.18em;
+  color:var(--pd-muted);
+  text-transform:uppercase;
+}
+
+.faz-producer-dashboard .faz-kpi .v{
+  margin-top:4px;
+  font-size:16px;
+  font-weight:950;
+  letter-spacing:-.01em;
+  color:var(--pd-ink);
+}
+
+.faz-producer-dashboard .faz-kpi .s{
+  margin-top:4px;
+  font-size:10px;
+  color:var(--pd-muted);
+  font-weight:650;
+}
+
+.faz-producer-dashboard .faz-panels2{
+  margin-top:9px;
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  gap:7px;
+}
+
+@media (max-width:980px){
+  .faz-producer-dashboard .faz-panels2{ grid-template-columns:1fr; }
+}
+
+.faz-producer-dashboard .faz-panel{
+  border-radius:13px;
+  padding:7px 8px;
+}
+
+.faz-producer-dashboard .faz-panel-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.faz-producer-dashboard .faz-metric{
+  min-width:82px;
+  border-radius:12px;
+  padding:5px 7px;
+  text-align:right;
+}
+
+.faz-producer-dashboard .faz-metric .k{
+  font-size:8px;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  color:var(--pd-muted);
+  font-weight:950;
+}
+
+.faz-producer-dashboard .faz-metric .v{
+  margin-top:3px;
+  font-size:11px;
+  color:var(--pd-ink);
+  font-weight:950;
+}
+
+.faz-producer-dashboard .faz-empty{
+  margin-top:7px;
+  border:1px dashed rgba(226,232,240,.95);
+  border-radius:13px;
+  padding:9px;
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  background:rgba(248,250,252,.55);
+}
+
+.faz-producer-dashboard .faz-empty .ic{
+  width:24px;height:24px;border-radius:999px;
+  display:grid;place-items:center;
+  background:rgba(124,58,237,.10);
+  border:1px solid rgba(124,58,237,.18);
+}
+
+.faz-producer-dashboard .faz-trendList{ margin-top:7px; display:flex; flex-direction:column; gap:7px; }
+
+.faz-producer-dashboard .faz-trendRow{
+  display:grid;
+  grid-template-columns: 86px 1fr 98px;
+  gap:10px;
+  align-items:center;
+}
+
+@media (max-width:520px){
+  .faz-producer-dashboard .faz-trendRow{ grid-template-columns: 1fr; }
+}
+
+.faz-producer-dashboard .faz-trendRow .m{ font-weight:850; color:var(--pd-ink); }
+.faz-producer-dashboard .faz-trendRow .v{ text-align:right; font-weight:850; color:var(--pd-ink); }
+
+.faz-producer-dashboard .faz-trendRow .bar{
+  height:7px;
+  border-radius:999px;
+  background:rgba(226,232,240,.8);
+  overflow:hidden;
+}
+
+.faz-producer-dashboard .faz-trendRow .fill{
+  display:block;
+  height:7px;
+  border-radius:999px;
+  background: var(--pd-grad) !important;
+  box-shadow: 0 8px 18px rgba(124,58,237,.12);
+}
+
+.faz-producer-dashboard .faz-bars{ margin-top:7px; display:flex; flex-direction:column; gap:7px; }
+
+.faz-producer-dashboard .faz-bar{
+  display:grid;
+  grid-template-columns: 140px 1fr 104px;
+  gap:10px;
+  align-items:center;
+}
+
+@media (max-width:980px){
+  .faz-producer-dashboard .faz-bar{ grid-template-columns: 115px 1fr 98px; }
+}
+
+@media (max-width:520px){
+  .faz-producer-dashboard .faz-bar{ grid-template-columns: 1fr; }
+}
+
+.faz-producer-dashboard .faz-bar .name{
+  font-weight:900;
+  letter-spacing:.14em;
+  font-size:9px;
+  text-transform:uppercase;
+  color:var(--pd-muted);
+}
+
+.faz-producer-dashboard .faz-bar .track{
+  height:7px;
+  border-radius:999px;
+  background:rgba(226,232,240,.8);
+  overflow:hidden;
+}
+
+.faz-producer-dashboard .faz-bar .track .fill{
+  height:7px;
+  border-radius:999px;
+  background: var(--pd-grad) !important;
+}
+
+.faz-producer-dashboard .faz-bar .val{
+  text-align:right;
+  font-weight:850;
+  color:var(--pd-ink);
+}
+
+.faz-producer-dashboard .faz-summaryGrid{
+  margin-top:9px;
+  display:grid;
+  grid-template-columns: 1.25fr .85fr;
+  gap:7px;
+  align-items:start;
+}
+
+@media (max-width:980px){
+  .faz-producer-dashboard .faz-summaryGrid{ grid-template-columns: 1fr; }
+}
+
+.faz-producer-dashboard .faz-summaryLines{ display:flex; flex-direction:column; gap:6px; }
+.faz-producer-dashboard .faz-sline{ display:flex; gap:10px; align-items:flex-start; }
+
+.faz-producer-dashboard .faz-sline .dot{
+  width:8px;height:8px;border-radius:999px;margin-top:6px;
+  background: var(--pd-grad) !important;
+  box-shadow: 0 8px 18px rgba(124,58,237,.12);
+}
+
+.faz-producer-dashboard .faz-sline .t{ font-size:11px; font-weight:750; color:var(--pd-ink); line-height:1.45; }
+
+.faz-producer-dashboard .faz-callout{
+  margin-top:7px;
+  display:flex;
+  gap:10px;
+  border-radius:13px;
+  padding:7px 9px;
+  border:1px solid rgba(226,232,240,.92);
+  background:rgba(255,255,255,.86);
+}
+
+.faz-producer-dashboard .faz-callout.info{
+  background:rgba(124,58,237,.08);
+  border-color:rgba(124,58,237,.22);
+}
+
+.faz-producer-dashboard .faz-callout .ic{
+  width:20px;height:20px;border-radius:999px;
+  display:grid;place-items:center;
+  font-weight:950;font-size:11px;
+  color:rgba(88,28,135,1);
+  background:rgba(124,58,237,.12);
+  border:1px solid rgba(124,58,237,.22);
+}
+
+.faz-producer-dashboard .faz-callout .tx{
+  font-size:11px;
+  font-weight:750;
+  color:var(--pd-ink);
+  line-height:1.4;
+}
+
+.faz-producer-dashboard .faz-quick{
+  border-radius:13px;
+  padding:7px 8px;
+}
+
+.faz-producer-dashboard .faz-quick-title{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  font-weight:950;
+  color:var(--pd-muted);
+}
+
+.faz-producer-dashboard .faz-quick-grid{
+  margin-top:7px;
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:7px;
+}
+
+@media (max-width:520px){
+  .faz-producer-dashboard .faz-quick-grid{ grid-template-columns: 1fr; }
+}
+
+.faz-producer-dashboard .faz-btn.sm{
+  width:100%;
+  padding:7px 8px;
+  font-size:11px;
+}
+
+/* Indicadores no mesmo tema (barras/pontos) */
+.faz-producer-dashboard .faz-trendRow .fill,
+.faz-producer-dashboard .faz-bar .track .fill,
+.faz-producer-dashboard .faz-sline .dot{
+  background: var(--pd-grad) !important;
+}
+
+/* FIX12 — navegação por botões (1 tela por vez) */
+.faz-producer-dashboard .pd-tabs{
+  margin-top: 6px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+
+.faz-producer-dashboard .pd-tab{
+  border:1px solid rgba(226,232,240,.95);
+  background:#fff;
+  color: var(--pd-ink);
+  border-radius: 999px;
+  padding: 5px 8px;
+  font-size: 10.5px;
+  font-weight: 850;
+  cursor: pointer;
+  transition: transform .06s ease, box-shadow .12s ease;
+}
+
+.faz-producer-dashboard .pd-tab:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(15,23,42,.08);
+}
+
+.faz-producer-dashboard .pd-tab.isActive{
+  border: 1px solid transparent;
+  background:
+    linear-gradient(#fff,#fff) padding-box,
+    var(--pd-grad) border-box;
+}
+
+.faz-producer-dashboard .pd-subhead{
+  margin-top: 8px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.faz-producer-dashboard .pd-subtitle{
+  font-size: 12px;
+  font-weight: 900;
+  color: var(--pd-ink);
+}
+
+.faz-producer-dashboard .pd-pill{
+  display:inline-flex;
+  align-items:center;
+  border-radius:999px;
+  padding: 5px 8px;
+  font-size: 10.5px;
+  font-weight: 900;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(#fff,#fff) padding-box,
+    var(--pd-grad) border-box;
+}
+
+.faz-producer-dashboard .pd-detail{
+  margin-top: 10px;
+}
+
+.faz-producer-dashboard .pd-ul{
+  margin: 0;
+  padding-left: 16px;
+}
+
+.faz-producer-dashboard .pd-tableWrap{
+  margin-top: 8px;
+  border:1px solid rgba(226,232,240,.92);
+  border-radius: 12px;
+  overflow:hidden;
+}
+
+.faz-producer-dashboard .pd-table{
+  width:100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+.faz-producer-dashboard .pd-table th,
+.faz-producer-dashboard .pd-table td{
+  padding: 8px 8px;
+  border-bottom: 1px solid rgba(226,232,240,.92);
+  text-align:left;
+}
+
+.faz-producer-dashboard .pd-table th{
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: var(--pd-muted);
+}
+
+.faz-producer-dashboard .pd-split{
+  margin-top: 8px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.faz-producer-dashboard .pd-splitBar{
+  flex:1;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(226,232,240,.8);
+  overflow:hidden;
+}
+
+.faz-producer-dashboard .pd-splitFill{
+  height: 8px;
+  border-radius: 999px;
+  background: var(--pd-grad);
+}
+
+.faz-producer-dashboard .pd-splitText{
+  min-width: 120px;
+  text-align:right;
+  font-weight: 850;
+  color: var(--pd-ink);
+  font-size: 11px;
+}
+
+.faz-producer-dashboard .pd-check{
+  margin-top: 8px;
+  display:flex;
+  flex-direction: column;
+  gap:6px;
+}
+
+.faz-producer-dashboard .pd-checkItem{
+  font-size: 11px;
+  font-weight: 750;
+  color: var(--pd-ink);
+  line-height: 1.35;
+  display:flex;
+  gap:8px;
+  align-items:flex-start;
+}
+
+.faz-producer-dashboard .pd-checkItem.ok{
+  color: rgba(22,101,52,1);
+}
+
+.faz-producer-dashboard .pd-checkDot{
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  display:inline-grid;
+  place-items:center;
+  font-size: 11px;
+  font-weight: 950;
+  border: 1px solid rgba(226,232,240,.95);
+  background:#fff;
+}
+
+.faz-producer-dashboard .pd-lots{
+  margin-top: 8px;
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 7px;
+}
+
+.faz-producer-dashboard .pd-lot{
+  border: 1px solid rgba(226,232,240,.92);
+  border-radius: 12px;
+  padding: 8px;
+  background: rgba(255,255,255,.8);
+}
+
+.faz-producer-dashboard .pd-lotTitle{
+  font-weight: 950;
+  color: var(--pd-ink);
+  font-size: 12px;
+}
+
+.faz-producer-dashboard .pd-lotSub{
+  margin-top: 4px;
+  font-size: 10px;
+  color: var(--pd-muted);
+  font-weight: 650;
+}
+
+
+/* FIX13 — status de conexao (compacto) */
+.faz-producer-dashboard .pd-offline{
+  margin-top:8px;
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+  border-radius:12px;
+  padding:8px 10px;
+  border:1px solid rgba(226,232,240,.92);
+  background:rgba(248,250,252,.75);
+}
+.faz-producer-dashboard .pd-offlineDot{
+  width:10px;height:10px;border-radius:999px;margin-top:3px;
+  background:rgba(239,68,68,.9);
+  box-shadow:0 10px 20px rgba(239,68,68,.22);
+}
+.faz-producer-dashboard .pd-offlineText{
+  font-size:11px;
+  font-weight:850;
+  color:rgba(15,23,42,1);
+}
+.faz-producer-dashboard .pd-offlineErr{
+  margin-left:auto;
+  max-width: 520px;
+  font-size:10px;
+  color:rgba(100,116,139,1);
+  line-height:1.35;
+}
+
+/* UX V3 — status do backend (discreto, sem poluir a tela) */
+.faz-producer-dashboard .pd-connPill{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(226,232,240,.92);
+  background: rgba(248,250,252,.80);
+  font-size: 11px;
+  font-weight: 950;
+  color: rgba(15,23,42,1);
+  max-width: 240px;
+  white-space: nowrap;
+}
+.faz-producer-dashboard .pd-connDot{
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(239,68,68,.9);
+  box-shadow: 0 10px 20px rgba(239,68,68,.22);
+}
+.faz-producer-dashboard .pd-connLabel{
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* V17 - Visao Geral (referencia video) */
+.faz-producer-dashboard .pdClassic-toolbar{
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.faz-producer-dashboard .pdClassic-grid{
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.faz-producer-dashboard .pdClassic-card{
+  border: 1px solid rgba(226,232,240,.92);
+  border-radius: 14px;
+  padding: 12px;
+  background: rgba(255,255,255,.92);
+  min-height: 210px;
+}
+
+.faz-producer-dashboard .pdClassic-head{
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+}
+
+.faz-producer-dashboard .pdClassic-head h3{
+  margin: 0;
+  font-size: 15px;
+  font-weight: 950;
+  color: var(--pd-ink);
+}
+
+.faz-producer-dashboard .pdClassic-metrics{
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.faz-producer-dashboard .pdClassic-metrics > div{
+  border: 1px solid rgba(226,232,240,.88);
+  border-radius: 10px;
+  padding: 8px;
+  display: grid;
+  gap: 4px;
+}
+
+.faz-producer-dashboard .pdClassic-metrics span{
+  font-size: 10px;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--pd-muted);
+}
+
+.faz-producer-dashboard .pdClassic-metrics b{
+  font-size: 19px;
+  line-height: 1;
+  font-weight: 950;
+  color: var(--pd-ink);
+}
+
+.faz-producer-dashboard .pdClassic-bars{
+  margin-top: 10px;
+  display: grid;
+  gap: 6px;
+}
+
+.faz-producer-dashboard .pdClassic-line{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.faz-producer-dashboard .pdClassic-line span{
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--pd-ink);
+}
+
+.faz-producer-dashboard .pdClassic-line b{
+  font-size: 12px;
+  font-weight: 950;
+  color: var(--pd-ink);
+}
+
+.faz-producer-dashboard .pdClassic-track{
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(226,232,240,.85);
+  overflow: hidden;
+}
+
+.faz-producer-dashboard .pdClassic-track i{
+  display: block;
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(15,118,110,.95), rgba(20,184,166,.9));
+}
+
+.faz-producer-dashboard .pdClassic-track.is-female i{
+  background: linear-gradient(90deg, rgba(190,24,93,.92), rgba(236,72,153,.86));
+}
+
+.faz-producer-dashboard .pdClassic-miniTitle{
+  margin-top: 10px;
+  font-size: 10px;
+  font-weight: 900;
+  color: var(--pd-muted);
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+
+.faz-producer-dashboard .pdClassic-list{
+  margin-top: 8px;
+  display: grid;
+  gap: 6px;
+}
+
+.faz-producer-dashboard .pdClassic-listRow{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 780;
+  color: var(--pd-ink);
+}
+
+.faz-producer-dashboard .pdClassic-listRow b{
+  font-weight: 950;
+}
+
+.faz-producer-dashboard .pdClassic-listRow .is-pos{
+  color: rgba(22,101,52,1);
+}
+
+.faz-producer-dashboard .pdClassic-listRow .is-neg{
+  color: rgba(190,24,93,1);
+}
+
+.faz-producer-dashboard .pdClassic-alert{
+  border: 1px solid rgba(251,191,36,.45);
+  border-radius: 10px;
+  padding: 8px;
+  background: rgba(255,251,235,.82);
+}
+
+.faz-producer-dashboard .pdClassic-alertTop{
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+}
+
+.faz-producer-dashboard .pdClassic-alertTop span{
+  font-size: 10px;
+  font-weight: 900;
+  color: rgba(120,53,15,1);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+
+.faz-producer-dashboard .pdClassic-alertName{
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 900;
+  color: rgba(15,23,42,1);
+}
+
+.faz-producer-dashboard .pdClassic-alertMeta{
+  margin-top: 2px;
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(100,116,139,1);
+}
+
+.faz-producer-dashboard .pdClassic-alertLine{
+  font-size: 11px;
+  font-weight: 780;
+  color: var(--pd-ink);
+  line-height: 1.35;
+}
+
+.faz-producer-dashboard .pdClassic-empty{
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--pd-muted);
+}
+
+.faz-producer-dashboard .pdClassic-actions{
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 1200px){
+  .faz-producer-dashboard .pdClassic-grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px){
+  .faz-producer-dashboard .pdClassic-grid{
+    grid-template-columns: 1fr;
+  }
+}
+
+/* V18 — Redesign Inicio (Mes) / Visao Geral */
+.faz-producer-dashboard{
+  border-radius: 18px;
+  padding: 12px 12px 18px;
+  border: 1px solid rgba(226,232,240,.92);
+  background: linear-gradient(180deg, rgba(255,255,255,.98) 0%, rgba(248,250,252,.88) 100%);
+  box-shadow: 0 18px 44px rgba(15,23,42,.08);
+}
+
+.faz-producer-dashboard .faz-pageHead{
+  gap: 14px;
+  padding: 6px 2px 8px;
+}
+
+.faz-producer-dashboard .faz-kicker{
+  font-size: 10px;
+  letter-spacing: .16em;
+}
+
+.faz-producer-dashboard .faz-title{
+  font-size: clamp(30px, 4vw, 44px);
+  line-height: .95;
+  letter-spacing: -.02em;
+}
+
+.faz-producer-dashboard .faz-titleRow .faz-muted{
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.faz-producer-dashboard .faz-headActions{
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.faz-producer-dashboard .faz-btn{
+  font-size: 13px;
+  padding: 9px 12px;
+  border-radius: 12px;
+}
+
+.faz-producer-dashboard .pd-connPill{
+  font-size: 12px;
+}
+
+.faz-producer-dashboard .pd-tabs{
+  margin-top: 10px;
+  gap: 8px;
+}
+
+.faz-producer-dashboard .pd-tab{
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.faz-producer-dashboard .pdClassic-toolbar{
+  margin-top: 12px;
+  gap: 10px;
+}
+
+.faz-producer-dashboard .pd-pill{
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+.faz-producer-dashboard .pdClassic-grid{
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.faz-producer-dashboard .pdClassic-grid > .pdClassic-card{
+  grid-column: span 4;
+}
+
+.faz-producer-dashboard .pdClassic-grid > .pdClassic-card:nth-child(1),
+.faz-producer-dashboard .pdClassic-grid > .pdClassic-card:nth-child(2),
+.faz-producer-dashboard .pdClassic-grid > .pdClassic-card:nth-child(3),
+.faz-producer-dashboard .pdClassic-grid > .pdClassic-card:nth-child(4){
+  grid-column: span 6;
+}
+
+.faz-producer-dashboard .pdClassic-grid > .pdClassic-card:nth-child(5){
+  grid-column: span 8;
+}
+
+.faz-producer-dashboard .pdClassic-grid > .pdClassic-card:nth-child(6){
+  grid-column: span 4;
+}
+
+.faz-producer-dashboard .pdClassic-card{
+  border-radius: 16px;
+  padding: 16px;
+  min-height: 0;
+  background: rgba(255,255,255,.98);
+  box-shadow: 0 12px 28px rgba(15,23,42,.06);
+}
+
+.faz-producer-dashboard .pdClassic-head h3{
+  font-size: 22px;
+  letter-spacing: -.01em;
+}
+
+.faz-producer-dashboard .pdClassic-metrics{
+  margin-top: 12px;
+  gap: 10px;
+}
+
+.faz-producer-dashboard .pdClassic-metrics > div{
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.faz-producer-dashboard .pdClassic-metrics span{
+  font-size: 11px;
+}
+
+.faz-producer-dashboard .pdClassic-metrics b{
+  font-size: 30px;
+}
+
+.faz-producer-dashboard .pdClassic-bars{
+  margin-top: 12px;
+  gap: 8px;
+}
+
+.faz-producer-dashboard .pdClassic-line span{
+  font-size: 14px;
+}
+
+.faz-producer-dashboard .pdClassic-line b{
+  font-size: 16px;
+}
+
+.faz-producer-dashboard .pdClassic-track,
+.faz-producer-dashboard .pdClassic-track i{
+  height: 10px;
+}
+
+.faz-producer-dashboard .pdClassic-miniTitle{
+  margin-top: 12px;
+  font-size: 11px;
+}
+
+.faz-producer-dashboard .pdClassic-list{
+  margin-top: 10px;
+  gap: 8px;
+}
+
+.faz-producer-dashboard .pdClassic-listRow{
+  font-size: 14px;
+}
+
+.faz-producer-dashboard .pdClassic-alert{
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.faz-producer-dashboard .pdClassic-alertTop span{
+  font-size: 10px;
+}
+
+.faz-producer-dashboard .pdClassic-alertName{
+  font-size: 14px;
+}
+
+.faz-producer-dashboard .pdClassic-alertMeta{
+  font-size: 12px;
+}
+
+.faz-producer-dashboard .pdClassic-alertLine{
+  font-size: 13px;
+}
+
+.faz-producer-dashboard .pdClassic-empty{
+  font-size: 13px;
+}
+
+.faz-producer-dashboard .pdClassic-actions{
+  margin-top: 12px;
+  gap: 9px;
+}
+
+.faz-producer-dashboard .pdClassic-actions .faz-btn{
+  font-size: 12px;
+  padding: 8px 11px;
+}
+
+@media (max-width: 1280px){
+  .faz-producer-dashboard .pdClassic-grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .faz-producer-dashboard .pdClassic-grid > .pdClassic-card{
+    grid-column: span 1 !important;
+  }
+}
+
+@media (max-width: 900px){
+  .faz-producer-dashboard{
+    padding: 10px 10px 14px;
+  }
+
+  .faz-producer-dashboard .faz-pageHead{
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .faz-producer-dashboard .faz-title{
+    font-size: clamp(28px, 9vw, 36px);
+  }
+
+  .faz-producer-dashboard .faz-titleRow .faz-muted{
+    font-size: 13px;
+  }
+
+  .faz-producer-dashboard .pdClassic-grid{
+    grid-template-columns: 1fr;
+  }
+}
+
+/* V19 — Visao Geral (mudanca total) */
+.faz-producer-dashboard .pdOverview-topline{
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.faz-producer-dashboard .pdOverview-hero{
+  margin-top: 10px;
+  border: 1px solid rgba(226,232,240,.92);
+  border-radius: 16px;
+  padding: 14px;
+  background:
+    linear-gradient(130deg, rgba(255,255,255,.98), rgba(248,250,252,.92)) padding-box,
+    linear-gradient(120deg, rgba(59,130,246,.35), rgba(16,185,129,.25)) border-box;
+  box-shadow: 0 12px 28px rgba(15,23,42,.05);
+}
+
+.faz-producer-dashboard .pdOverview-heroHead{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.faz-producer-dashboard .pdOverview-kicker{
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-weight: 900;
+  color: var(--pd-muted);
+}
+
+.faz-producer-dashboard .pdOverview-heroHead h2{
+  margin: 6px 0 0;
+  font-size: clamp(22px, 2.6vw, 30px);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+  color: var(--pd-ink);
+}
+
+.faz-producer-dashboard .pdOverview-heroActions{
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.faz-producer-dashboard .pdOverview-kpiGrid{
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.faz-producer-dashboard .pdOverview-kpi{
+  border: 1px solid rgba(226,232,240,.92);
+  border-radius: 12px;
+  padding: 10px;
+  background: rgba(255,255,255,.98);
+  box-shadow: 0 8px 22px rgba(15,23,42,.04);
+  display: grid;
+  gap: 6px;
+}
+
+.faz-producer-dashboard .pdOverview-kpi span{
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-weight: 900;
+  color: var(--pd-muted);
+}
+
+.faz-producer-dashboard .pdOverview-kpi strong{
+  font-size: clamp(18px, 1.8vw, 24px);
+  line-height: 1;
+  letter-spacing: -.01em;
+  color: var(--pd-ink);
+}
+
+.faz-producer-dashboard .pdOverview-kpi strong.is-pos{
+  color: rgba(22,101,52,1);
+}
+
+.faz-producer-dashboard .pdOverview-kpi strong.is-neg{
+  color: rgba(190,24,93,1);
+}
+
+.faz-producer-dashboard .pdOverview-grid{
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.faz-producer-dashboard .pdOverview-card{
+  grid-column: span 6;
+  border: 1px solid rgba(226,232,240,.92);
+  border-radius: 14px;
+  padding: 12px;
+  background: rgba(255,255,255,.98);
+  box-shadow: 0 10px 24px rgba(15,23,42,.05);
+}
+
+.faz-producer-dashboard .pdOverview-card--wide{
+  grid-column: span 12;
+}
+
+.faz-producer-dashboard .pdOverview-head{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.faz-producer-dashboard .pdOverview-head h3{
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: -.01em;
+  color: var(--pd-ink);
+}
+
+.faz-producer-dashboard .pdOverview-tag{
+  border: 1px solid rgba(226,232,240,.92);
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  font-weight: 900;
+  color: var(--pd-muted);
+  background: rgba(248,250,252,.8);
+}
+
+.faz-producer-dashboard .pdOverview-miniGrid{
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.faz-producer-dashboard .pdOverview-miniGrid > div{
+  border: 1px solid rgba(226,232,240,.9);
+  border-radius: 10px;
+  padding: 8px;
+  display: grid;
+  gap: 4px;
+}
+
+.faz-producer-dashboard .pdOverview-miniGrid span{
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  font-weight: 850;
+  color: var(--pd-muted);
+}
+
+.faz-producer-dashboard .pdOverview-miniGrid b{
+  font-size: 24px;
+  line-height: 1;
+  color: var(--pd-ink);
+}
+
+.faz-producer-dashboard .pdOverview-sexBars{
+  margin-top: 10px;
+  display: grid;
+  gap: 6px;
+}
+
+.faz-producer-dashboard .pdOverview-sexRow{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--pd-ink);
+}
+
+.faz-producer-dashboard .pdOverview-track{
+  height: 9px;
+  border-radius: 999px;
+  background: rgba(226,232,240,.85);
+  overflow: hidden;
+}
+
+.faz-producer-dashboard .pdOverview-track i{
+  display: block;
+  height: 9px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(15,118,110,.95), rgba(20,184,166,.88));
+}
+
+.faz-producer-dashboard .pdOverview-track.is-female i{
+  background: linear-gradient(90deg, rgba(190,24,93,.92), rgba(236,72,153,.86));
+}
+
+.faz-producer-dashboard .pdOverview-subtitle{
+  margin-top: 10px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .13em;
+  font-weight: 900;
+  color: var(--pd-muted);
+}
+
+.faz-producer-dashboard .pdOverview-list{
+  margin-top: 8px;
+  display: grid;
+  gap: 6px;
+}
+
+.faz-producer-dashboard .pdOverview-row{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--pd-ink);
+}
+
+.faz-producer-dashboard .pdOverview-row b{
+  font-weight: 950;
+}
+
+.faz-producer-dashboard .pdOverview-row b.is-pos{
+  color: rgba(22,101,52,1);
+}
+
+.faz-producer-dashboard .pdOverview-row b.is-neg{
+  color: rgba(190,24,93,1);
+}
+
+.faz-producer-dashboard .pdOverview-chipList{
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.faz-producer-dashboard .pdOverview-chip{
+  border: 1px solid rgba(226,232,240,.9);
+  border-radius: 10px;
+  padding: 8px 10px;
+  background: rgba(248,250,252,.78);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.faz-producer-dashboard .pdOverview-chip span{
+  font-size: 11px;
+  font-weight: 900;
+  color: var(--pd-ink);
+}
+
+.faz-producer-dashboard .pdOverview-chip b{
+  font-size: 14px;
+  font-weight: 950;
+  color: var(--pd-ink);
+  white-space: nowrap;
+}
+
+.faz-producer-dashboard .pdOverview-chip b small{
+  margin-left: 4px;
+  font-size: 11px;
+  color: var(--pd-muted);
+}
+
+.faz-producer-dashboard .pdOverview-finGrid{
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.faz-producer-dashboard .pdOverview-finItem{
+  border: 1px solid rgba(226,232,240,.9);
+  border-radius: 10px;
+  padding: 9px 10px;
+  background: rgba(248,250,252,.8);
+  display: grid;
+  gap: 4px;
+}
+
+.faz-producer-dashboard .pdOverview-finItem--full{
+  grid-column: span 2;
+}
+
+.faz-producer-dashboard .pdOverview-finItem span{
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  font-weight: 850;
+  color: var(--pd-muted);
+}
+
+.faz-producer-dashboard .pdOverview-finItem b{
+  font-size: 19px;
+  line-height: 1.05;
+  color: var(--pd-ink);
+}
+
+.faz-producer-dashboard .pdOverview-finItem b.is-pos{
+  color: rgba(22,101,52,1);
+}
+
+.faz-producer-dashboard .pdOverview-finItem b.is-neg{
+  color: rgba(190,24,93,1);
+}
+
+.faz-producer-dashboard .pdOverview-costList{
+  margin-top: 8px;
+  display: grid;
+  gap: 8px;
+}
+
+.faz-producer-dashboard .pdOverview-costRow{
+  border: 1px solid rgba(226,232,240,.9);
+  border-radius: 10px;
+  padding: 8px 10px;
+  background: rgba(255,255,255,.94);
+  display: grid;
+  gap: 6px;
+}
+
+.faz-producer-dashboard .pdOverview-costMain{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.faz-producer-dashboard .pdOverview-costMain span{
+  font-size: 12px;
+  font-weight: 850;
+  color: var(--pd-ink);
+}
+
+.faz-producer-dashboard .pdOverview-costMain b{
+  font-size: 14px;
+  font-weight: 950;
+  color: var(--pd-ink);
+}
+
+.faz-producer-dashboard .pdOverview-costTrack{
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(226,232,240,.9);
+  overflow: hidden;
+}
+
+.faz-producer-dashboard .pdOverview-costTrack i{
+  display: block;
+  height: 7px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(99,102,241,.9), rgba(14,165,233,.85));
+}
+
+.faz-producer-dashboard .pdOverview-alerts{
+  margin-top: 8px;
+  display: grid;
+  gap: 8px;
+}
+
+.faz-producer-dashboard .pdOverview-alert{
+  border: 1px solid rgba(251,191,36,.45);
+  border-radius: 10px;
+  padding: 8px;
+  background: rgba(255,251,235,.84);
+}
+
+.faz-producer-dashboard .pdOverview-alertTop{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.faz-producer-dashboard .pdOverview-alertTop span{
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  font-weight: 900;
+  color: rgba(120,53,15,1);
+}
+
+.faz-producer-dashboard .pdOverview-alertName{
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--pd-ink);
+}
+
+.faz-producer-dashboard .pdOverview-alertMeta{
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--pd-muted);
+}
+
+.faz-producer-dashboard .pdOverview-line{
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--pd-ink);
+}
+
+.faz-producer-dashboard .pdOverview-line.is-pos{
+  color: rgba(22,101,52,1);
+  font-weight: 800;
+}
+
+.faz-producer-dashboard .pdOverview-line.is-neg{
+  color: rgba(190,24,93,1);
+  font-weight: 800;
+}
+
+.faz-producer-dashboard .pdOverview-empty{
+  font-size: 12px;
+  color: var(--pd-muted);
+  font-weight: 700;
+}
+
+.faz-producer-dashboard .pdOverview-summary{
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.faz-producer-dashboard .pdOverview-summaryItem{
+  border: 1px solid rgba(226,232,240,.92);
+  border-radius: 10px;
+  padding: 9px;
+  display: grid;
+  gap: 4px;
+  background: rgba(248,250,252,.78);
+}
+
+.faz-producer-dashboard .pdOverview-summaryItem span{
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  font-weight: 850;
+  color: var(--pd-muted);
+}
+
+.faz-producer-dashboard .pdOverview-summaryItem b{
+  font-size: 18px;
+  color: var(--pd-ink);
+  line-height: 1.05;
+}
+
+.faz-producer-dashboard .pdOverview-summaryItem b.is-pos{
+  color: rgba(22,101,52,1);
+}
+
+.faz-producer-dashboard .pdOverview-summaryItem b.is-neg{
+  color: rgba(190,24,93,1);
+}
+
+.faz-producer-dashboard .pdOverview-actions{
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.faz-producer-dashboard .pdOverview-actions .faz-btn.sm{
+  width: auto;
+}
+
+@media (max-width: 1200px){
+  .faz-producer-dashboard .pdOverview-kpiGrid{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .faz-producer-dashboard .pdOverview-card{
+    grid-column: span 12;
+  }
+}
+
+@media (max-width: 720px){
+  .faz-producer-dashboard .pdOverview-kpiGrid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .faz-producer-dashboard .pdOverview-miniGrid{
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .faz-producer-dashboard .pdOverview-chipList{
+    grid-template-columns: 1fr;
+  }
+
+  .faz-producer-dashboard .pdOverview-finGrid{
+    grid-template-columns: 1fr;
+  }
+
+  .faz-producer-dashboard .pdOverview-finItem--full{
+    grid-column: span 1;
+  }
+
+  .faz-producer-dashboard .pdOverview-summary{
+    grid-template-columns: 1fr;
+  }
+}

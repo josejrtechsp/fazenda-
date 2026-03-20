@@ -1,0 +1,1143 @@
+.cras-ui-v2 .faz-financeiro-v2{
+  padding: 8px 6px 22px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-topbar{
+  margin-top: 10px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-topbar .left{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-topbar .lbl{
+  font-size:12px;
+  font-weight:800;
+  color: rgba(51,65,85,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-topbar .muted{
+  font-size:12px;
+  color: rgba(100,116,139,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-topbar .right{
+  display:flex;
+  gap:8px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .btn-back,
+.cras-ui-v2 .faz-financeiro-v2 .btn-refresh{
+  border:1px solid rgba(226,232,240,.92);
+  border-radius:12px;
+  background:#fff;
+  padding:8px 12px;
+  font-size:12px;
+  font-weight:800;
+  color: rgba(15,23,42,1);
+  cursor:pointer;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .btn-primary,
+.cras-ui-v2 .faz-financeiro-v2 .btn-warn{
+  border-radius:12px;
+  padding:8px 12px;
+  font-size:12px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .btn-primary{
+  border:1px solid rgba(59,130,246,.18);
+  color:#fff;
+  background: linear-gradient(135deg, rgba(79,70,229,1), rgba(14,165,233,1));
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .btn-warn{
+  border:1px solid rgba(245,158,11,.28);
+  color: rgba(120,53,15,1);
+  background: rgba(255,247,237,.96);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .btn-back:hover,
+.cras-ui-v2 .faz-financeiro-v2 .btn-refresh:hover{
+  border-color: rgba(124,58,237,.35);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .btn-primary:hover{
+  filter: brightness(1.03);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .btn-warn:hover{
+  border-color: rgba(217,119,6,.45);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-alert{
+  margin-top:10px;
+  border:1px solid rgba(239,68,68,.26);
+  border-radius:12px;
+  background: rgba(254,242,242,.92);
+  color: rgba(127,29,29,1);
+  padding:10px 12px;
+  font-size:13px;
+  font-weight:700;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-alert.ok{
+  border-color: rgba(34,197,94,.26);
+  background: rgba(240,253,244,.92);
+  color: rgba(22,101,52,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-lock-note{
+  margin-top: 10px;
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: grid;
+  gap: 3px;
+  border:1px solid rgba(226,232,240,.92);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-lock-note b{
+  font-size: 13px;
+  color: rgba(15,23,42,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-lock-note span,
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-lock-note small{
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(71,85,105,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-lock-note.locked{
+  border-color: rgba(245,158,11,.30);
+  background: rgba(255,247,237,.95);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-lock-note.open{
+  border-color: rgba(59,130,246,.22);
+  background: rgba(239,246,255,.88);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-reportTitle{
+  margin-top: 12px;
+  margin-bottom: 10px;
+  font-size: 28px;
+  font-weight: 900;
+  color: rgba(15,23,42,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-hub{
+  margin-top: 10px;
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap:12px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-hub-card{
+  text-align:left;
+  border:1px solid rgba(226,232,240,.92);
+  border-radius:14px;
+  background:#fff;
+  padding:14px;
+  cursor:pointer;
+  box-shadow: 0 10px 26px rgba(15,23,42,.05);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-hub-card:hover{
+  border-color: rgba(16,185,129,.4);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-hub-card .t{
+  font-size:18px;
+  font-weight:900;
+  color: rgba(15,23,42,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-hub-card .d{
+  margin-top:6px;
+  font-size:14px;
+  line-height:1.4;
+  color: rgba(100,116,139,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-kpis{
+  display:grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap:8px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-kpis .kpi{
+  border:1px solid transparent;
+  border-radius:12px;
+  background:
+    linear-gradient(#fff,#fff) padding-box,
+    linear-gradient(135deg, rgba(124,58,237,.34), rgba(16,185,129,.34)) border-box;
+  padding:9px 10px;
+  min-height: 65px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:4px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-kpis .kpi span{
+  display:block;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color: rgba(100,116,139,1);
+  font-weight:900;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-kpis .kpi b{
+  margin-top:0;
+  display:block;
+  font-size:clamp(20px, 1.8vw, 30px);
+  line-height:1.04;
+  color: rgba(15,23,42,1);
+  white-space:nowrap;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-filters{
+  margin-top: 12px;
+  display:grid;
+  grid-template-columns: 1fr 260px;
+  gap:10px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-filters.faz-fin-filters-3{
+  grid-template-columns: 1fr 220px 220px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-filters.faz-fin-filters-4{
+  grid-template-columns: 1fr 180px 220px 220px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-tableWrap{
+  margin-top: 12px;
+  border:1px solid rgba(226,232,240,.92);
+  border-radius:14px;
+  overflow:hidden;
+  background:#fff;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-table{
+  width:100%;
+  border-collapse: collapse;
+  min-width: 980px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-table thead th{
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  color: rgba(100,116,139,1);
+  background: rgba(248,250,252,.95);
+  border-bottom:1px solid rgba(226,232,240,.92);
+  padding:10px 12px;
+  text-align:left;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-table tbody td{
+  padding:10px 12px;
+  border-bottom:1px solid rgba(241,245,249,.95);
+  font-size:14px;
+  color: rgba(15,23,42,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-table tbody tr:hover{
+  background: rgba(16,185,129,.06);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-table .faz-fin-table-actions-inline{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-table .faz-fin-table-actions-inline .btn-back{
+  padding:6px 8px;
+  font-size:11px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .chip{
+  display:inline-flex;
+  align-items:center;
+  border-radius:999px;
+  padding:4px 8px;
+  font-size:11px;
+  font-weight:900;
+  border:1px solid rgba(226,232,240,.92);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .chip.ok{
+  color: rgba(22,101,52,1);
+  background: rgba(34,197,94,.12);
+  border-color: rgba(34,197,94,.28);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .chip.warn{
+  color: rgba(124,45,18,1);
+  background: rgba(245,158,11,.14);
+  border-color: rgba(245,158,11,.28);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .chip.bad{
+  color: rgba(127,29,29,1);
+  background: rgba(239,68,68,.14);
+  border-color: rgba(239,68,68,.28);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .chip.rec{
+  color: rgba(30,64,175,1);
+  background: rgba(59,130,246,.14);
+  border-color: rgba(59,130,246,.28);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-approval-required{
+  margin-top: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(100,116,139,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-switches{
+  margin-top: 10px;
+  display:flex;
+  gap:8px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-pay-toolbar{
+  margin-top: 8px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-pay-toolbar .left,
+.cras-ui-v2 .faz-financeiro-v2 .faz-pay-toolbar .right{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-pay-toolbar .pay-prop{
+  min-width: 180px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .pay-chart-card{
+  margin-top: 14px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-pay-table-actions{
+  margin-top: 12px;
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-pay-table-actions .pay-status{
+  min-width: 170px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .flow-chart-wrap{
+  padding: 10px 10px 12px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .flow-svg{
+  width: 100%;
+  height: auto;
+  display:block;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .flow-xlab{
+  fill: rgba(100,116,139,1);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .flow-legend{
+  margin-top: 8px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:12px;
+  font-size:12px;
+  color: rgba(71,85,105,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .flow-legend span{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .flow-legend .swatch{
+  display:inline-block;
+  width:10px;
+  height:10px;
+  border-radius:3px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .flow-legend .swatch.inprev{ background: rgba(45,212,191,.75); }
+.cras-ui-v2 .faz-financeiro-v2 .flow-legend .swatch.outprev{ background: rgba(248,113,113,.45); }
+.cras-ui-v2 .faz-financeiro-v2 .flow-legend .swatch.inreal{ background: rgba(15,118,110,1); }
+.cras-ui-v2 .faz-financeiro-v2 .flow-legend .swatch.outreal{ background: rgba(220,38,38,1); }
+.cras-ui-v2 .faz-financeiro-v2 .flow-legend .swatch.saldo{ background: rgba(3,105,161,1); }
+.cras-ui-v2 .faz-financeiro-v2 .flow-legend .swatch.saldoprev{ background: rgba(245,158,11,1); }
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-table.faz-flow-matrix{
+  min-width: 1680px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-table.faz-flow-matrix thead th{
+  text-align:center;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-table.faz-flow-matrix td{
+  text-align:right;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-table.faz-flow-matrix .flow-row-title{
+  text-align:left;
+  font-weight:900;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-table.faz-flow-matrix .flow-pos{
+  color: rgba(22,101,52,1);
+  font-weight: 800;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-table.faz-flow-matrix .flow-neg{
+  color: rgba(185,28,28,1);
+  font-weight: 800;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-bars{
+  margin-top: 12px;
+  border:1px solid rgba(226,232,240,.92);
+  border-radius:14px;
+  background:#fff;
+  padding:14px 12px;
+  display:grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap:10px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-bars .bar-col{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-bars .bar-val{
+  font-size:12px;
+  font-weight:800;
+  color: rgba(15,23,42,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-bars .bar-track{
+  height:120px;
+  width:100%;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-bars .bar-fill{
+  width:36px;
+  border-radius:8px;
+  background: linear-gradient(180deg, rgba(239,68,68,1) 0%, rgba(220,38,38,1) 100%);
+  box-shadow: inset 0 -1px 0 rgba(0,0,0,.16);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-bars .bar-label{
+  font-size:12px;
+  color: rgba(71,85,105,1);
+  text-align:center;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  width:100%;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-note{
+  margin-top:12px;
+  border:1px dashed rgba(226,232,240,.9);
+  border-radius:12px;
+  padding:12px;
+  font-size:13px;
+  color: rgba(71,85,105,1);
+  background: rgba(248,250,252,.82);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-queueContext{
+  margin-top: 12px;
+  border: 1px solid rgba(203, 213, 225, 0.92);
+  border-radius: 16px;
+  padding: 14px;
+  background: linear-gradient(135deg, rgba(255,255,255,1), rgba(248,250,252,.96));
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(320px, 1fr);
+  gap: 14px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-queueContext .eyebrow{
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-weight: 900;
+  color: rgba(100,116,139,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-queueContext h4{
+  margin: 4px 0 0;
+  font-size: 22px;
+  line-height: 1.05;
+  font-weight: 900;
+  color: rgba(15,23,42,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-queueContext p{
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: rgba(51,65,85,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-queueContext .helper{
+  color: rgba(71,85,105,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-queueContext .metrics{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-queueContext .mini{
+  border: 1px solid rgba(226,232,240,.92);
+  border-radius: 12px;
+  background: rgba(255,255,255,.82);
+  padding: 10px 12px;
+  display: grid;
+  gap: 4px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-queueContext .mini span{
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: rgba(100,116,139,1);
+  font-weight: 900;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-queueContext .mini b{
+  font-size: 22px;
+  line-height: 1;
+  color: rgba(15,23,42,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-queueContext .mini small{
+  font-size: 12px;
+  color: rgba(71,85,105,1);
+  font-weight: 700;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-queueContext.tone-warn{
+  border-color: rgba(245,158,11,.28);
+  background: linear-gradient(135deg, rgba(255,251,235,.94), rgba(255,255,255,1));
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-queueContext.tone-bad{
+  border-color: rgba(239,68,68,.24);
+  background: linear-gradient(135deg, rgba(254,242,242,.95), rgba(255,255,255,1));
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-queueContext.tone-rec{
+  border-color: rgba(59,130,246,.24);
+  background: linear-gradient(135deg, rgba(239,246,255,.95), rgba(255,255,255,1));
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-queueContext.tone-ok{
+  border-color: rgba(34,197,94,.22);
+  background: linear-gradient(135deg, rgba(240,253,244,.95), rgba(255,255,255,1));
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-queueChips{
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-aging{
+  margin-top: 12px;
+  border: 1px solid rgba(226,232,240,.92);
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255,255,255,1), rgba(248,250,252,.96));
+  padding: 14px;
+  display: grid;
+  gap: 12px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-aging-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-aging-head .eyebrow{
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-weight: 900;
+  color: rgba(100,116,139,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-aging-head h4{
+  margin: 4px 0 0;
+  font-size: 20px;
+  line-height: 1.05;
+  font-weight: 900;
+  color: rgba(15,23,42,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-aging-head p{
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: rgba(51,65,85,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-aging-grid{
+  display:grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap:8px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-aging-card{
+  border: 1px solid rgba(226,232,240,.92);
+  border-radius: 12px;
+  background: rgba(255,255,255,.88);
+  padding: 10px 12px;
+  display:grid;
+  gap:4px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-aging-card span{
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: rgba(100,116,139,1);
+  font-weight: 900;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-aging-card b{
+  font-size: 22px;
+  line-height: 1;
+  color: rgba(15,23,42,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-aging-card small{
+  font-size: 12px;
+  color: rgba(71,85,105,1);
+  font-weight: 700;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-aging-card.tone-bad{
+  border-color: rgba(239,68,68,.28);
+  background: rgba(254,242,242,.92);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-aging-card.tone-warn{
+  border-color: rgba(245,158,11,.28);
+  background: rgba(255,251,235,.92);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-aging-card.tone-rec{
+  border-color: rgba(59,130,246,.24);
+  background: rgba(239,246,255,.92);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-aging-card.tone-ok{
+  border-color: rgba(34,197,94,.22);
+  background: rgba(240,253,244,.92);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-grid{
+  margin-top: 12px;
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap:12px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-card{
+  margin-top: 12px;
+  border: 1px solid rgba(226,232,240,.92);
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255,255,255,1), rgba(248,250,252,.96));
+  padding: 14px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-card .eyebrow{
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-weight: 900;
+  color: rgba(100,116,139,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-card h4{
+  margin: 4px 0 0;
+  font-size: 20px;
+  line-height: 1.05;
+  font-weight: 900;
+  color: rgba(15,23,42,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-card p{
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: rgba(51,65,85,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-diff-grid{
+  margin-top: 12px;
+  display:grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap:10px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-diff-card{
+  border: 1px solid rgba(226,232,240,.92);
+  border-radius: 12px;
+  background: rgba(255,255,255,.9);
+  padding: 12px;
+  display:grid;
+  gap:4px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-diff-card span{
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: rgba(100,116,139,1);
+  font-weight: 900;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-diff-card b{
+  font-size: 24px;
+  line-height: 1.05;
+  color: rgba(15,23,42,1);
+  font-weight: 900;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-diff-card small{
+  font-size: 12px;
+  color: rgba(71,85,105,1);
+  font-weight: 700;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-diff-card em{
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-diff-card.tone-neutral{
+  border-color: rgba(226,232,240,.92);
+  background: rgba(248,250,252,.96);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-diff-card.tone-neutral em{
+  color: rgba(100,116,139,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-diff-card.tone-ok{
+  border-color: rgba(34,197,94,.22);
+  background: rgba(240,253,244,.92);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-diff-card.tone-ok em{
+  color: rgba(22,101,52,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-diff-card.tone-warn{
+  border-color: rgba(245,158,11,.24);
+  background: rgba(255,251,235,.96);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-diff-card.tone-warn em{
+  color: rgba(180,83,9,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-diff-card.tone-rec{
+  border-color: rgba(59,130,246,.24);
+  background: rgba(239,246,255,.92);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-diff-card.tone-rec em{
+  color: rgba(29,78,216,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-lines{
+  margin-top: 12px;
+  display:grid;
+  gap:8px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-lines > div{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px 12px;
+  border:1px solid rgba(226,232,240,.92);
+  border-radius:12px;
+  background: rgba(255,255,255,.88);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-lines span{
+  font-size: 12px;
+  color: rgba(71,85,105,1);
+  font-weight: 700;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-lines b{
+  font-size: 18px;
+  color: rgba(15,23,42,1);
+  font-weight: 900;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-checklist{
+  margin-top: 12px;
+  display:grid;
+  gap:8px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-section{
+  display:grid;
+  gap:8px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-section-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:2px 2px 0;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-section-head b{
+  font-size: 13px;
+  color: rgba(15,23,42,1);
+  font-weight: 900;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-check{
+  display:grid;
+  grid-template-columns: auto 1fr;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border:1px solid rgba(226,232,240,.92);
+  border-radius:12px;
+  background: rgba(255,255,255,.88);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 button.faz-fin-close-check{
+  width:100%;
+  text-align:left;
+  font: inherit;
+  color: inherit;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-check.actionable{
+  cursor:pointer;
+  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-check.actionable:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(15,23,42,.08);
+  border-color: rgba(59,130,246,.22);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-check.actionable:focus-visible{
+  outline: 2px solid rgba(59,130,246,.35);
+  outline-offset: 2px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-check.ok{
+  border-color: rgba(34,197,94,.22);
+  background: rgba(240,253,244,.92);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-check.bad{
+  border-color: rgba(239,68,68,.22);
+  background: rgba(254,242,242,.92);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-check.warn{
+  border-color: rgba(245,158,11,.24);
+  background: rgba(255,251,235,.96);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-check .body{
+  display:grid;
+  gap:4px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-check .body b{
+  font-size: 14px;
+  color: rgba(15,23,42,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-check .body small{
+  font-size: 12px;
+  color: rgba(71,85,105,1);
+  font-weight: 700;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-check .body .helper-link{
+  color: rgba(37,99,235,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-empty{
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(71,85,105,1);
+  font-weight: 700;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-history{
+  margin-top: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-history-item{
+  display:grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap:12px;
+  align-items:center;
+  padding:10px 12px;
+  border:1px solid rgba(226,232,240,.92);
+  border-radius:12px;
+  background: rgba(248,250,252,.92);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-history-item .main{
+  display:grid;
+  gap:4px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-history-item .main b{
+  font-size: 13px;
+  color: rgba(15,23,42,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-history-item .main small{
+  font-size: 12px;
+  color: rgba(71,85,105,1);
+  font-weight: 700;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-history-item .side span{
+  font-size: 13px;
+  font-weight: 900;
+  color: rgba(15,23,42,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-launch-grid{
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(320px, 1fr);
+  gap: 12px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-launch-card{
+  padding: 12px;
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-width: 0;
+}
+
+/* No card de lançamento, 4 campos lado a lado estouravam em telas médias.
+   Aqui forçamos 2 colunas para manter legibilidade e evitar corte dos inputs. */
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-launch-card .faz-fin-filters.faz-fin-filters-4{
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-launch-card .faz-fin-filters > *{
+  min-width: 0;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-launch-card .faz-field{
+  display:grid;
+  gap:6px;
+  min-width:0;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-launch-card .faz-check-inline{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:12px;
+  font-weight:700;
+  color: rgba(51,65,85,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-launch-card .faz-field-label{
+  font-size:11px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  color: rgba(100,116,139,1);
+  padding-left:2px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-launch-card .faz-field .faz-input{
+  width:100%;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-launch-card h4{
+  margin: 0;
+  font-size: 20px;
+  font-weight: 900;
+  color: rgba(15,23,42,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-recon-card{
+  margin-top: 8px;
+  display: grid;
+  gap: 10px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-recon-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-recon-head h4{
+  margin:0;
+  font-size:18px;
+  font-weight:900;
+  color: rgba(15,23,42,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-recon-head p{
+  margin:4px 0 0;
+  font-size:13px;
+  color: rgba(71,85,105,1);
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-recon-textarea{
+  min-height: 110px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.35;
+  resize: vertical;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-recon-select{
+  min-width: 260px;
+  max-width: 420px;
+  font-size: 12px;
+  padding: 6px 8px;
+}
+
+@media (max-width: 1080px){
+  .cras-ui-v2 .faz-financeiro-v2 .faz-fin-hub{
+    grid-template-columns: 1fr 1fr;
+  }
+  .cras-ui-v2 .faz-financeiro-v2 .faz-fin-kpis{
+    grid-template-columns: 1fr 1fr;
+  }
+  .cras-ui-v2 .faz-financeiro-v2 .faz-fin-bars{
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .cras-ui-v2 .faz-financeiro-v2 .faz-fin-launch-grid{
+    grid-template-columns: 1fr;
+  }
+  .cras-ui-v2 .faz-financeiro-v2 .faz-fin-queueContext{
+    grid-template-columns: 1fr;
+  }
+  .cras-ui-v2 .faz-financeiro-v2 .faz-fin-aging-grid{
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-grid{
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1360px){
+  .cras-ui-v2 .faz-financeiro-v2 .faz-fin-launch-grid{
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px){
+  .cras-ui-v2 .faz-financeiro-v2 .faz-fin-reportTitle{
+    font-size: 22px;
+  }
+  .cras-ui-v2 .faz-financeiro-v2 .faz-fin-hub{
+    grid-template-columns: 1fr;
+  }
+  .cras-ui-v2 .faz-financeiro-v2 .faz-fin-filters{
+    grid-template-columns: 1fr;
+  }
+  .cras-ui-v2 .faz-financeiro-v2 .faz-fin-filters.faz-fin-filters-3{
+    grid-template-columns: 1fr;
+  }
+  .cras-ui-v2 .faz-financeiro-v2 .faz-fin-filters.faz-fin-filters-4{
+    grid-template-columns: 1fr;
+  }
+  .cras-ui-v2 .faz-financeiro-v2 .faz-fin-kpis{
+    grid-template-columns: 1fr;
+  }
+  .cras-ui-v2 .faz-financeiro-v2 .faz-fin-bars{
+    grid-template-columns: 1fr 1fr;
+  }
+  .cras-ui-v2 .faz-financeiro-v2 .faz-fin-queueContext .metrics{
+    grid-template-columns: 1fr;
+  }
+  .cras-ui-v2 .faz-financeiro-v2 .faz-fin-aging-grid{
+    grid-template-columns: 1fr 1fr;
+  }
+  .cras-ui-v2 .faz-financeiro-v2 .faz-fin-close-check{
+    grid-template-columns: 1fr;
+  }
+  .cras-ui-v2 .faz-financeiro-v2 .faz-fin-launch-card .faz-fin-filters.faz-fin-filters-4{
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px){
+  .cras-ui-v2 .faz-financeiro-v2 .faz-fin-aging-grid{
+    grid-template-columns: 1fr;
+  }
+}

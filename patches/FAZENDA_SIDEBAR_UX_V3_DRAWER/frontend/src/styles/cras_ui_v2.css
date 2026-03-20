@@ -1,0 +1,1346 @@
+/* ============================================================
+   CRAS UI — MODELO V2 (layout limpo com sidebar e header leve)
+   Escopo: somente quando o container tem .cras-ui-v2
+   ============================================================ */
+
+
+/* tokens (Fazenda / CRAS v2) */
+.cras-ui-v2{
+  --nav-accent: rgba(99,102,241,1);
+  --nav-accent-soft: rgba(99,102,241,.12);
+  --nav-border: rgba(226,232,240,.92);
+  --nav-card: rgba(255,255,255,.92);
+  --nav-shadow: 0 18px 60px rgba(15,23,42,.06);
+  --nav-shadow-strong: 0 22px 70px rgba(15,23,42,.10);
+  --nav-active-bg: rgba(99,102,241,.14);
+  --nav-hover-bg: rgba(99,102,241,.08);
+  --nav-active-indicator: linear-gradient(180deg, rgba(168,85,247,1) 0%, rgba(99,102,241,1) 55%, rgba(34,197,94,1) 100%);
+}
+
+.cras-ui-v2 .app-tabs{
+  display: none !important;
+}
+
+/* app-main no padrão POPRUA é flex-wrap; no CRAS v2, vira bloco */
+.cras-ui-v2 .app-main{
+  display: block !important;
+  padding: 18px 20px 44px !important;
+}
+
+/* evita qualquer sticky antigo do "context header" que sobrepunha */
+.cras-ui-v2 .cras-top-stack,
+.cras-ui-v2 .cras-context-wrap{
+  position: static !important;
+  top: auto !important;
+  z-index: auto !important;
+}
+
+.cras-ui-v2 .cras-shell-v2{
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 14px 28px;
+  display: grid;
+  grid-template-columns: 296px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+@media (max-width: 980px){
+  .cras-ui-v2 .cras-shell-v2{
+    grid-template-columns: 78px minmax(0, 1fr);
+    gap: 14px;
+  }
+}
+
+/* Sidebar */
+.cras-ui-v2 .cras-sidebar-v2{
+  position: sticky;
+  top: 14px;
+  z-index: 1;
+
+  background: var(--nav-card);
+  border: 1px solid var(--nav-border);
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: var(--nav-shadow);
+  backdrop-filter: blur(10px);
+
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 28px);
+  overflow: hidden;
+}
+
+.cras-ui-v2 .cras-sidebar-v2-head{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.cras-ui-v2 .cras-sidebar-v2-title{
+  min-width: 0;
+}
+.cras-ui-v2 .cras-sidebar-v2-muni{
+  font-weight: 900;
+  font-size: 13px;
+  color: rgba(15,23,42,1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cras-ui-v2 .cras-sidebar-v2-sub{
+  margin-top: 3px;
+  font-size: 12px;
+  color: rgba(100,116,139,1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cras-ui-v2 .cras-sidebar-v2-toggle{
+  border: 1px solid var(--nav-border);
+  background: rgba(255,255,255,.95);
+  border-radius: 12px;
+  padding: 8px 10px;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(15,23,42,.06);
+  font-weight: 900;
+}
+.cras-ui-v2 .cras-sidebar-v2-toggle:hover{
+  border-color: rgba(199,210,254,.95);
+  transform: translateY(-1px);
+}
+
+.cras-ui-v2 .cras-sidebar-v2-search{
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--nav-border);
+  background: rgba(255,255,255,.98);
+  outline: none;
+}
+.cras-ui-v2 .cras-sidebar-v2-search:focus{
+  border-color: rgba(99,102,241,.45);
+  box-shadow: 0 0 0 4px rgba(99,102,241,.12);
+}
+
+.cras-ui-v2 .cras-sidebar-v2-nav{
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  overflow: auto;
+  padding-right: 6px;
+}
+
+/* scroll bonito (webkit) */
+.cras-ui-v2 .cras-sidebar-v2-nav::-webkit-scrollbar{ width: 10px; }
+.cras-ui-v2 .cras-sidebar-v2-nav::-webkit-scrollbar-thumb{ background: rgba(148,163,184,.55); border-radius: 999px; border: 3px solid rgba(255,255,255,.75); }
+.cras-ui-v2 .cras-sidebar-v2-nav::-webkit-scrollbar-track{ background: transparent; }
+
+.cras-ui-v2 .cras-sidebar-v2-group-title{
+  margin: 6px 8px 6px;
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(100,116,139,1);
+}
+
+.cras-ui-v2 .cras-sidebar-v2-item{
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  font-weight: 800;
+  color: rgba(15,23,42,1);
+}
+.cras-ui-v2 .cras-sidebar-v2-item:hover{
+  background: var(--nav-hover-bg);
+  border-color: rgba(99,102,241,.18);
+}
+.cras-ui-v2 .cras-sidebar-v2-item.is-active{
+  background: var(--nav-active-bg);
+  border-color: rgba(99,102,241,.25);
+}
+
+.cras-ui-v2 .cras-sidebar-v2-item.is-active::before{
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--nav-active-indicator);
+}
+
+.cras-ui-v2 .cras-sidebar-v2-item:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(99,102,241,.16);
+  border-color: rgba(99,102,241,.28);
+}
+
+.cras-ui-v2 .cras-sidebar-v2-icon{
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: .92;
+}
+
+.cras-ui-v2 .cras-sidebar-v2-text{
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-start;
+}
+
+.cras-ui-v2 .cras-sidebar-v2-label{
+  width: 100%;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cras-ui-v2 .cras-sidebar-v2-subline{
+  margin-top: 1px;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(100,116,139,1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cras-ui-v2 .cras-sidebar-v2-badge{
+  min-width: 20px;
+  height: 20px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: rgba(99,102,241,.18);
+  border: 1px solid rgba(99,102,241,.18);
+  color: #3730a3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.cras-ui-v2 .cras-sidebar-v2-foot{
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(226,232,240,.92);
+}
+.cras-ui-v2 .cras-sidebar-v2-foot-strong{
+  font-weight: 900;
+  font-size: 12px;
+  color: rgba(15,23,42,1);
+}
+.cras-ui-v2 .cras-sidebar-v2-foot-soft{
+  margin-top: 4px;
+  font-size: 12px;
+  color: rgba(100,116,139,1);
+}
+
+/* collapsed */
+.cras-ui-v2 .cras-sidebar-v2.is-collapsed{
+  padding: 10px;
+}
+.cras-ui-v2 .cras-sidebar-v2.is-collapsed .cras-sidebar-v2-muni,
+.cras-ui-v2 .cras-sidebar-v2.is-collapsed .cras-sidebar-v2-sub,
+.cras-ui-v2 .cras-sidebar-v2.is-collapsed .cras-sidebar-v2-search,
+.cras-ui-v2 .cras-sidebar-v2.is-collapsed .cras-sidebar-v2-group-title,
+.cras-ui-v2 .cras-sidebar-v2.is-collapsed .cras-sidebar-v2-label,
+.cras-ui-v2 .cras-sidebar-v2.is-collapsed .cras-sidebar-v2-foot{
+  display: none !important;
+}
+.cras-ui-v2 .cras-sidebar-v2.is-collapsed .cras-sidebar-v2-head{
+  justify-content: center;
+}
+
+/* Stage */
+.cras-ui-v2 .cras-stage-v2{
+  min-width: 0;
+}
+
+.cras-ui-v2 .cras-stage-body{
+  margin-top: 14px;
+}
+
+/* Page header (substitui o bloco pesado) */
+.cras-ui-v2 .cras-pageheader-v2{
+  width: 100%;
+  background: rgba(255,255,255,.92);
+  border: 1px solid var(--nav-border);
+  border-radius: 18px;
+  padding: 14px 16px;
+  box-shadow: var(--nav-shadow);
+  backdrop-filter: blur(10px);
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.cras-ui-v2 .cras-pageheader-v2-left{
+  min-width: 0;
+}
+
+.cras-ui-v2 .cras-pageheader-v2-eyebrow{
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(99,102,241,.95);
+  font-weight: 900;
+}
+
+.cras-ui-v2 .cras-pageheader-v2-title{
+  margin-top: 2px;
+  font-size: 22px;
+  line-height: 1.12;
+  font-weight: 900;
+  color: rgba(15,23,42,1);
+}
+
+.cras-ui-v2 .cras-pageheader-v2-subtitle{
+  margin-top: 6px;
+  font-size: 13px;
+  color: rgba(100,116,139,1);
+}
+
+.cras-ui-v2 .cras-pageheader-v2-chips{
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cras-ui-v2 .cras-chip{
+  border-radius: 999px;
+  border: 1px solid rgba(199,210,254,.9);
+  background: rgba(99,102,241,.08);
+  padding: 7px 10px;
+  font-size: 12px;
+  font-weight: 800;
+  color: rgba(55,48,163,1);
+}
+
+.cras-ui-v2 .cras-pageheader-v2-actions{
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.cras-ui-v2 .cras-action-btn{
+  border-radius: 999px;
+  padding: 9px 14px;
+  border: 1px solid var(--nav-border);
+  background: rgba(255,255,255,.95);
+  cursor: pointer;
+  font-weight: 900;
+}
+.cras-ui-v2 .cras-action-btn:hover{
+  border-color: rgba(199,210,254,.95);
+  transform: translateY(-1px);
+}
+
+.cras-ui-v2 .cras-action-btn.primary{
+  background: rgba(99,102,241,.95);
+  border-color: rgba(99,102,241,.95);
+  color: white;
+}
+.cras-ui-v2 .cras-action-btn.ghost{
+  background: rgba(255,255,255,.92);
+  color: rgba(15,23,42,1);
+}
+
+/* Ajustes leves de cards dentro do CRAS */
+.cras-ui-v2 .card{
+  border-radius: 18px;
+  box-shadow: 0 16px 44px rgba(15,23,42,.05);
+}
+
+/* ============================================================
+   CRAS UI V2 — Ajustes finos (TUNING_V1)
+   Objetivo: hierarquia mais clara, melhor distribuição e
+   sidebar mais "produto" (sem quebrar telas existentes).
+   ============================================================ */
+
+.cras-ui-v2 .app-main{
+  padding: 14px 18px 44px !important;
+}
+
+/* Mais largura útil em telas grandes (sem ficar “espalhado”) */
+.cras-ui-v2 .cras-shell-v2{
+  max-width: 1520px !important;
+  gap: 20px !important;
+  grid-template-columns: 304px minmax(0, 1fr) !important;
+}
+
+@media (max-width: 1200px){
+  .cras-ui-v2 .cras-shell-v2{
+    max-width: 1380px !important;
+  }
+}
+
+/* Sidebar: mais limpa e “profissional” */
+.cras-ui-v2 .cras-sidebar-v2{
+  padding: 12px !important;
+  max-height: calc(100vh - 28px);
+  overflow: auto;
+}
+
+.cras-ui-v2 .cras-sidebar-v2::-webkit-scrollbar{
+  width: 10px;
+}
+.cras-ui-v2 .cras-sidebar-v2::-webkit-scrollbar-thumb{
+  background: rgba(148,163,184,.35);
+  border-radius: 999px;
+  border: 2px solid rgba(255,255,255,.85);
+}
+.cras-ui-v2 .cras-sidebar-v2::-webkit-scrollbar-track{
+  background: transparent;
+}
+
+.cras-ui-v2 .cras-sidebar-v2-head{
+  padding: 6px 6px 10px !important;
+  margin-bottom: 8px !important;
+  border-bottom: 1px solid rgba(226,232,240,.75);
+}
+
+.cras-ui-v2 .cras-sidebar-v2-item{
+  position: relative;
+  border-radius: 12px !important;
+  padding: 10px 10px !important;
+}
+
+.cras-ui-v2 .cras-sidebar-v2-item.is-active{
+  background: rgba(99,102,241,.12) !important;
+  border-color: rgba(99,102,241,.18) !important;
+}
+
+.cras-ui-v2 .cras-sidebar-v2-item.is-active::before{
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 999px;
+  background: rgba(99,102,241,.9);
+}
+
+/* Group titles mais claros */
+.cras-ui-v2 .cras-sidebar-v2-group-title{
+  margin: 10px 8px 6px !important;
+  font-size: 11px !important;
+  letter-spacing: .12em !important;
+  opacity: .9;
+}
+
+/* Cabeçalho da seção: mais compacto e com melhor hierarquia */
+.cras-ui-v2 .cras-pageheader-v2{
+  padding: 12px 14px !important;
+  border-radius: 18px !important;
+}
+
+.cras-ui-v2 .cras-pageheader-v2-eyebrow{
+  font-size: 11px !important;
+  letter-spacing: .14em !important;
+}
+
+.cras-ui-v2 .cras-pageheader-v2-title{
+  font-size: 20px !important;
+  line-height: 1.12 !important;
+}
+
+.cras-ui-v2 .cras-pageheader-v2-subtitle{
+  font-size: 13px !important;
+  color: rgba(71,85,105,1) !important;
+}
+
+.cras-ui-v2 .cras-pageheader-v2-chips{
+  margin-top: 10px !important;
+  gap: 8px !important;
+}
+
+.cras-ui-v2 .cras-chip{
+  padding: 7px 10px !important;
+  font-size: 12px !important;
+  border-radius: 999px !important;
+}
+
+.cras-ui-v2 .cras-action-btn{
+  padding: 8px 12px !important;
+  border-radius: 999px !important;
+}
+
+/* Stage: aproxima o conteúdo do header e reduz “vazio” */
+.cras-ui-v2 .cras-stage-body{
+  margin-top: 12px !important;
+}
+
+/* Cards genéricos dentro do CRAS v2 (sem interferir em outros módulos) */
+.cras-ui-v2 .card{
+  border-radius: 16px !important;
+}
+
+@media (max-width: 980px){
+  .cras-ui-v2 .app-main{
+    padding: 12px 12px 32px !important;
+  }
+  .cras-ui-v2 .cras-shell-v2{
+    grid-template-columns: 78px minmax(0, 1fr) !important;
+    gap: 14px !important;
+  }
+  .cras-ui-v2 .cras-sidebar-v2{
+    padding: 10px !important;
+  }
+}
+
+/* ============================================================
+   CRAS UI V2 — PREMIUM ALIGNMENT PACK (V1)
+   Objetivo: encaixe milimétrico (larguras, gutters, cards, sidebar)
+   Escopo: somente .cras-ui-v2
+   ============================================================ */
+
+/* 0) Tokens */
+.cras-ui-v2{
+  --cras-maxw: 1320px;
+  --cras-gutter: 16px;
+  --cras-gap: 18px;
+  --cras-radius: 18px;
+  --cras-radius-sm: 12px;
+  --cras-border: rgba(226,232,240,.92);
+  --cras-surface: rgba(255,255,255,.92);
+  --cras-shadow: 0 18px 60px rgba(15,23,42,.06);
+  --cras-shadow-soft: 0 12px 42px rgba(15,23,42,.05);
+  --cras-ink: rgba(15,23,42,1);
+  --cras-muted: rgba(100,116,139,1);
+}
+
+/* 1) Topo (SuasTopHeader): alinhar exatamente com o grid abaixo */
+.cras-ui-v2 .app-header{
+  padding: 14px 0 6px !important;
+}
+.cras-ui-v2 .app-header-inner{
+  max-width: var(--cras-maxw) !important;
+  margin: 0 auto !important;
+  padding-left: var(--cras-gutter) !important;
+  padding-right: var(--cras-gutter) !important;
+}
+
+/* 2) Área principal: mesmo max-width e mesmo gutter do topo */
+.cras-ui-v2 .app-main{
+  padding: 14px 0 44px !important;
+}
+.cras-ui-v2 .cras-shell-v2{
+  max-width: var(--cras-maxw) !important;
+  margin: 0 auto !important;
+  padding: 0 var(--cras-gutter) !important;
+  gap: var(--cras-gap) !important;
+  grid-template-columns: 300px minmax(0,1fr) !important;
+  align-items: start !important;
+}
+
+/* 3) Sidebar: scroll interno e separadores suaves */
+.cras-ui-v2 .cras-sidebar-v2{
+  border-radius: var(--cras-radius) !important;
+  box-shadow: var(--cras-shadow-soft) !important;
+  border-color: var(--cras-border) !important;
+}
+.cras-ui-v2 .cras-sidebar-v2-nav{
+  gap: 8px !important;
+  max-height: calc(100vh - 240px);
+  overflow: auto;
+  padding-right: 2px;
+}
+.cras-ui-v2 .cras-sidebar-v2-nav::-webkit-scrollbar{ width: 10px; }
+.cras-ui-v2 .cras-sidebar-v2-nav::-webkit-scrollbar-thumb{
+  background: rgba(148,163,184,.35);
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+.cras-ui-v2 .cras-sidebar-v2-group-title{
+  padding-top: 10px;
+  margin-top: 8px;
+  border-top: 1px solid rgba(226,232,240,.75);
+}
+
+/* Item ativo “premium” com barra lateral */
+.cras-ui-v2 .cras-sidebar-v2-item{
+  position: relative;
+  border-radius: var(--cras-radius-sm) !important;
+}
+.cras-ui-v2 .cras-sidebar-v2-item.is-active{
+  box-shadow: 0 10px 24px rgba(99,102,241,.10);
+}
+.cras-ui-v2 .cras-sidebar-v2-item.is-active::before{
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 999px;
+  background: rgba(99,102,241,.75);
+}
+
+/* 4) Coluna principal: gaps consistentes */
+.cras-ui-v2 .cras-stage-v2{
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.cras-ui-v2 .cras-stage-body{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* 5) Cards: padronizar “superfície” para tudo que usa .card */
+.cras-ui-v2 .card{
+  border-radius: var(--cras-radius) !important;
+  border: 1px solid var(--cras-border) !important;
+  background: var(--cras-surface) !important;
+  box-shadow: var(--cras-shadow-soft) !important;
+}
+
+/* 6) PageHeader: mesmo raio/sombra dos cards, sem “desencaixe” */
+.cras-ui-v2 .cras-pageheader-v2{
+  border-radius: var(--cras-radius) !important;
+  border-color: var(--cras-border) !important;
+  box-shadow: var(--cras-shadow-soft) !important;
+}
+
+/* 7) Botões/segmented: micro-ajuste para ficar mais “encaixado” */
+.cras-ui-v2 .cras-pageheader-v2-actions{
+  gap: 10px !important;
+}
+.cras-ui-v2 .cras-pageheader-v2-chip{
+  border-radius: 999px !important;
+  padding: 7px 12px !important;
+}
+
+/* 8) Responsivo: mantém proporção e evita “quebrar” */
+@media (max-width: 980px){
+  .cras-ui-v2 .cras-shell-v2{
+    grid-template-columns: 78px minmax(0,1fr) !important;
+    padding: 0 12px !important;
+    gap: 14px !important;
+  }
+  .cras-ui-v2 .app-header-inner{
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+}
+
+/* ============================================================
+   CRAS UI V2 — SIDEBAR & HEADER TUNING (V2)
+   Objetivo: sidebar mais estreita e “dialogando” com o sistema.
+   Escopo: somente .cras-ui-v2
+   ============================================================ */
+
+.cras-ui-v2{
+  --cras-sidebar-w: 252px;
+  --cras-sidebar-w-collapsed: 72px;
+}
+
+/* Grid mais “milimétrico” */
+.cras-ui-v2 .cras-shell-v2{
+  grid-template-columns: var(--cras-sidebar-w) minmax(0,1fr) !important;
+}
+
+/* Sidebar: menos “peso”, mais clean */
+.cras-ui-v2 .cras-sidebar-v2{
+  background: rgba(255,255,255,.86) !important;
+  border-color: rgba(226,232,240,.85) !important;
+  box-shadow: 0 14px 44px rgba(15,23,42,.06) !important;
+}
+
+/* Header da sidebar e busca: mais compactos */
+.cras-ui-v2 .cras-sidebar-v2-header{
+  padding-bottom: 10px !important;
+}
+.cras-ui-v2 .cras-sidebar-v2-search{
+  border-radius: 14px !important;
+  padding: 9px 10px !important;
+}
+
+/* Itens: mais “encaixados” e menos altos */
+.cras-ui-v2 .cras-sidebar-v2-item{
+  padding: 9px 10px !important;
+  border-radius: 14px !important;
+}
+.cras-ui-v2 .cras-sidebar-v2-item.is-active{
+  background: rgba(99,102,241,.10) !important;
+  border-color: rgba(99,102,241,.18) !important;
+}
+
+/* Subtítulos de grupo: discreto */
+.cras-ui-v2 .cras-sidebar-v2-group-title{
+  color: rgba(100,116,139,.92) !important;
+}
+
+/* PageHeader: compactar um pouco e alinhar com sidebar */
+.cras-ui-v2 .cras-pageheader-v2{
+  padding: 14px 16px !important;
+}
+.cras-ui-v2 .cras-pageheader-v2-title{
+  letter-spacing: -0.01em;
+}
+
+/* Responsivo: colapsa com largura correta */
+@media (max-width: 980px){
+  .cras-ui-v2 .cras-shell-v2{
+    grid-template-columns: var(--cras-sidebar-w-collapsed) minmax(0,1fr) !important;
+  }
+}
+
+/* ============================================================
+   CRAS UI V2 — FIX TOP HEADER STYLING (V1)
+   Motivo: CrasTopHeader estava sem CSS -> aparecia "texto cru".
+   ============================================================ */
+
+.cras-ui-v2 .cras-top-v2{
+  padding: 12px 0 10px;
+}
+
+.cras-ui-v2 .cras-top-v2-inner{
+  max-width: var(--cras-maxw, 1320px);
+  margin: 0 auto;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+
+  background: rgba(255,255,255,.86);
+  border: 1px solid rgba(226,232,240,.85);
+  border-radius: 18px;
+  box-shadow: var(--nav-shadow);
+  backdrop-filter: blur(10px);
+}
+
+.cras-ui-v2 .cras-top-v2-left{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.cras-ui-v2 .cras-top-v2-brand{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+  font-weight: 900;
+  letter-spacing: .04em;
+  color: rgba(15,23,42,1);
+}
+
+.cras-ui-v2 .cras-top-v2-mark{
+  width: 22px;
+  height: 22px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius: 10px;
+  background: rgba(99,102,241,.14);
+  border: 1px solid rgba(99,102,241,.22);
+  color: rgba(55,48,163,1);
+  font-size: 14px;
+}
+
+.cras-ui-v2 .cras-top-v2-brandtext{
+  font-size: 12px;
+}
+
+.cras-ui-v2 .cras-top-v2-divider{
+  width: 1px;
+  height: 18px;
+  background: rgba(226,232,240,.9);
+}
+
+.cras-ui-v2 .cras-top-v2-module{
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(100,116,139,1);
+  white-space: nowrap;
+}
+
+.cras-ui-v2 .cras-top-v2-center{
+  position: relative;
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.cras-ui-v2 .cras-top-v2-context{
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(226,232,240,.9);
+  background: rgba(248,250,252,.75);
+  color: rgba(15,23,42,1);
+  box-shadow: 0 10px 30px rgba(15,23,42,.05);
+  max-width: 420px;
+}
+
+.cras-ui-v2 .cras-top-v2-context-strong{
+  font-weight: 900;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cras-ui-v2 .cras-top-v2-context-dot{
+  opacity: .55;
+}
+
+.cras-ui-v2 .cras-top-v2-context-soft{
+  font-weight: 700;
+  color: rgba(100,116,139,1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cras-ui-v2 .cras-top-v2-switchbtn,
+.cras-ui-v2 .cras-top-v2-ghost,
+.cras-ui-v2 .cras-top-v2-primary{
+  border-radius: 12px;
+  padding: 8px 10px;
+  font-weight: 800;
+  cursor: pointer;
+  border: 1px solid rgba(226,232,240,.9);
+  background: rgba(255,255,255,.9);
+}
+
+.cras-ui-v2 .cras-top-v2-switchbtn:hover,
+.cras-ui-v2 .cras-top-v2-ghost:hover{
+  border-color: rgba(199,210,254,.95);
+  transform: translateY(-1px);
+}
+
+.cras-ui-v2 .cras-top-v2-primary{
+  border-color: rgba(99,102,241,.28);
+  background: rgba(99,102,241,.12);
+  color: rgba(55,48,163,1);
+}
+.cras-ui-v2 .cras-top-v2-primary:hover{
+  background: rgba(99,102,241,.16);
+}
+
+.cras-ui-v2 .cras-top-v2-right{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.cras-ui-v2 .cras-top-v2-user{
+  font-weight: 800;
+  color: rgba(15,23,42,1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+
+/* Popover de troca */
+.cras-ui-v2 .cras-top-v2-switchpop{
+  position: absolute;
+  top: 46px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(380px, 92vw);
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid var(--nav-border);
+  background: rgba(255,255,255,.96);
+  box-shadow: 0 24px 80px rgba(15,23,42,.12);
+  z-index: 120;
+}
+
+.cras-ui-v2 .cras-top-v2-field{
+  display:flex;
+  flex-direction:column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.cras-ui-v2 .cras-top-v2-field label{
+  font-size: 12px;
+  font-weight: 800;
+  color: rgba(100,116,139,1);
+}
+
+.cras-ui-v2 .cras-top-v2-field select{
+  border-radius: 12px;
+  border: 1px solid var(--nav-border);
+  padding: 10px 10px;
+  background: rgba(248,250,252,.85);
+}
+
+.cras-ui-v2 .cras-top-v2-switchactions{
+  display:flex;
+  justify-content:flex-end;
+  gap: 10px;
+}
+
+/* Responsivo: simplifica */
+@media (max-width: 840px){
+  .cras-ui-v2 .cras-top-v2-module,
+  .cras-ui-v2 .cras-top-v2-divider{
+    display: none;
+  }
+  .cras-ui-v2 .cras-top-v2-user{
+    display: none;
+  }
+  .cras-ui-v2 .cras-top-v2-context{
+    max-width: 260px;
+  }
+}
+
+/* ============================================================
+   CRAS UI V2 — MILIMETRIC ALIGNMENT OVERRIDES (V1)
+   Objetivo: topo e grid “encaixados” (mesmos eixos visuais).
+   ============================================================ */
+
+.cras-ui-v2{
+  --cras-sidebar-w: 232px;
+  --cras-sidebar-w-collapsed: 72px;
+  --cras-gap: 16px;
+  --cras-gutter: 16px;
+}
+
+/* Grid principal: largura da sidebar + gap consistente */
+.cras-ui-v2 .cras-shell-v2{
+  grid-template-columns: var(--cras-sidebar-w) minmax(0,1fr) !important;
+  gap: var(--cras-gap) !important;
+  padding-left: var(--cras-gutter) !important;
+  padding-right: var(--cras-gutter) !important;
+}
+
+/* Top header: usa as MESMAS colunas do grid (sidebar | stage | actions) */
+.cras-ui-v2 .cras-top-v2-inner{
+  display: grid !important;
+  grid-template-columns: var(--cras-sidebar-w) minmax(0,1fr) auto !important;
+  column-gap: var(--cras-gap) !important;
+  align-items: center !important;
+  padding-left: var(--cras-gutter) !important;
+  padding-right: var(--cras-gutter) !important;
+}
+
+/* Alinhar conteúdo do meio ao “stage” (não centralizar demais) */
+.cras-ui-v2 .cras-top-v2-center{
+  justify-content: flex-start !important;
+}
+
+/* Context pill: não estoura e fica alinhado ao conteúdo */
+.cras-ui-v2 .cras-top-v2-context{
+  max-width: 520px;
+}
+
+/* Sidebar: um pouco mais “leve” e com raio igual aos cards */
+.cras-ui-v2 .cras-sidebar-v2{
+  border-radius: 18px !important;
+}
+.cras-ui-v2 .cras-sidebar-v2-item{
+  border-radius: 14px !important;
+}
+
+/* Responsivo: colapsado continua alinhado */
+@media (max-width: 980px){
+  .cras-ui-v2 .cras-shell-v2{
+    grid-template-columns: var(--cras-sidebar-w-collapsed) minmax(0,1fr) !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    gap: 14px !important;
+  }
+  .cras-ui-v2 .cras-top-v2-inner{
+    grid-template-columns: var(--cras-sidebar-w-collapsed) minmax(0,1fr) auto !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    column-gap: 14px !important;
+  }
+  .cras-ui-v2 .cras-top-v2-left .cras-top-v2-module,
+  .cras-ui-v2 .cras-top-v2-left .cras-top-v2-divider{
+    display:none !important;
+  }
+}
+
+/* CRAS_APPLE_BUTTONS_V1
+   Unifica botões do CRAS (estética Apple-like): menos "inflado", mais limpo.
+   Escopo: somente .cras-ui-v2
+*/
+.cras-ui-v2 :is(.btn, button.btn, a.btn){
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 32px;
+}
+
+.cras-ui-v2 .btn-primario,
+.cras-ui-v2 .btn.btn-primario{
+  box-shadow: 0 10px 26px rgba(99,102,241,.14);
+}
+
+.cras-ui-v2 .btn-secundario,
+.cras-ui-v2 .btn.btn-secundario{
+  background: rgba(255,255,255,.78);
+  border: 1px solid var(--nav-border);
+  box-shadow: none;
+}
+
+.cras-ui-v2 .btn-secundario:hover{
+  border-color: rgba(199,210,254,.95);
+  transform: translateY(-1px);
+}
+
+/* Botões em cards de item (ex.: Encaminhamentos): alinhamento e largura */
+.cras-ui-v2 .card :is(.btn-primario, .btn-secundario){
+  min-width: 140px;
+}
+
+@media (max-width: 980px){
+  .cras-ui-v2 .card :is(.btn-primario, .btn-secundario){
+    min-width: 124px;
+  }
+}
+
+/* CRAS_APPLE_BUTTONS_V1
+   Unifica botões do CRAS (estética Apple-like): menos "inflado", mais limpo.
+   Escopo: somente .cras-ui-v2
+*/
+.cras-ui-v2 :is(.btn, button.btn, a.btn){
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 32px;
+}
+
+.cras-ui-v2 .btn-primario,
+.cras-ui-v2 .btn.btn-primario{
+  box-shadow: 0 10px 26px rgba(99,102,241,.14);
+}
+
+.cras-ui-v2 .btn-secundario,
+.cras-ui-v2 .btn.btn-secundario{
+  background: rgba(255,255,255,.78);
+  border: 1px solid var(--nav-border);
+  box-shadow: none;
+}
+
+.cras-ui-v2 .btn-secundario:hover{
+  border-color: rgba(199,210,254,.95);
+  transform: translateY(-1px);
+}
+
+/* Botões em cards de item (ex.: Encaminhamentos): alinhamento e largura */
+.cras-ui-v2 .card :is(.btn-primario, .btn-secundario){
+  min-width: 140px;
+}
+
+@media (max-width: 980px){
+  .cras-ui-v2 .card :is(.btn-primario, .btn-secundario){
+    min-width: 124px;
+  }
+}
+
+/* CRAS_APPLE_BUTTONS_V2_COMPACT
+   Refinamento: botões menos "inflados" e sem largura mínima fixa nos cards.
+   Escopo: somente .cras-ui-v2
+*/
+
+.cras-ui-v2 :is(.btn, button.btn, a.btn){
+  height: 32px !important;
+  padding: 0 14px !important;
+  line-height: 30px !important;
+}
+
+/* Cards: NÃO forçar min-width grande (deixa o texto ditar a largura) */
+.cras-ui-v2 .card :is(.btn-primario, .btn-secundario){
+  min-width: unset !important;
+}
+
+/* Secundário vira mais "ghost" */
+.cras-ui-v2 .btn-secundario,
+.cras-ui-v2 .btn.btn-secundario{
+  background: rgba(255,255,255,.72) !important;
+  border: 1px solid rgba(226,232,240,.92) !important;
+}
+
+/* Segmentados (ex.: Recebidos/Enviados): encaixe e tamanho */
+.cras-ui-v2 .card :is(.segmented, .tabs, .tablist){
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.cras-ui-v2 .card :is(.segmented button, .tabs button, .tablist button){
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 999px;
+}
+
+
+
+
+/* CRAS_ENC_SPLITVIEW_35_65_CSS_V4 */
+.cras-ui-v2 .cras-enc-split{
+  display: grid;
+  grid-template-columns: 0.35fr 0.65fr;
+  gap: 16px;
+  align-items: start;
+}
+.cras-ui-v2 .cras-enc-left{ min-width: 0; }
+.cras-ui-v2 .cras-enc-right{ min-width: 0; }
+.cras-ui-v2 .cras-enc-left-stack{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+@media (max-width: 980px){
+  .cras-ui-v2 .cras-enc-split{ grid-template-columns: 1fr; }
+}
+
+
+/* CRAS_ENC_VIEW_MODES_V1 */
+.cras-enc-split{ overflow-x: hidden; }
+.cras-enc-left, .cras-enc-right{ min-width:0; overflow-x:hidden; }
+
+/* telas únicas: vira 1 coluna e some o painel direito */
+.cras-enc-split[data-enc-view="filtros"],
+.cras-enc-split[data-enc-view="novo"],
+.cras-enc-split[data-enc-view="semdev"]{
+  grid-template-columns: 1fr !important;
+}
+.cras-enc-split[data-enc-view="filtros"] .cras-enc-right,
+.cras-enc-split[data-enc-view="novo"]    .cras-enc-right,
+.cras-enc-split[data-enc-view="semdev"]  .cras-enc-right{
+  display:none !important;
+}
+
+/* SUAS e TODOS: mostra direita; esquerda vira apoio (sem novo/semdev) */
+.cras-enc-split[data-enc-view="suas"]  .cras-enc-left .enc-panel-novo,
+.cras-enc-split[data-enc-view="suas"]  .cras-enc-left .enc-panel-semdev{ display:none !important; }
+.cras-enc-split[data-enc-view="todos"] .cras-enc-left .enc-panel-novo,
+.cras-enc-split[data-enc-view="todos"] .cras-enc-left .enc-panel-semdev{ display:none !important; }
+
+/* telas únicas: deixa só 1 painel na esquerda */
+.cras-enc-split[data-enc-view="filtros"] .cras-enc-left .enc-panel-novo,
+.cras-enc-split[data-enc-view="filtros"] .cras-enc-left .enc-panel-semdev{ display:none !important; }
+
+.cras-enc-split[data-enc-view="novo"] .cras-enc-left .enc-panel-filtros,
+.cras-enc-split[data-enc-view="novo"] .cras-enc-left .enc-panel-semdev{ display:none !important; }
+
+.cras-enc-split[data-enc-view="semdev"] .cras-enc-left .enc-panel-filtros,
+.cras-enc-split[data-enc-view="semdev"] .cras-enc-left .enc-panel-novo{ display:none !important; }
+
+/* Chips do header viram botões de modo (apenas em Encaminhamentos) */
+.cras-ui-v2 .chip.is-enc-mode{ cursor:pointer; user-select:none; }
+.cras-ui-v2 .chip.is-enc-mode.is-active{
+  background: rgba(99,102,241,.14);
+  border-color: rgba(99,102,241,.22);
+  color: rgba(55,48,163,1);
+}
+
+
+/* ============================================================
+   CRAS UI V2 — Subtelas no Header (SUBTABS_V1)
+   Objetivo: substituir chips não-clicáveis por botões de subtela
+   (abre 1 área por vez; padrão "produto/Apple")
+   ============================================================ */
+
+.cras-ui-v2 .cras-pageheader-v2-subtabs{
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cras-ui-v2 .cras-subtab-btn{
+  border-radius: 999px;
+  border: 1px solid rgba(199,210,254,.92);
+  background: rgba(99,102,241,.08);
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 900;
+  color: rgba(55,48,163,1);
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease, border-color .12s ease;
+}
+
+.cras-ui-v2 .cras-subtab-btn:hover{
+  border-color: rgba(99,102,241,.28);
+  transform: translateY(-1px);
+}
+
+.cras-ui-v2 .cras-subtab-btn.is-active{
+  background: rgba(99,102,241,.95);
+  border-color: rgba(99,102,241,.95);
+  color: #fff;
+  box-shadow: 0 14px 34px rgba(99,102,241,.22);
+}
+
+/* ============================================================
+   CRAS UI V2 — Guia rápido (HELP_CARD_V1)
+   Objetivo: ajudar o usuário (servidor) a entender cada ficha,
+   sem poluir a tela. Recolhido por padrão ("Ver como usar").
+   ============================================================ */
+
+.cras-ui-v2 .cras-help-card{
+  margin-top: 10px;
+  border-radius: 16px;
+  border: 1px solid rgba(99,102,241,.22);
+  background: linear-gradient(135deg, rgba(99,102,241,.14), rgba(255,255,255,.92));
+  padding: 10px 12px;
+  box-shadow: var(--nav-shadow);
+}
+
+.cras-ui-v2 .cras-help-head{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cras-ui-v2 .cras-help-title{
+  font-size: 12px;
+  font-weight: 950;
+  color: rgba(15,23,42,1);
+}
+
+.cras-ui-v2 .cras-help-summary{
+  margin-top: 4px;
+  font-size: 12px;
+  color: rgba(71,85,105,1);
+}
+
+.cras-ui-v2 .cras-help-toggle{
+  border-radius: 999px;
+  border: 1px solid var(--nav-border);
+  background: rgba(255,255,255,.92);
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+  white-space: nowrap;
+  color: rgba(15,23,42,1);
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+}
+
+.cras-ui-v2 .cras-help-toggle:hover{
+  border-color: rgba(99,102,241,.30);
+  transform: translateY(-1px);
+}
+
+.cras-ui-v2 .cras-help-body{
+  margin-top: 10px;
+  display: grid;
+  gap: 10px;
+}
+
+.cras-ui-v2 .cras-help-section-title{
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-weight: 950;
+  color: rgba(99,102,241,.95);
+}
+
+.cras-ui-v2 .cras-help-text{
+  margin-top: 4px;
+  font-size: 12px;
+  color: rgba(51,65,85,1);
+  line-height: 1.35;
+}
+
+.cras-ui-v2 .cras-help-list{
+  margin: 6px 0 0 0;
+  padding-left: 18px;
+  font-size: 12px;
+  color: rgba(51,65,85,1);
+  line-height: 1.35;
+}
+
+.cras-ui-v2 .cras-help-list li{ margin: 4px 0; }
+
+/* =========================
+   UX V3 — Drawer nav (iPad/mobile)
+   - Em telas menores, o menu vira gaveta (overlay), sem roubar área do conteúdo.
+   ========================= */
+
+.cras-ui-v2{
+  --ideal1: rgba(99,102,241,1);
+  --ideal2: rgba(168,85,247,1);
+  --ideal3: rgba(34,197,94,1);
+  --ui-radius: 18px;
+}
+
+
+.cras-ui-v2 .cras-nav-scrim{ display: none; }
+
+@media (max-width: 980px){
+  .cras-ui-v2 .cras-shell-v2{
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    padding: 0 10px 24px !important;
+  }
+
+  .cras-ui-v2 .cras-sidebar-v2{
+    position: fixed !important;
+    left: 12px !important;
+    top: 12px !important;
+    bottom: 12px !important;
+    width: min(340px, calc(100vw - 24px)) !important;
+    max-height: none !important;
+    z-index: 1001 !important;
+    transform: translateX(-120%);
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+
+  .cras-ui-v2.nav-open .cras-sidebar-v2{
+    transform: translateX(0);
+    box-shadow: var(--nav-shadow-strong);
+  }
+
+  .cras-ui-v2 .cras-nav-scrim{ display: none; }
+  .cras-ui-v2.nav-open .cras-nav-scrim{
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(15,23,42,.35);
+    backdrop-filter: blur(2px);
+    z-index: 1000;
+  }
+}

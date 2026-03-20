@@ -1,0 +1,447 @@
+.areas-page{
+  --ap-purple: rgba(124,58,237,.48);
+  --ap-green: rgba(34,197,94,.48);
+}
+
+.areas-page .areas-filters{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.areas-page .areas-summaryBlock{
+  padding:12px;
+}
+
+.areas-page .areas-summaryTop{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.areas-page .areas-eyebrow{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  font-weight:950;
+  color:rgba(100,116,139,1);
+}
+
+.areas-page .areas-summaryTitle{
+  margin:4px 0 0;
+  font-size:18px;
+  line-height:1.15;
+  font-weight:950;
+  color:rgba(15,23,42,1);
+}
+
+.areas-page .areas-searchWrap{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  margin-top:10px;
+}
+
+.areas-page .areas-searchBar{
+  border:1px solid rgba(226,232,240,.92);
+  background:#fff;
+  border-radius:14px;
+  padding:10px 12px;
+}
+
+.areas-page .faz-chip{
+  border:1px solid rgba(226,232,240,.92);
+  background:#fff;
+  border-radius:999px;
+  padding:8px 12px;
+  font-weight:850;
+}
+
+.areas-page .faz-chip.on{
+  border-color:rgba(124,58,237,.55);
+  background:rgba(124,58,237,.08);
+  color:rgba(76,29,149,1);
+}
+
+.areas-page .areas-block{
+  border:1px solid transparent !important;
+  background:
+    linear-gradient(#fff,#fff) padding-box,
+    linear-gradient(135deg, var(--ap-purple), var(--ap-green)) border-box !important;
+  border-radius:16px;
+  box-shadow:0 14px 36px rgba(15,23,42,.05);
+}
+
+.areas-page .faz-subtitle{
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  font-weight:950;
+  color:rgba(100,116,139,1);
+}
+
+.areas-page .faz-input{
+  width:100%;
+  border:1px solid rgba(226,232,240,.92);
+  background:#fff;
+  border-radius:12px;
+  padding:10px 12px;
+}
+
+.areas-page .faz-input:focus{
+  outline:none;
+  border-color:rgba(124,58,237,.55);
+  box-shadow:0 0 0 3px rgba(124,58,237,.10);
+}
+
+.areas-page .faz-metricGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.areas-page .areas-metricGrid{
+  grid-template-columns:repeat(6,minmax(0,1fr));
+}
+
+.areas-page .faz-miniMetric{
+  border:1px solid rgba(226,232,240,.92);
+  background:rgba(248,250,252,.9);
+  border-radius:14px;
+  padding:10px 12px;
+}
+
+.areas-page .faz-miniMetric .k{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  font-weight:950;
+  color:rgba(100,116,139,1);
+}
+
+.areas-page .faz-miniMetric .v{
+  margin-top:6px;
+  font-size:16px;
+  font-weight:950;
+  color:rgba(15,23,42,1);
+}
+
+.areas-page .areas-block h3{
+  margin:0;
+  font-size:16px;
+  line-height:1.2;
+  font-weight:900;
+}
+
+.areas-page .faz-seg{
+  display:flex;
+  gap:6px;
+  padding:5px;
+  border-radius:999px;
+  border:1px solid rgba(226,232,240,.92);
+  background:#fff;
+}
+
+.areas-page .faz-seg button{
+  border:none;
+  background:transparent;
+  padding:7px 11px;
+  border-radius:999px;
+  font-weight:900;
+  color:rgba(100,116,139,1);
+  cursor:pointer;
+}
+
+.areas-page .faz-seg button.on{
+  background:rgba(124,58,237,.08);
+  color:rgba(76,29,149,1);
+}
+
+.areas-page .faz-areaGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:10px;
+}
+
+.areas-page .faz-areaTile{
+  border:1px solid rgba(226,232,240,.92);
+  background:#fff;
+  border-radius:14px;
+  padding:10px;
+  box-shadow:0 10px 24px rgba(15,23,42,.04);
+}
+
+.areas-page .faz-areaTile:hover{
+  border-color:rgba(124,58,237,.48);
+}
+
+.areas-page .faz-areaTile.isAlert{
+  border-color:rgba(244,63,94,.34);
+}
+
+.areas-page .faz-areaTile .tHead{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+}
+
+.areas-page .faz-areaTile .tNum{
+  font-size:22px;
+  font-weight:950;
+  color:rgba(15,23,42,1);
+}
+
+.areas-page .faz-areaTile .b{
+  font-size:10px;
+  font-weight:950;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  padding:5px 8px;
+  border-radius:999px;
+  border:1px solid rgba(226,232,240,.92);
+}
+
+.areas-page .faz-areaTile .b.ok{ background:rgba(34,197,94,.10); border-color:rgba(34,197,94,.20); color:rgba(22,101,52,1); }
+.areas-page .faz-areaTile .b.vaz{ background:rgba(99,102,241,.08); border-color:rgba(199,210,254,.92); color:rgba(55,48,163,1); }
+.areas-page .faz-areaTile .b.rest{ background:rgba(245,158,11,.10); border-color:rgba(245,158,11,.20); color:rgba(146,64,14,1); }
+.areas-page .faz-areaTile .b.bad{ background:rgba(244,63,94,.10); border-color:rgba(244,63,94,.18); color:rgba(159,18,57,1); }
+
+.areas-page .faz-areaTile .tTitle{ margin-top:8px; font-size:13px; font-weight:900; color:rgba(100,116,139,1); }
+.areas-page .faz-areaTile .tSub{ margin-top:4px; font-size:14px; font-weight:950; color:rgba(15,23,42,1); }
+.areas-page .faz-areaTile .tMeta{ margin-top:4px; font-size:12px; font-weight:700; color:rgba(100,116,139,1); }
+
+.areas-page .faz-rowActions{ display:flex; gap:8px; flex-wrap:wrap; }
+
+.areas-page .faz-rowActions .faz-btn{
+  border:1px solid rgba(226,232,240,.95);
+  background:#fff;
+  border-radius:999px;
+  padding:7px 10px;
+  font-size:12px;
+  font-weight:850;
+}
+
+.areas-page .faz-rowActions .faz-btn:hover{
+  border-color:rgba(124,58,237,.55);
+}
+
+.areas-page .faz-tableWrap{
+  border:1px solid rgba(226,232,240,.92);
+  border-radius:14px;
+  overflow:auto;
+  background:#fff;
+}
+
+.areas-page .faz-table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.areas-page .faz-table thead th{
+  text-align:left;
+  font-size:10px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:rgba(100,116,139,1);
+  padding:10px 12px;
+  border-bottom:1px solid rgba(226,232,240,.85);
+}
+
+.areas-page .faz-table td{
+  padding:10px 12px;
+  border-bottom:1px solid rgba(241,245,249,.95);
+}
+
+.areas-page .faz-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  border-radius:999px;
+  padding:5px 9px;
+  font-size:10px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  border:1px solid rgba(226,232,240,.92);
+}
+
+.areas-page .faz-empty{
+  border:1px dashed rgba(226,232,240,.92);
+  border-radius:14px;
+  padding:14px;
+  background:rgba(248,250,252,.9);
+  color:rgba(100,116,139,1);
+}
+
+@media (max-width: 1200px){
+  .areas-page .areas-metricGrid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+}
+
+@media (max-width: 980px){
+  .areas-page .areas-summaryTop{
+    flex-direction:column;
+    align-items:stretch;
+  }
+}
+
+@media (max-width: 760px){
+  .areas-page .areas-summaryTitle{
+    font-size:16px;
+  }
+
+  .areas-page .areas-metricGrid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+/* V17 - Areas com hero + tabela operacional */
+.areas-page .areasHeroMap{
+  position: relative;
+  margin-top: 10px;
+  height: 210px;
+  border-radius: 16px;
+  border: 1px solid rgba(226,232,240,.92);
+  overflow: hidden;
+  background-image:
+    radial-gradient(circle at 20% 25%, rgba(99,102,241,.24), transparent 38%),
+    radial-gradient(circle at 75% 78%, rgba(16,185,129,.2), transparent 40%),
+    linear-gradient(120deg, rgba(15,23,42,.3), rgba(15,23,42,.08));
+  background-size: cover;
+  background-position: center;
+}
+
+.areas-page .areasHeroShade{
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,.16), transparent 48%),
+    linear-gradient(180deg, rgba(15,23,42,.14), rgba(15,23,42,.22));
+}
+
+.areas-page .areasMapTools{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 2;
+  display: grid;
+  gap: 6px;
+}
+
+.areas-page .areasMapTools button{
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.35);
+  background: rgba(15,23,42,.52);
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.areas-page .areasKpiGrid{
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.areas-page .areasKpi{
+  border: 1px solid rgba(226,232,240,.92);
+  border-radius: 12px;
+  padding: 10px;
+  background: rgba(255,255,255,.94);
+  display: grid;
+  gap: 4px;
+}
+
+.areas-page .areasKpi span{
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(100,116,139,1);
+}
+
+.areas-page .areasKpi b{
+  font-size: 17px;
+  line-height: 1.1;
+  font-weight: 950;
+  color: rgba(15,23,42,1);
+}
+
+.areas-page .areasToolbar{
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: auto auto minmax(240px, 1fr);
+  gap: 8px;
+  align-items: center;
+}
+
+.areas-page .areasToolbar .faz-input{
+  margin-left: auto;
+}
+
+.areas-page .areasTableWrap{
+  margin-top: 10px;
+  border: 1px solid rgba(226,232,240,.92);
+  border-radius: 14px;
+  overflow: auto;
+  background: #fff;
+}
+
+.areas-page .areasTable{
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1300px;
+}
+
+.areas-page .areasTable th{
+  text-align: left;
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(100,116,139,1);
+  padding: 10px 10px;
+  border-bottom: 1px solid rgba(226,232,240,.9);
+  white-space: nowrap;
+}
+
+.areas-page .areasTable td{
+  padding: 10px 10px;
+  border-bottom: 1px solid rgba(241,245,249,.95);
+  font-size: 12px;
+  color: rgba(15,23,42,1);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.areas-page .areasRowActions{
+  display: flex;
+  gap: 6px;
+}
+
+.areas-page .areasEmpty{
+  text-align: center;
+  padding: 18px;
+  color: rgba(100,116,139,1);
+}
+
+@media (max-width: 1200px){
+  .areas-page .areasKpiGrid{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px){
+  .areas-page .areasKpiGrid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .areas-page .areasToolbar{
+    grid-template-columns: 1fr;
+  }
+}

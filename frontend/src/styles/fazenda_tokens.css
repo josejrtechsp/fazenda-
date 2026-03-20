@@ -1,0 +1,236 @@
+/* ============================================================
+   FAZENDA IDEAL — Design Tokens + UI Kit (V4)
+   Objetivo:
+   - Unificar aparência (chips, botões, cards, inputs) em TODAS as telas
+   - Manter estilo "Apple-like": leve, limpo, com foco/hover bons
+   Escopo: .cras-ui-v2 (shell atual do app)
+   ============================================================ */
+
+.cras-ui-v2{
+  /* Paleta base */
+  --faz-ink: rgba(15,23,42,1);
+  --faz-ink-2: rgba(15,23,42,.82);
+  --faz-muted: rgba(15,23,42,.55);
+  --faz-muted-2: rgba(15,23,42,.40);
+
+  /* Marca / gradiente */
+  --ideal1: #7c3aed; /* roxo */
+  --ideal2: #22c55e; /* verde */
+  --ideal3: #06b6d4; /* ciano (apoio) */
+  --faz-grad: linear-gradient(135deg, var(--ideal1), var(--ideal2));
+
+  /* Superfícies */
+  --faz-bg: #ffffff;
+  --faz-glass: rgba(255,255,255,.92);
+  --faz-border: rgba(226,232,240,.92);
+
+  /* Rounds + sombras */
+  --faz-r-sm: 12px;
+  --faz-r: 14px;
+  --faz-r-lg: 18px;
+
+  --faz-shadow: 0 18px 60px rgba(15,23,42,.06);
+  --faz-shadow-sm: 0 10px 30px rgba(15,23,42,.08);
+
+  /* Ações */
+  --faz-primary: var(--ideal1);
+  --faz-success: var(--ideal2);
+  --faz-danger: #ef4444;
+  --faz-warning: #f59e0b;
+
+  /* Foco */
+  --faz-focus: 0 0 0 3px rgba(124,58,237,.18);
+}
+
+/* =========================
+   Botões (faz-btn / cras-btn / cras-action-btn)
+   ========================= */
+
+.cras-ui-v2 .faz-btn,
+.cras-ui-v2 .cras-btn,
+.cras-ui-v2 .cras-action-btn{
+  appearance: none;
+  border: 1px solid var(--faz-border);
+  background: rgba(248,250,252,.85);
+  color: var(--faz-ink);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  transition: transform .08s ease, background .12s ease, border-color .12s ease, box-shadow .12s ease, opacity .12s ease;
+}
+
+.cras-ui-v2 .faz-btn:hover,
+.cras-ui-v2 .cras-btn:hover,
+.cras-ui-v2 .cras-action-btn:hover{
+  background: rgba(255,255,255,.95);
+  border-color: rgba(203,213,225,.95);
+  box-shadow: 0 8px 20px rgba(15,23,42,.06);
+}
+
+.cras-ui-v2 .faz-btn:active,
+.cras-ui-v2 .cras-btn:active,
+.cras-ui-v2 .cras-action-btn:active{
+  transform: translateY(1px);
+}
+
+.cras-ui-v2 .faz-btn:focus,
+.cras-ui-v2 .cras-btn:focus,
+.cras-ui-v2 .cras-action-btn:focus{
+  outline: none;
+  box-shadow: var(--faz-focus);
+}
+
+.cras-ui-v2 .faz-btn.sm,
+.cras-ui-v2 .cras-action-btn.sm{
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+.cras-ui-v2 .faz-btn.ghost,
+.cras-ui-v2 .cras-action-btn.ghost{
+  background: transparent;
+}
+
+.cras-ui-v2 .faz-btn.primary,
+.cras-ui-v2 .cras-btn-primary,
+.cras-ui-v2 .cras-action-btn.primary{
+  border-color: rgba(124,58,237,.28);
+  background: linear-gradient(180deg, rgba(124,58,237,.14), rgba(124,58,237,.08));
+  color: rgba(79,24,178,1);
+}
+
+.cras-ui-v2 .faz-btn.primary:hover,
+.cras-ui-v2 .cras-btn-primary:hover,
+.cras-ui-v2 .cras-action-btn.primary:hover{
+  border-color: rgba(124,58,237,.36);
+  background: linear-gradient(180deg, rgba(124,58,237,.18), rgba(124,58,237,.10));
+}
+
+/* =========================
+   Chips / Pílulas
+   ========================= */
+
+.cras-ui-v2 .cras-chip,
+.cras-ui-v2 .faz-pill,
+.cras-ui-v2 .cras-pill,
+.cras-ui-v2 .faz-badge{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--faz-border);
+  background: rgba(248,250,252,.80);
+  color: var(--faz-ink-2);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* =========================
+   Inputs (faz-input + inputs normais dentro do shell)
+   ========================= */
+
+.cras-ui-v2 .faz-input,
+.cras-ui-v2 input[type="text"],
+.cras-ui-v2 input[type="number"],
+.cras-ui-v2 input[type="date"],
+.cras-ui-v2 input[type="search"],
+.cras-ui-v2 select,
+.cras-ui-v2 textarea{
+  border: 1px solid var(--faz-border);
+  background: rgba(255,255,255,.92);
+  border-radius: 12px;
+  padding: 9px 10px;
+  font-size: 13px;
+  color: var(--faz-ink);
+  outline: none;
+  transition: box-shadow .12s ease, border-color .12s ease;
+}
+
+.cras-ui-v2 .faz-input:focus,
+.cras-ui-v2 input[type="text"]:focus,
+.cras-ui-v2 input[type="number"]:focus,
+.cras-ui-v2 input[type="date"]:focus,
+.cras-ui-v2 input[type="search"]:focus,
+.cras-ui-v2 select:focus,
+.cras-ui-v2 textarea:focus{
+  border-color: rgba(124,58,237,.34);
+  box-shadow: var(--faz-focus);
+}
+
+/* =========================
+   Cards / Panels (card, faz-card, faz-panel)
+   ========================= */
+
+.cras-ui-v2 .card,
+.cras-ui-v2 .faz-card,
+.cras-ui-v2 .faz-panel{
+  background: var(--faz-glass);
+  border: 1px solid var(--faz-border);
+  border-radius: var(--faz-r-lg);
+  box-shadow: var(--faz-shadow);
+}
+
+.cras-ui-v2 .card{
+  overflow: hidden;
+}
+
+.cras-ui-v2 .faz-muted,
+.cras-ui-v2 .muted{
+  color: var(--faz-muted);
+}
+
+/* =========================
+   Offline status (deixa discreto, tipo pill)
+   ========================= */
+.cras-ui-v2 .pd-offline{
+  margin-top: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  padding: 7px 10px;
+  border: 1px solid rgba(148,163,184,.55);
+  background: rgba(248,250,252,.85);
+  color: rgba(51,65,85,.92);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.cras-ui-v2 .pd-offlineErr{
+  margin-left: 10px;
+  font-weight: 700;
+  color: rgba(127,29,29,.92);
+}
+
+.cras-ui-v2 .pd-offlineDot{
+  width: 8px;
+  height: 8px;
+  border-radius: 99px;
+  background: rgba(245,158,11,.95);
+  box-shadow: 0 0 0 3px rgba(245,158,11,.15);
+}
+
+/* =========================
+   Tabelas (leve e legível)
+   ========================= */
+.cras-ui-v2 .faz-table,
+.cras-ui-v2 table{
+  border-collapse: collapse;
+}
+
+.cras-ui-v2 .faz-table th,
+.cras-ui-v2 .faz-table td,
+.cras-ui-v2 table th,
+.cras-ui-v2 table td{
+  border-bottom: 1px solid rgba(226,232,240,.75);
+}

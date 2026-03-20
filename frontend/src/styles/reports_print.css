@@ -1,0 +1,193 @@
+.reports-page .reports-print-only {
+  display: none;
+}
+
+.reports-page .reports-period-note {
+  margin-top: 10px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2.reports-page .faz-fin-kpis {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+
+@media (max-width: 1280px) {
+  .cras-ui-v2 .faz-financeiro-v2.reports-page .faz-fin-kpis {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 980px) {
+  .cras-ui-v2 .faz-financeiro-v2.reports-page .faz-fin-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .cras-ui-v2 .faz-financeiro-v2.reports-page .faz-fin-kpis {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@page {
+  size: A4 portrait;
+  margin: 10mm;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 10.5pt;
+    line-height: 1.35;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .site-back-button,
+  .cras-ui-v2 .app-header,
+  .cras-ui-v2 .cras-sidebar-v2,
+  .cras-ui-v2 .cras-nav-scrim,
+  .cras-ui-v2 .cras-pageheader-v2,
+  .reports-page .reports-no-print {
+    display: none !important;
+  }
+
+  .cras-ui-v2 .cras-shell-v2 {
+    display: block !important;
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .cras-ui-v2 .cras-stage-v2 {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .reports-page {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .reports-page .reports-print-only {
+    display: block !important;
+  }
+
+  .reports-page .reports-print-cover {
+    border: 1px solid #111;
+    padding: 12mm 10mm;
+    min-height: 70mm;
+    margin: 0 0 8mm 0;
+  }
+
+  .reports-page .reports-print-cover h1 {
+    margin: 0;
+    font-size: 24pt;
+    line-height: 1.2;
+    font-weight: 800;
+  }
+
+  .reports-page .reports-print-cover .reports-print-subtitle {
+    margin: 3mm 0 7mm 0;
+    font-size: 11pt;
+    color: #333;
+  }
+
+  .reports-page .reports-print-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5mm 4mm;
+    font-size: 10pt;
+  }
+
+  .reports-page .reports-period-note {
+    margin: 0 0 4mm 0 !important;
+    border: 1px solid #bbb !important;
+    background: #fff !important;
+    color: #000 !important;
+    padding: 2.5mm 3mm !important;
+  }
+
+  .reports-page .reports-print-section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .reports-page .reports-print-break-before {
+    break-before: page;
+    page-break-before: always;
+  }
+
+  .reports-page .faz-fin-kpis {
+    margin-top: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 2.5mm !important;
+  }
+
+  .reports-page .faz-fin-kpis .kpi {
+    border: 1px solid #bbb !important;
+    background: #fff !important;
+    min-height: 0 !important;
+    padding: 2.5mm !important;
+  }
+
+  .reports-page .faz-fin-kpis .kpi span {
+    font-size: 8.2pt !important;
+    color: #222 !important;
+    letter-spacing: 0.02em !important;
+  }
+
+  .reports-page .faz-fin-kpis .kpi b {
+    margin-top: 1.2mm !important;
+    font-size: 11.5pt !important;
+    color: #000 !important;
+    line-height: 1.2 !important;
+  }
+
+  .reports-page .faz-fin-tableWrap {
+    margin-top: 4mm !important;
+    border: 1px solid #bbb !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+    background: #fff !important;
+  }
+
+  .reports-page .faz-fin-tableWrap h4 {
+    margin: 0 !important;
+    padding: 2.5mm 3mm !important;
+    border-bottom: 1px solid #bbb !important;
+    font-size: 10.5pt !important;
+    color: #000 !important;
+  }
+
+  .reports-page .faz-fin-table {
+    min-width: 0 !important;
+    width: 100% !important;
+    table-layout: fixed !important;
+    border-collapse: collapse !important;
+  }
+
+  .reports-page .faz-fin-table thead th,
+  .reports-page .faz-fin-table tbody td {
+    padding: 2mm 2.2mm !important;
+    font-size: 8.8pt !important;
+    color: #000 !important;
+    border-color: #cfcfcf !important;
+    word-break: break-word !important;
+    white-space: normal !important;
+    background: #fff !important;
+  }
+
+  .reports-page .faz-fin-table thead th {
+    font-weight: 700 !important;
+  }
+
+  .reports-page .faz-fin-table tbody tr:hover {
+    background: #fff !important;
+  }
+}

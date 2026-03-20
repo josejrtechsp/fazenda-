@@ -1,0 +1,34 @@
+/* V15N — Tight 30% (escopo: .faz-dash-tight30) */
+
+.faz-dash-tight30 .faz-grid-kpis{gap:8px;}
+.faz-dash-tight30 .faz-kpi{padding:9px 11px;border-radius:16px;}
+.faz-dash-tight30 .faz-kpi .k{font-size:9px;letter-spacing:.16em;}
+.faz-dash-tight30 .faz-kpi .v{font-size:18px;line-height:1.05;}
+.faz-dash-tight30 .faz-kpi .s{margin-top:4px;font-size:11px;}
+
+.faz-dash-tight30 .faz-panels2{gap:10px;}
+.faz-dash-tight30 .faz-panel{padding:10px 12px;border-radius:16px;}
+.faz-dash-tight30 .faz-panel h3{font-size:14px;}
+.faz-dash-tight30 .faz-muted{font-size:12px;}
+
+/* Trend list rows */
+.faz-dash-tight30 .faz-trendRow{gap:10px;}
+.faz-dash-tight30 .faz-trendRow .m{font-size:12px;}
+.faz-dash-tight30 .faz-trendRow .v{font-size:12px;}
+.faz-dash-tight30 .faz-trendRow .bar{height:10px;}
+
+/* Top costs bars */
+.faz-dash-tight30 .faz-bars{gap:9px;}
+.faz-dash-tight30 .faz-bar .name{font-size:11px;letter-spacing:.14em;}
+.faz-dash-tight30 .faz-bar .val{font-size:12px;}
+.faz-dash-tight30 .faz-bar .track{height:10px;}
+
+/* Secondary sections (Nutrição/Gado cards) */
+.faz-dash-tight30 .faz-miniCards{gap:8px;}
+.faz-dash-tight30 .faz-miniCard{padding:9px 10px;border-radius:14px;}
+.faz-dash-tight30 .faz-miniCard .t{font-size:10px;letter-spacing:.14em;}
+.faz-dash-tight30 .faz-miniCard .n{font-size:15px;}
+
+/* Buttons / chips within dashboard */
+.faz-dash-tight30 .faz-chip{padding:6px 10px;font-size:12px;}
+.faz-dash-tight30 .faz-btn.sm{padding:8px 10px;font-size:12px;}

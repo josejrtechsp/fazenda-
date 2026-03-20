@@ -1,0 +1,34 @@
+/* V15M — Tight25: reduz fontes e caixas ~25% no dashboard do produtor.
+   Escopo: .faz-dash-tight25 no root do ProducerDashboard.
+*/
+
+.faz-dash-tight25 .faz-grid-kpis{gap:8px!important;margin-top:8px!important;}
+.faz-dash-tight25 .faz-kpi{padding:9px 11px!important;border-radius:14px!important;}
+.faz-dash-tight25 .faz-kpi .k{font-size:9px!important;letter-spacing:.12em!important;}
+.faz-dash-tight25 .faz-kpi .v{font-size:20px!important;margin-top:4px!important;}
+.faz-dash-tight25 .faz-kpi .s{font-size:12px!important;margin-top:4px!important;}
+
+.faz-dash-tight25 .faz-panels2{gap:10px!important;margin-top:10px!important;}
+.faz-dash-tight25 .faz-panel{padding:10px 12px!important;border-radius:16px!important;}
+.faz-dash-tight25 .faz-panel h3{font-size:15px!important;}
+.faz-dash-tight25 .faz-muted{font-size:12px!important;}
+
+/* Trend (Evolucao) */
+.faz-dash-tight25 .faz-trendList{gap:8px!important;}
+.faz-dash-tight25 .faz-trendRow .m{font-size:14px!important;}
+.faz-dash-tight25 .faz-trendRow .v{font-size:13px!important;}
+.faz-dash-tight25 .faz-trendRow .bar{height:10px!important;}
+
+/* Top custos */
+.faz-dash-tight25 .faz-bars{gap:8px!important;}
+.faz-dash-tight25 .faz-bar .name{font-size:11px!important;width:150px!important;}
+.faz-dash-tight25 .faz-bar .val{font-size:13px!important;}
+.faz-dash-tight25 .faz-bar .track{height:10px!important;}
+
+/* Blocos inferiores (nutricao/gado) */
+.faz-dash-tight25 .faz-miniCard{padding:10px 12px!important;border-radius:14px!important;}
+.faz-dash-tight25 .faz-miniCard .big{font-size:18px!important;}
+
+@media (max-width: 980px){
+  .faz-dash-tight25 .faz-bar .name{width:120px!important;}
+}

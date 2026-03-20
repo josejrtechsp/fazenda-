@@ -1,0 +1,117 @@
+/* V16 - Header compacto CRAS-like (cliente) */
+
+/* fallback caso fazHeroFrame nao exista em outros css */
+.fazHeroFrame{
+  position: relative;
+  border-radius: 26px;
+  border: 1px solid rgba(226,232,240,.92);
+  background: #ffffff;
+  box-shadow: 0 18px 60px rgba(15,23,42,.08);
+  overflow: hidden;
+}
+.fazHeroFrame::before{
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 5px;
+  background: linear-gradient(90deg, rgba(99,102,241,.95), rgba(168,85,247,.95), rgba(16,185,129,.90));
+}
+
+.fazHeroInner{
+  padding: 14px 16px 12px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.fazTopV16{ width: 100%; }
+.fazTopV16Inner{ padding-top: 12px; }
+
+.fazTopV16Left{ min-width: 0; }
+
+.fazTopV16Pill{
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(199,210,254,.9);
+  background: rgba(99,102,241,.08);
+  font-weight: 950;
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(55,48,163,1);
+}
+
+.fazTopV16TitleRow{
+  margin-top: 10px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.fazTopV16TitleBase{
+  font-size: 44px;
+  line-height: 1.02;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: rgba(55,65,81,1);
+}
+
+.fazTopV16TitleGrad{
+  font-size: 44px;
+  line-height: 1.02;
+  font-weight: 950;
+  letter-spacing: -0.02em;
+  background: linear-gradient(90deg, rgba(99,102,241,1), rgba(168,85,247,1), rgba(16,185,129,1));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.fazTopV16Sub{
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 650;
+  color: rgba(71,85,105,1);
+}
+
+.fazTopV16Right{ display: flex; align-items: flex-start; justify-content: flex-end; }
+
+.fazBrandLockupV16{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(226,232,240,.92);
+  background: rgba(255,255,255,.78);
+}
+
+.fazBrandLogoV16{
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  image-rendering: -webkit-optimize-contrast;
+  filter: none !important;
+  transform: none;
+}
+
+.fazBrandTaglineV16{
+  font-weight: 950;
+  font-size: 12px;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, rgba(99,102,241,1), rgba(168,85,247,1), rgba(16,185,129,1));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  white-space: nowrap;
+}
+
+@media (max-width: 860px){
+  .fazTopV16TitleBase, .fazTopV16TitleGrad{ font-size: 34px; }
+  .fazBrandTaglineV16{ font-size: 11px; letter-spacing: .08em; }
+}

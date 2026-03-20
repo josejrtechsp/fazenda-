@@ -1,0 +1,138 @@
+/*
+  UI lock inegociavel:
+  - Cabecalho do sistema (FazendaTopHeader)
+  - Sidebar/abas do sistema (CrasSidebarNav)
+  Escopo fechado: somente .fazenda-system-shell
+*/
+
+.cras-ui-v2.fazenda-system-shell .app-header.app-header-fazenda {
+  margin-bottom: 10px !important;
+  padding: 14px 0 6px !important;
+}
+
+.cras-ui-v2.fazenda-system-shell .app-header-fazenda .app-header-inner {
+  max-width: var(--cras-maxw, 1320px) !important;
+  margin: 0 auto !important;
+  padding-left: var(--cras-gutter, 16px) !important;
+  padding-right: var(--cras-gutter, 16px) !important;
+  grid-template-columns: 1fr !important;
+  grid-template-rows: auto auto !important;
+  align-items: start !important;
+}
+
+.cras-ui-v2.fazenda-system-shell .app-header-fazenda .faz-header-brand {
+  display: none !important;
+}
+
+.cras-ui-v2.fazenda-system-shell .app-header-fazenda .app-header-menuBtn {
+  display: none !important;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(226, 232, 240, 0.92);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+  font-weight: 900;
+  color: rgba(15, 23, 42, 1);
+}
+
+.cras-ui-v2.fazenda-system-shell .app-header-fazenda .app-header-menuIcon {
+  display: block;
+}
+
+.cras-ui-v2.fazenda-system-shell .app-header-fazenda .app-header-menuText {
+  font-size: 12px;
+}
+
+.cras-ui-v2.fazenda-system-shell .cras-shell-v2 {
+  max-width: var(--cras-maxw, 1320px) !important;
+  margin: 0 auto !important;
+  padding: 0 var(--cras-gutter, 16px) !important;
+  gap: var(--cras-gap, 18px) !important;
+  grid-template-columns: var(--cras-sidebar-w, 252px) minmax(0, 1fr) !important;
+  align-items: start !important;
+}
+
+.cras-ui-v2.fazenda-system-shell .cras-sidebar-v2 {
+  position: sticky !important;
+  top: 14px !important;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.86) !important;
+  border: 1px solid rgba(226, 232, 240, 0.85) !important;
+  border-radius: 18px !important;
+  box-shadow: 0 14px 44px rgba(15, 23, 42, 0.06) !important;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 28px);
+  overflow: hidden;
+}
+
+.cras-ui-v2.fazenda-system-shell .cras-sidebar-v2-nav {
+  gap: 8px !important;
+  max-height: calc(100vh - 240px);
+  overflow: auto;
+  padding-right: 2px;
+}
+
+.cras-ui-v2.fazenda-system-shell .cras-sidebar-v2-item {
+  position: relative;
+  padding: 9px 10px !important;
+  border-radius: 14px !important;
+}
+
+.cras-ui-v2.fazenda-system-shell .cras-sidebar-v2-item.is-active {
+  background: rgba(99, 102, 241, 0.1) !important;
+  border-color: rgba(99, 102, 241, 0.18) !important;
+  box-shadow: 0 10px 24px rgba(99, 102, 241, 0.1) !important;
+}
+
+.cras-ui-v2.fazenda-system-shell .cras-sidebar-v2-item.is-active::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 999px;
+  background: rgba(99, 102, 241, 0.75) !important;
+}
+
+@media (max-width: 980px) {
+  .cras-ui-v2.fazenda-system-shell .app-header-fazenda .app-header-inner-fazenda {
+    display: flex !important;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .cras-ui-v2.fazenda-system-shell .app-header-fazenda .app-header-menuBtn {
+    display: inline-flex !important;
+  }
+
+  .cras-ui-v2.fazenda-system-shell .app-header-fazenda .app-header-title {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .cras-ui-v2.fazenda-system-shell .cras-shell-v2 {
+    grid-template-columns: var(--cras-sidebar-w-collapsed, 72px) minmax(0, 1fr) !important;
+    padding: 0 12px !important;
+    gap: 14px !important;
+  }
+
+  .cras-ui-v2.fazenda-system-shell .app-header-fazenda .app-header-inner {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .cras-ui-v2.fazenda-system-shell .app-header-fazenda .app-header-menuText {
+    display: none;
+  }
+
+  .cras-ui-v2.fazenda-system-shell .app-header-fazenda .app-header-menuBtn {
+    padding: 8px;
+  }
+}

@@ -1,0 +1,110 @@
+.cras-ui-v2.fazenda-system-shell .faz-quick-guide {
+  margin-bottom: 10px;
+  border-radius: 16px;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.96));
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+  padding: 12px 14px;
+}
+
+.cras-ui-v2.fazenda-system-shell .faz-quick-guide-kicker {
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(79, 70, 229, 1);
+}
+
+.cras-ui-v2.fazenda-system-shell .faz-quick-guide-heading {
+  margin: 2px 0 0;
+  font-size: 20px;
+  line-height: 1.15;
+  font-weight: 900;
+  color: rgba(15, 23, 42, 1);
+}
+
+.cras-ui-v2.fazenda-system-shell .faz-quick-guide-grid {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.cras-ui-v2.fazenda-system-shell .faz-quick-guide-block {
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.cras-ui-v2.fazenda-system-shell .faz-quick-guide-title {
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(71, 85, 105, 1);
+}
+
+.cras-ui-v2.fazenda-system-shell .faz-quick-guide-text {
+  margin: 6px 0 0;
+  font-size: 14px;
+  line-height: 1.35;
+  color: rgba(30, 41, 59, 1);
+}
+
+.cras-ui-v2.fazenda-system-shell .faz-quick-guide-list {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 4px;
+}
+
+.cras-ui-v2.fazenda-system-shell .faz-quick-guide-list li {
+  font-size: 14px;
+  line-height: 1.32;
+  color: rgba(30, 41, 59, 1);
+}
+
+@media (max-width: 980px) {
+  .cras-ui-v2.fazenda-system-shell .faz-quick-guide-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cras-ui-v2.fazenda-system-shell .faz-quick-guide-heading {
+    font-size: 18px;
+  }
+}
+
+.cras-ui-v2.fazenda-system-shell .faz-quick-guide-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.cras-ui-v2.fazenda-system-shell .faz-quick-guide-toggle {
+  border: 1px solid rgba(99, 102, 241, 0.28);
+  background: rgba(99, 102, 241, 0.08);
+  color: rgba(67, 56, 202, 1);
+  font-size: 12px;
+  font-weight: 900;
+  border-radius: 999px;
+  padding: 7px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.cras-ui-v2.fazenda-system-shell .faz-quick-guide-toggle:hover {
+  background: rgba(99, 102, 241, 0.14);
+}
+
+@media (max-width: 980px) {
+  .cras-ui-v2.fazenda-system-shell .faz-quick-guide-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cras-ui-v2.fazenda-system-shell .faz-quick-guide-toggle {
+    width: 100%;
+  }
+}

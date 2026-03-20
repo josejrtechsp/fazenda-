@@ -1,0 +1,112 @@
+/* Header hero estilo CRAS/IDEAL (compacto e sem usuário/município) */
+
+.fazHeroFrame{
+  position: relative;
+  border-radius: 28px;
+  border: 1px solid rgba(226,232,240,.92);
+  background: rgba(255,255,255,.86);
+  box-shadow: 0 22px 70px rgba(15,23,42,.10);
+  overflow: hidden;
+}
+
+.fazHeroFrame::before{
+  content:"";
+  position:absolute;
+  left:0; right:0; top:0;
+  height:6px;
+  background: linear-gradient(90deg,
+    rgba(99,102,241,.95),
+    rgba(168,85,247,.90),
+    rgba(16,185,129,.65)
+  );
+}
+
+.fazHeroInner{ padding: 14px 16px 12px; }
+.fazHeroRow{ display:flex; align-items:flex-start; justify-content:space-between; gap:14px; }
+
+.fazHeroLeft{ min-width: 0; }
+
+.fazHeroPill{
+  display:inline-flex;
+  align-items:center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(199,210,254,.85);
+  background: rgba(99,102,241,.08);
+  color: rgba(67,56,202,1);
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.fazHeroTitle{
+  margin-top: 10px;
+  line-height: 1.02;
+  font-weight: 950;
+  letter-spacing: -0.02em;
+  font-size: 44px;
+  white-space: nowrap;
+}
+
+.fazHeroTitle .tBase{ color: rgba(55,65,81,1); }
+.fazHeroTitle .tAccent{
+  background: linear-gradient(90deg, rgba(168,85,247,1), rgba(16,185,129,1));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.fazHeroSubtitle{
+  margin-top: 10px;
+  color: rgba(71,85,105,1);
+  font-size: 15px;
+  font-weight: 650;
+  max-width: 780px;
+}
+
+.fazHeroRight{ flex: 0 0 auto; }
+
+.fazBrandLockup{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(226,232,240,.92);
+  background: rgba(248,250,252,.80);
+}
+
+.fazBrandLogo{
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  image-rendering: -webkit-optimize-contrast;
+  filter: none !important;
+  transform: translateZ(0);
+}
+
+.idealTagline{
+  font-size: 13px;
+  font-weight: 950;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, rgba(168,85,247,1), rgba(16,185,129,1));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  white-space: nowrap;
+}
+
+/* Responsivo */
+@media (max-width: 980px){
+  .fazHeroRow{ flex-direction: column; }
+  .fazHeroTitle{ font-size: 38px; white-space: normal; }
+  .fazBrandLockup{ align-self: flex-start; }
+}
+
+@media (max-width: 520px){
+  .fazHeroInner{ padding: 12px 12px 10px; }
+  .fazHeroTitle{ font-size: 32px; }
+  .idealTagline{ font-size: 12px; }
+}

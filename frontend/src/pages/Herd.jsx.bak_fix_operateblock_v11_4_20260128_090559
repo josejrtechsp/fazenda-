@@ -1,0 +1,2204 @@
+import React, { useEffect, useMemo, useState } from "react";
+import CrasPageHeader from "../components/CrasPageHeader.jsx";
+import { api } from "../lib/api.js";
+import "../styles/herd_rebanho_fix.css";
+
+function fmtInt(n){
+  try { return Number(n).toLocaleString("pt-BR"); } catch { return String(n); }
+}
+
+function fmtKg(n){
+  if (n == null || Number.isNaN(Number(n))) return "—";
+  return `${fmtInt(Math.round(Number(n)))} kg`;
+}
+
+function normalizeEarTag(s){
+  return (s || "").toString().trim().replace(/[^0-9A-Za-z]/g, "").toUpperCase();
+}
+
+
+function fmtGmdValue(g){
+  if (g == null || Number.isNaN(Number(g))) return { txt: "—", label: "none" };
+  const x = Number(g);
+  // evita "+0.00" vindo de arredondamento
+  const val = Math.abs(x) < 0.005 ? 0 : x;
+  let label = "neutro";
+  if (val > 0.05) label = "pos";
+  else if (val < -0.05) label = "neg";
+  const sign = val > 0 ? "+" : "";
+  const txtNum = val === 0 ? "0.00" : `${sign}${val.toFixed(2)}`;
+  return { txt: txtNum, label };
+}
+
+function daysSinceIso(iso){
+  try {
+    if (!iso) return null;
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return null;
+    const ms = Date.now() - d.getTime();
+    return Math.max(0, Math.floor(ms / (1000*60*60*24)));
+  } catch {
+    return null;
+  }
+}
+
+function fmtDateShort(iso){
+  try {
+    if (!iso) return "—";
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return "—";
+    return d.toLocaleDateString("pt-BR");
+  } catch {
+    return "—";
+  }
+}
+
+function coerceActionKey(a){
+  return a?.key || a;
+}
+
+// fallback (quando sem backend)
+const MOCK_LOTS = [
+  { id: 10, name: "Vacas", category: "VACA", area_name: "Manga 7", heads: 65 },
+  { id: 15, name: "Boiada", category: "BOI", area_name: "Manga 30", heads: 80 },
+  { id: 18, name: "Novilhas", category: "NOVILHA", area_name: "Manga 18", heads: 42 },
+  { id: 21, name: "Bezerros", category: "BEZERRO", area_name: "Manga 21", heads: 55 },
+];
+
+
+
+const HEALTH_OPTIONS = [
+  { code: "CLOSTRIDIAL", name: "Clostridial (polivalente)", kind: "vaccine" },
+  { code: "RAIVA", name: "Raiva", kind: "vaccine" },
+  { code: "LEPTO", name: "Leptospirose", kind: "vaccine" },
+  { code: "IBR_BVD", name: "IBR/BVD", kind: "vaccine" },
+  { code: "BOTULISMO", name: "Botulismo", kind: "vaccine" },
+  { code: "BRUCELOSE", name: "Brucelose (fêmeas 3–8m)", kind: "vaccine" },
+  { code: "VERMIFUGO", name: "Vermífugo", kind: "dewormer" },
+  { code: "CARRAPATO", name: "Carrapaticida", kind: "treatment" },
+  { code: "AFTOSA", name: "Aftosa (se aplicável)", kind: "vaccine" },
+];
+
+// Reprodução (IATF/Resync) — ações de curral que costumam acontecer junto da pesagem
+const REPRO_OPTIONS = [
+  { code: "ESTRO_SYNC", name: "Sincronização do cio (Protocolo IATF)", kind: "repro" },
+  { code: "OVULATION_INDUCE", name: "Indução de ovulação", kind: "repro" },
+  { code: "IATF", name: "Inseminação (IATF)", kind: "repro" },
+  { code: "RESYNC", name: "Ressincronização (Resync)", kind: "repro" },
+  { code: "DG", name: "Diagnóstico de gestação (DG)", kind: "repro" },
+];
+
+
+const MOCK_ANIMALS_BY_LOT = {
+  15: [
+    { ear_tag: "7820", sex: "M", category: "BOI", lot_id: 15, last_weight_kg: 460, last_weighed_at: new Date(Date.now()-55*864e5).toISOString(), status: "active" },
+    { ear_tag: "A2402", sex: "M", category: "BOI", lot_id: 15, last_weight_kg: 510, last_weighed_at: new Date(Date.now()-10*864e5).toISOString(), status: "active" },
+    { ear_tag: "A2403", sex: "M", category: "BOI", lot_id: 15, last_weight_kg: 495, last_weighed_at: new Date(Date.now()-21*864e5).toISOString(), status: "active" },
+  ],
+  10: [
+    { ear_tag: "7812", sex: "F", category: "VACA", lot_id: 10, last_weight_kg: 450, last_weighed_at: new Date(Date.now()-14*864e5).toISOString(), status: "active" },
+    { ear_tag: "A2391", sex: "F", category: "VACA", lot_id: 10, last_weight_kg: 420, last_weighed_at: new Date(Date.now()-35*864e5).toISOString(), status: "active" },
+    { ear_tag: "7819", sex: "F", category: "VACA", lot_id: 10, last_weight_kg: 438, last_weighed_at: new Date(Date.now()-75*864e5).toISOString(), status: "active" },
+  ],
+  18: [
+    { ear_tag: "N110", sex: "F", category: "NOVILHA", lot_id: 18, last_weight_kg: 350, last_weighed_at: new Date(Date.now()-18*864e5).toISOString(), status: "active" },
+    { ear_tag: "N111", sex: "F", category: "NOVILHA", lot_id: 18, last_weight_kg: 368, last_weighed_at: new Date(Date.now()-42*864e5).toISOString(), status: "active" },
+  ],
+  21: [
+    { ear_tag: "B901", sex: "M", category: "BEZERRO", lot_id: 21, last_weight_kg: 210, last_weighed_at: new Date(Date.now()-12*864e5).toISOString(), status: "active" },
+    { ear_tag: "B902", sex: "F", category: "BEZERRA", lot_id: 21, last_weight_kg: 195, last_weighed_at: new Date(Date.now()-12*864e5).toISOString(), status: "active" },
+  ],
+};
+
+export default function Herd({ onTransfer = () => {} }){
+  // tabs: overview | lots | animals | animal
+  const [tab, setTab] = useState("operate");
+  const [opQ, setOpQ] = useState("");
+  const [prevTab, setPrevTab] = useState("lots");
+
+  // === REBANHO_TRANSFER_LOTE_V1 ===
+  const [xferFromLot, setXferFromLot] = useState(null);
+  const [xferToLot, setXferToLot] = useState(null);
+  const [xferQ, setXferQ] = useState("");
+  const [xferReason, setXferReason] = useState("manejo");
+  const [xferNote, setXferNote] = useState("");
+  const [xferPick, setXferPick] = useState({}); // ear_tag -> bool
+  const [xferAnimals, setXferAnimals] = useState([]);
+  const [xferBusy, setXferBusy] = useState(false);
+  const [xferMsg, setXferMsg] = useState(null);
+
+
+  const [lots, setLots] = useState([]);
+  const [selectedLotId, setSelectedLotId] = useState(15);
+  const [animalsLot, setAnimalsLot] = useState([]);
+  const [animalsAll, setAnimalsAll] = useState([]);
+  const [summary, setSummary] = useState(null);
+
+  const [qLot, setQLot] = useState("");
+  const [qAll, setQAll] = useState("");
+
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState(null);
+  const [notice, setNotice] = useState(null);
+
+  // baixa (venda/morte/descarte)
+  const [baixaOpen, setBaixaOpen] = useState(false);
+  const [baixaEar, setBaixaEar] = useState(null);
+  const [baixaKind, setBaixaKind] = useState("venda");
+  const [baixaDate, setBaixaDate] = useState(() => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+  });
+  const [baixaKg, setBaixaKg] = useState("");
+  const [baixaBrl, setBaixaBrl] = useState("");
+  const [baixaNote, setBaixaNote] = useState("");
+  const [baixaSaving, setBaixaSaving] = useState(false);
+  const [baixaErr, setBaixaErr] = useState(null);
+
+  // filtros (Animais)
+  const [fCategory, setFCategory] = useState("ALL");
+  const [fLot, setFLot] = useState("ALL");
+  const [onlyStale, setOnlyStale] = useState(false);
+  const [onlyNegGmd, setOnlyNegGmd] = useState(false);
+  const [sortKey, setSortKey] = useState("stale"); // stale | gmd | ear | weight
+  const [animalsView, setAnimalsView] = useState("cards"); // cards | table
+  const [staleDays, setStaleDays] = useState(60);
+
+  // ficha (placeholder por enquanto)
+  const [selectedEar, setSelectedEar] = useState(null);
+  const [animalView, setAnimalView] = useState({ loading: false, err: null, data: null });
+  const [showWeighForm, setShowWeighForm] = useState(false);
+  const [weighDate, setWeighDate] = useState(() => {
+    const d = new Date();
+    // yyyy-mm-dd
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+  });
+  const [weighKg, setWeighKg] = useState("");
+  const [weighNote, setWeighNote] = useState("");
+  const [weighSaving, setWeighSaving] = useState(false);
+  const [weighErr, setWeighErr] = useState(null);
+  // pesagem rápida (campo)
+  const [qwOpen, setQwOpen] = useState(false);
+  const [qwEar, setQwEar] = useState("");
+  const [qwDate, setQwDate] = useState(() => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+  });
+  const [qwKg, setQwKg] = useState("");
+  const [qwNote, setQwNote] = useState("");
+  const [qwSaving, setQwSaving] = useState(false);
+  const [qwErr, setQwErr] = useState(null);
+
+  const [healthEnabled, setHealthEnabled] = useState(false);
+  const [healthSelected, setHealthSelected] = useState(() => ({}));
+  const [healthDose, setHealthDose] = useState("");
+  const [healthBatch, setHealthBatch] = useState("");
+  const [healthNote, setHealthNote] = useState("");
+  const [healthOther, setHealthOther] = useState("");
+
+  // reprodução (IATF/Resync) — lançado junto da pesagem no curral
+  const [reproSelected, setReproSelected] = useState(() => ({}));
+  const [reproSemen, setReproSemen] = useState("");
+  const [reproProtocol, setReproProtocol] = useState("");
+  const [reproNote, setReproNote] = useState("");
+
+  const toggleHealth = (code) => {
+    setHealthSelected((m) => ({ ...m, [code]: !m[code] }));
+  };
+
+  const toggleRepro = (code) => {
+    setReproSelected((m) => ({ ...m, [code]: !m[code] }));
+  };
+
+  const selectedLot = useMemo(
+    () => lots.find(l => Number(l.id) === Number(selectedLotId)) || lots[0],
+    [lots, selectedLotId]
+  );
+
+  const lotById = useMemo(() => {
+    const m = new Map();
+    (lots || []).forEach(l => m.set(Number(l.id), l));
+    return m;
+  }, [lots]);
+
+  function animalDays(a){
+    if (a?.days_since_weigh != null) return Number(a.days_since_weigh);
+    if (a?.last_weighed_at) return daysSinceIso(a.last_weighed_at);
+    return null;
+  }
+
+  function animalLastDateIso(a){
+    if (a?.last_weighed_at) return a.last_weighed_at;
+    const ds = a?.days_since_weigh;
+    if (ds == null) return null;
+    const d = new Date(Date.now() - Number(ds) * 864e5);
+    return d.toISOString();
+  }
+
+  function animalGmd(a){
+    const g = a?.gmd_kg_day;
+    if (g == null || Number.isNaN(Number(g))) return null;
+    return Number(g);
+  }
+
+  async function loadSummary(){
+    const data = await api.get("/herd/summary");
+    setSummary(data);
+  }
+
+  async function loadLots(pick=true){
+    const data = await api.get("/herd/lots");
+    const ll = (data?.lots || []).map(l => ({
+      id: Number(l.id),
+      name: l.name || l.label || `Lote ${l.id}`,
+      category: l.category || "—",
+      area_name: l.area_name || l.area_label || l.area || "—",
+      heads: Number(l.heads || 0),
+    }));
+    setLots(ll);
+    if (pick && ll.length){
+      setSelectedLotId(prev => (ll.some(x => x.id === Number(prev)) ? prev : ll[0].id));
+    }
+    return ll;
+  }
+
+  
+
+  function openTransferTab(fromLotId){
+    const fromId = Number(fromLotId ?? selectedLotId);
+    setXferFromLot(fromId);
+    // pick default to first different lot
+    const candidate = (lots || []).find(l => Number(l.id) !== Number(fromId));
+    setXferToLot(candidate ? Number(candidate.id) : null);
+    setXferPick({});
+    setXferQ("");
+    setXferReason("manejo");
+    setXferNote("");
+    setXferMsg(null);
+    setTab("transfer");
+  }
+
+  async function loadXferAnimals(lotId){
+    try {
+      const data = await api.get(`/herd/animals?lot_id=${encodeURIComponent(lotId)}`);
+      setXferAnimals(Array.isArray(data?.animals) ? data.animals : []);
+    } catch {
+      setXferAnimals([]);
+    }
+  }
+
+  async function confirmTransfer(){
+    if (!xferFromLot || !xferToLot){
+      setXferMsg("Selecione origem e destino.");
+      return;
+    }
+    const picks = Object.entries(xferPick || {}).filter(([,v]) => v).map(([k]) => k);
+    if (!picks.length){
+      setXferMsg("Selecione ao menos 1 animal.");
+      return;
+    }
+    try {
+      setXferBusy(true);
+      setXferMsg(null);
+      const resp = await api.post('/herd/move', {
+        from_lot_id: Number(xferFromLot),
+        to_lot_id: Number(xferToLot),
+        ear_tags: picks,
+        reason: xferReason,
+        note: xferNote,
+      });
+      await refreshAll();
+      setXferMsg(`Transferência aplicada: ${resp?.moved ?? picks.length} animal(is).`);
+      setTab('lots');
+      setNotice(`Transferência aplicada: ${resp?.moved ?? picks.length} animal(is).`);
+      setTimeout(() => setNotice(null), 6000);
+    } catch (e){
+      setXferMsg(`Falha ao transferir: ${e?.message || 'erro'}`);
+    } finally {
+      setXferBusy(false);
+    }
+  }
+async function loadAnimalsForLot(lotId){
+    const data = await api.get(`/herd/animals?lot_id=${encodeURIComponent(lotId)}`);
+    setAnimalsLot(data?.animals || []);
+  }
+
+  async function loadAnimalsAllSmart(ll){
+    // tenta /herd/animals?all=1 (se existir). Se não, busca por lote.
+    try {
+      const data = await api.get("/herd/animals?all=1&limit=2000");
+      if (Array.isArray(data?.animals) && data.animals.length){
+        setAnimalsAll(data.animals);
+        return;
+      }
+      // se veio vazio, tenta fallback por lote (evita "0 itens" indevido)
+    } catch {
+      // fallback per-lot
+    }
+
+    const lotList = ll || lots;
+    if (!lotList.length){
+      setAnimalsAll([]);
+      return;
+    }
+
+    const res = await Promise.all(
+      lotList.map(async (l) => {
+        try {
+          const d = await api.get(`/herd/animals?lot_id=${encodeURIComponent(l.id)}&limit=2000`);
+          const arr = (d?.animals || []).map(a => ({ ...a, lot_id: Number(a.lot_id ?? l.id) }));
+          return arr;
+        } catch {
+          return [];
+        }
+      })
+    );
+
+    const flat = res.flat();
+    setAnimalsAll(flat);
+  }
+
+  async function refreshAll(){
+    setLoading(true);
+    setErr(null);
+    setNotice(null);
+
+    try {
+      const ll = await loadLots(true);
+      await loadSummary();
+
+      const lotId = ll.length
+        ? (ll.some(x => x.id === Number(selectedLotId)) ? Number(selectedLotId) : ll[0].id)
+        : Number(selectedLotId);
+
+      await loadAnimalsForLot(lotId);
+      await loadAnimalsAllSmart(ll);
+    } catch (e){
+      setErr(e?.message || "Sem conexão");
+
+      // fallback demo
+      setLots(MOCK_LOTS);
+      setSelectedLotId(15);
+      setAnimalsLot(MOCK_ANIMALS_BY_LOT[15] || []);
+      const all = Object.values(MOCK_ANIMALS_BY_LOT).flat();
+      setAnimalsAll(all);
+
+      setSummary({
+        total_active: 244,
+        by_category: { VACA: 120, BOI: 60, NOVILHA: 30, BEZERRO: 18, BEZERRA: 16 },
+        weighing_ok_pct: 61.5,
+        no_weigh_count: 94,
+      });
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    refreshAll();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (tab !== 'transfer') return;
+    if (!xferFromLot) return;
+    loadXferAnimals(xferFromLot);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tab, xferFromLot]);
+
+
+  useEffect(() => {
+    if (!lots.length) return;
+
+    if (err) {
+      setAnimalsLot(MOCK_ANIMALS_BY_LOT[selectedLotId] || []);
+      return;
+    }
+
+    loadAnimalsForLot(selectedLotId).catch(() => {
+      setAnimalsLot(MOCK_ANIMALS_BY_LOT[selectedLotId] || []);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedLotId]);
+
+  async function seedDemo(){
+    try {
+      setLoading(true);
+      setNotice("Gerando seed do rebanho…");
+      const resp = await api.post("/herd/seed-demo", {});
+      await refreshAll();
+      setTab("lots");
+      setNotice(
+        `Seed gerado: ${resp?.message || "ok"}.`
+      );
+    } catch (e){
+      const msg = e?.message || "Falha ao gerar seed";
+      setErr(msg);
+      setNotice(`Erro ao gerar seed: ${msg}`);
+    } finally {
+      setLoading(false);
+      setTimeout(() => setNotice(null), 7000);
+    }
+  }
+
+  function applyLocalWeighing(earTag, weightKg, iso){
+    const ear = normalizeEarTag(earTag);
+    const kg = Number(weightKg);
+    const patchOne = (a) => {
+      if (!a) return a;
+      const aEar = normalizeEarTag(a.ear_tag);
+      if (aEar !== ear) return a;
+      return {
+        ...a,
+        last_weight_kg: kg,
+        last_weighed_at: iso,
+        days_since_weigh: 0,
+      };
+    };
+
+    setAnimalsAll((prev) => Array.isArray(prev) ? prev.map(patchOne) : prev);
+    setAnimalsLot((prev) => Array.isArray(prev) ? prev.map(patchOne) : prev);
+
+    try {
+      const key = "fazenda_rebanho_local_weighings_v1";
+      const cur = JSON.parse(localStorage.getItem(key) || "[]");
+      const next = Array.isArray(cur) ? cur : [];
+      next.push({ ear_tag: ear, weight_kg: kg, date_iso: iso, note: qwNote || "" });
+      localStorage.setItem(key, JSON.stringify(next.slice(-500)));
+    } catch {}
+  }
+
+  function openQuickWeigh(){
+    const d = new Date();
+    const today = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+    setQwErr(null);
+    setQwEar(selectedEar || "");
+    setQwKg("");
+    setQwNote("");
+    setQwDate(today);
+    setQwOpen(true);
+  }
+
+  async function submitQuickWeigh(){
+    const ear = normalizeEarTag(qwEar);
+    const kgNum = Number(String(qwKg || "").replace(",", "."));
+
+    if (!ear){
+      setQwErr("Informe o brinco do animal.");
+      return;
+    }
+    if (!Number.isFinite(kgNum) || kgNum <= 0){
+      setQwErr("Informe o peso (kg).");
+      return;
+    }
+
+    try {
+      setQwSaving(true);
+      setQwErr(null);
+
+      await api.post("/herd/weighings", {
+        ear_tag: ear,
+        date: qwDate,
+        weight_kg: kgNum,
+        note: qwNote || "",
+        health_enabled: false,
+        health_actions: [],
+        health_meta: {},
+        repro_actions: [],
+        repro_meta: {},
+      });
+
+      setQwOpen(false);
+      setPrevTab(tab);
+      setSelectedEar(ear);
+      setTab("animal");
+      setNotice("Pesagem registrada.");
+      await refreshAll();
+      try { await loadAnimalDetail(ear); } catch {}
+    } catch (e){
+      // Modo demo/local: atualiza telas (sem backend)
+      let iso = new Date().toISOString();
+      try {
+        const d = new Date(qwDate);
+        if (!Number.isNaN(d.getTime())) iso = d.toISOString();
+      } catch {}
+      applyLocalWeighing(ear, kgNum, iso);
+
+      setQwOpen(false);
+      setSelectedEar(ear);
+      setTab("animals");
+      setNotice("Sem backend: pesagem salva no modo demo (local).");
+    } finally {
+      setQwSaving(false);
+      setTimeout(() => setNotice(null), 6000);
+    }
+  }
+
+
+  function openTransferLot(){
+    onTransfer({
+      mode: "lot_to_area",
+      fromLot: selectedLot?.id,
+      fromLotLabel: selectedLot?.name,
+      notes: `Origem: ${selectedLot?.area_name || "—"}`,
+    });
+  }
+
+  function openTransferPartial(){
+    onTransfer({
+      mode: "lot_to_lot",
+      fromLot: selectedLot?.id,
+      fromLotLabel: selectedLot?.name,
+      qty: 30,
+      notes: `Separação parcial de ${selectedLot?.name}`,
+    });
+  }
+
+  // Lote: filtrar por brinco
+  const filteredAnimalsLot = useMemo(() => {
+    const list = animalsLot || [];
+    const qq = normalizeEarTag(qLot);
+    if (!qq) return list;
+    return list.filter(a => normalizeEarTag(a.ear_tag).includes(qq));
+  }, [animalsLot, qLot]);
+
+  // Animais: filtros / ordenação
+  const categories = useMemo(() => {
+    const set = new Set();
+    (animalsAll || []).forEach(a => { if (a?.category) set.add(String(a.category)); });
+    return ["ALL", ...Array.from(set).sort()];
+  }, [animalsAll]);
+
+  const lotOptions = useMemo(() => {
+    const arr = (lots || []).map(l => ({ id: String(l.id), label: l.name || `Lote ${l.id}` }));
+    return [{ id: "ALL", label: "Todos os lotes" }, ...arr];
+  }, [lots]);
+
+  const filteredAnimalsAll = useMemo(() => {
+    let list = Array.isArray(animalsAll) ? [...animalsAll] : [];
+
+    const qq = normalizeEarTag(qAll);
+    if (qq) list = list.filter(a => normalizeEarTag(a.ear_tag).includes(qq));
+
+    if (fCategory !== "ALL") list = list.filter(a => String(a.category) === fCategory);
+
+    if (fLot !== "ALL") list = list.filter(a => String(a.lot_id) === String(fLot));
+
+    if (onlyStale){
+      list = list.filter(a => {
+        const ds = animalDays(a);
+        return ds != null && ds > Number(staleDays);
+      });
+    }
+
+    if (onlyNegGmd){
+      list = list.filter(a => {
+        const g = animalGmd(a);
+        return g != null && g < -0.05;
+      });
+    }
+
+    // sort
+    list.sort((a,b) => {
+      if (sortKey === "ear") return String(a.ear_tag).localeCompare(String(b.ear_tag));
+
+      if (sortKey === "weight"){
+        const aw = Number(a.last_weight_kg ?? -1);
+        const bw = Number(b.last_weight_kg ?? -1);
+        return bw - aw;
+      }
+
+      if (sortKey === "gmd"){
+        const ag = animalGmd(a);
+        const bg = animalGmd(b);
+        // pior primeiro: menor valor (mais negativo)
+        if (ag == null && bg == null) return 0;
+        if (ag == null) return 1;
+        if (bg == null) return -1;
+        return ag - bg;
+      }
+
+      // stale (default): maior dias primeiro
+      const ad = animalDays(a);
+      const bd = animalDays(b);
+      if (ad == null && bd == null) return 0;
+      if (ad == null) return 1;
+      if (bd == null) return -1;
+      return bd - ad;
+    });
+
+    return list;
+  }, [animalsAll, qAll, fCategory, fLot, onlyStale, staleDays, onlyNegGmd, sortKey]);
+
+  function openFicha(ear){
+    setPrevTab(tab);
+    setSelectedEar(String(ear));
+    setTab("animal");
+    setShowWeighForm(false);
+  }
+
+  function openFichaWeigh(ear){
+    setPrevTab(tab);
+    setSelectedEar(String(ear));
+    setTab("animal");
+    setShowWeighForm(true);
+  }
+
+function openBaixa(ear){
+    setBaixaErr(null);
+    setBaixaEar(ear);
+    setBaixaKind("venda");
+    const d = new Date();
+    setBaixaDate(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`);
+    setBaixaKg("");
+    setBaixaBrl("");
+    setBaixaNote("");
+    setBaixaOpen(true);
+  }
+
+  async function submitBaixa(){
+    if (!baixaEar) return;
+    setBaixaSaving(true);
+    setBaixaErr(null);
+    try {
+      const occurred_at = baixaDate ? new Date(`${baixaDate}T12:00:00`).toISOString() : null;
+      const payload = {
+        kind: baixaKind,
+        occurred_at,
+        note: baixaNote || "",
+        weight_kg: baixaKg ? Number(String(baixaKg).replace(",",".")) : null,
+        price_brl: baixaBrl ? Number(String(baixaBrl).replace(",",".")) : null,
+      };
+      await api.post(`/herd/animals/${encodeURIComponent(baixaEar)}/baixa`, payload);
+      setNotice(`Baixa registrada: ${baixaEar} (${baixaKind}).`);
+      setBaixaOpen(false);
+      // recarrega visões
+      await Promise.allSettled([loadSummary(), loadLots(false)]);
+      // recarrega lista
+      if (tab === "animals"){
+        await loadAnimalsAllSmart(lots);
+      }
+      if (tab === "lots"){
+        await loadAnimalsForLot(selectedLotId);
+      }
+    } catch (e){
+      setBaixaErr(e?.message || String(e));
+    } finally {
+      setBaixaSaving(false);
+    }
+  }
+
+  async function loadAnimalDetail(ear){
+    setAnimalView({ loading: true, err: null, data: null });
+    try {
+      const data = await api.get(`/herd/animal/${encodeURIComponent(String(ear))}`);
+      setAnimalView({ loading: false, err: null, data });
+    } catch (e){
+      setAnimalView({ loading: false, err: e?.message || "Falha ao carregar ficha", data: null });
+    }
+  }
+
+  useEffect(() => {
+    if (tab !== "animal" || !selectedEar) return;
+    loadAnimalDetail(selectedEar);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tab, selectedEar]);
+
+  function gmdBetween(w1, w2){
+    try {
+      if (!w1 || !w2) return null;
+      const d1 = new Date(w1.weighed_at);
+      const d2 = new Date(w2.weighed_at);
+      const days = (d2.getTime() - d1.getTime()) / 86400000;
+      if (!Number.isFinite(days) || days <= 0) return null;
+      const delta = Number(w2.weight_kg) - Number(w1.weight_kg);
+      if (!Number.isFinite(delta)) return null;
+      return delta / days;
+    } catch {
+      return null;
+    }
+  }
+
+  function svgPathFromWeights(ws){
+    try {
+      if (!Array.isArray(ws) || ws.length < 2) return null;
+      const vals = ws.map(w => Number(w.weight_kg)).filter(v => Number.isFinite(v));
+      if (vals.length < 2) return null;
+      const min = Math.min(...vals);
+      const max = Math.max(...vals);
+      const pad = (max - min) === 0 ? 1 : (max - min) * 0.08;
+      const lo = min - pad;
+      const hi = max + pad;
+      const n = ws.length;
+      const pts = ws.map((w, i) => {
+        const x = (i / (n - 1)) * 100;
+        const y = 100 - ((Number(w.weight_kg) - lo) / (hi - lo)) * 100;
+        return { x, y };
+      });
+      return "M " + pts.map(p => `${p.x.toFixed(2)} ${p.y.toFixed(2)}`).join(" L ");
+    } catch {
+      return null;
+    }
+  }
+
+  async function submitWeighing(){
+    if (!selectedEar) return;
+    setWeighErr(null);
+    const kg = Number(String(weighKg).replace(",", "."));
+    if (!Number.isFinite(kg) || kg <= 0){
+      setWeighErr("Informe um peso válido (kg). ");
+      return;
+    }
+    const dateStr = (weighDate || "").trim();
+    const iso = dateStr ? new Date(`${dateStr}T12:00:00`).toISOString() : null;
+
+    try {
+      setWeighSaving(true);
+            const health = healthEnabled ? (
+        HEALTH_OPTIONS.filter(o => healthSelected[o.code]).map(o => ({
+          kind: o.kind,
+          code: o.code,
+          name: o.name,
+          dose: healthDose || "",
+          batch: healthBatch || "",
+          note: healthNote || "",
+        })).concat((healthOther || "").trim() ? [{
+          kind: "other",
+          code: "OUTRO",
+          name: (healthOther || "").trim(),
+          dose: healthDose || "",
+          batch: healthBatch || "",
+          note: healthNote || "",
+        }] : [])
+      ) : null;
+
+      const repro = healthEnabled ? (
+        REPRO_OPTIONS.filter(o => reproSelected[o.code]).map(o => ({
+          code: o.code,
+          name: o.name,
+        }))
+      ) : null;
+
+      await api.post("/herd/weighings", {
+        ear_tag: selectedEar,
+        weight_kg: kg,
+        weighed_at: iso,
+        note: weighNote || "",
+        health,
+        repro,
+        repro_semen: reproSemen || "",
+        repro_protocol: reproProtocol || "",
+        repro_note: reproNote || "",
+      });
+      setWeighKg("");
+      setWeighNote("");
+      setShowWeighForm(false);
+      setHealthEnabled(false);
+      setHealthSelected({});
+      setHealthDose("");
+      setHealthBatch("");
+      setHealthNote("");
+      setHealthOther("");
+      setReproSelected({});
+      setReproSemen("");
+      setReproProtocol("");
+      setReproNote("");
+      await loadAnimalDetail(selectedEar);
+      // atualiza listas/indicadores
+      await refreshAll();
+      setNotice("Pesagem registrada.");
+    } catch (e){
+      setWeighErr(e?.message || "Falha ao registrar pesagem");
+    } finally {
+      setWeighSaving(false);
+      setTimeout(() => setNotice(null), 5000);
+    }
+  }
+
+  const totalActive = summary?.total_active ?? null;
+const byCat = summary?.by_category || {};
+
+
+  const opQNorm = normalizeEarTag(opQ);
+
+  const opMatches = useMemo(() => {
+    try {
+      const q = opQNorm;
+      const list = Array.isArray(animalsAll) ? animalsAll : [];
+      if (!q) return [];
+      return list
+        .filter((a) => normalizeEarTag(a?.ear_tag).includes(q))
+        .slice(0, 10);
+    } catch {
+      return [];
+    }
+  }, [opQNorm, animalsAll]);
+
+  const opExact = useMemo(() => {
+    try {
+      const q = opQNorm;
+      if (!q) return null;
+      return (opMatches || []).find((a) => normalizeEarTag(a?.ear_tag) === q) || null;
+    } catch {
+      return null;
+    }
+  }, [opQNorm, opMatches]);
+
+const staleCount = useMemo(() => {
+  try {
+    const list = Array.isArray(animalsAll) ? animalsAll : [];
+    return list.filter(a => {
+      const ds = animalDays(a);
+      return ds != null && ds > Number(staleDays);
+    }).length;
+  } catch { return 0; }
+}, [animalsAll, staleDays]);
+
+const negGmdCount = useMemo(() => {
+  try {
+    const list = Array.isArray(animalsAll) ? animalsAll : [];
+    return list.filter(a => {
+      const g = animalGmd(a);
+      return g != null && g < -0.05;
+    }).length;
+  } catch { return 0; }
+}, [animalsAll]);
+
+const weighingOkPct = summary?.weighing_ok_pct ?? null;
+  const headerTabs = useMemo(() => {
+    const base = [
+      { key: "overview", label: "Visão geral" },
+      { key: "lots", label: "Lotes" },
+      { key: "animals", label: "Animais" },
+      { key: "transfer", label: "Transferir" },
+    ];
+    if (selectedEar) base.push({ key: "animal", label: "Ficha" });
+    return base;
+  }, [selectedEar]);
+
+  const headerActiveKey = (selectedEar && tab === "animal") ? "animal" : tab;
+
+  return (
+    <div className="faz-herd cras-stage-v2 cras-ui-v2">
+      <CrasPageHeader
+        eyebrow="Operação"
+        title="Rebanho"
+        subtitle="Lotes e animais — simples no dia a dia, completo quando precisar."
+        subtabs={headerTabs}
+        activeSubtabKey={headerActiveKey}
+        onSubtab={(k) => {
+          if (k === "transfer") return openTransferTab(selectedLotId);
+          if (k === "animal") return selectedEar ? setTab("animal") : setTab("animals");
+          setTab(k);
+        }}
+        actions={[
+          { key: "quickweigh", label: "Pesagem rápida", variant: "primary" },
+          { key: "move_lot", label: "Mover lote", variant: "ghost" },
+          { key: "seed", label: "Demo", variant: "ghost" },
+        ]}
+        onAction={(a) => {
+          const k = coerceActionKey(a);
+          if (k === "seed") return seedDemo();
+          if (k === "move_lot") return openTransferLot();
+          if (k === "quickweigh") return openQuickWeigh();
+        }}
+      />
+
+      <div className="cras-stage-body">
+        {err ? (
+          <div className="texto-suave" style={{ margin: "6px 0 10px" }}>
+            Sem conexão/sem dados reais no momento — exibindo visão simplificada. ({String(err)})
+          </div>
+        ) : null}
+
+        {notice ? (
+          <div className="texto-suave" style={{ margin: "6px 0 10px" }}><b>Aviso:</b> {notice}</div>
+        ) : null}
+
+        {tab === "operate" ? (
+  <div className="card">
+    <div className="card-header-row" style={{ alignItems: "flex-start" }}>
+      <div>
+        <div style={{ fontWeight: 900 }}>Operar por brinco</div>
+        <div className="card-subtitle">
+          Digite o brinco e faça pesagem/movimentação em segundos.
+        </div>
+      </div>
+
+      <div className="faz-actions-row" style={{ marginLeft: "auto" }}>
+        <button className="faz-btn primary" type="button" onClick={openQuickWeigh}>
+          Pesagem rápida
+        </button>
+        <button className="faz-btn" type="button" onClick={() => setTab("lots")}>
+          Ver lotes
+        </button>
+        <button className="faz-btn" type="button" onClick={seedDemo}>
+          Demo
+        </button>
+      </div>
+    </div>
+
+    <div style={{ marginTop: 12 }}>
+      <label className="form-label">Buscar brinco</label>
+      <input
+        className="input"
+        value={opQ}
+        onChange={(e) => setOpQ(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key !== "Enter") return;
+          if (opExact) return openFicha(opExact.ear_tag);
+          if (opMatches.length === 1) return openFicha(opMatches[0].ear_tag);
+        }}
+        placeholder="Ex.: A2402, N901, 7812..."
+      />
+      <div className="texto-suave" style={{ marginTop: 6 }}>
+        Dica: aperte <b>Enter</b> para abrir a ficha quando houver um match.
+      </div>
+    </div>
+
+    {Array.isArray(animalsAll) && animalsAll.length === 0 ? (
+      <div className="faz-emptyNice" style={{ marginTop: 12 }}>
+        Sem animais carregados no momento. Clique em <b>Demo</b> para preencher dados de exemplo.
+      </div>
+    ) : null}
+
+    {opQNorm && opMatches.length === 0 ? (
+      <div className="faz-emptyNice" style={{ marginTop: 12 }}>
+        Nenhum animal encontrado para <b>{opQNorm}</b>.
+      </div>
+    ) : null}
+
+    {opMatches.length > 0 ? (
+      <div className="faz-animals" style={{ marginTop: 12 }}>
+        {opMatches.map((a) => {
+          const lot = lotById.get(Number(a.lot_id));
+          const lotLabel = lot?.name || (a.lot_id != null ? `Lote ${a.lot_id}` : "—");
+          const ds = animalDays(a);
+          const stale = ds != null && ds > Number(staleDays);
+          const lastIso = animalLastDateIso(a);
+          const g = animalGmd(a);
+          const gv = fmtGmdValue(g);
+          const gTxt = gv.txt === "—" ? "—" : `${gv.txt} kg/d`;
+
+          return (
+            <div key={a.ear_tag} className={"faz-animal-row" + (stale ? " is-alert" : "")}>
+              <button type="button" className="link ear" onClick={() => openFicha(a.ear_tag)}>
+                {a.ear_tag}
+              </button>
+
+              <div className="meta">
+                <span className="ear">{a.category || "—"}</span>
+                {" • "}{lotLabel}
+                {" • "}{fmtKg(a.last_weight_kg)}
+                {lastIso ? ` • ${fmtDateShort(lastIso)}` : ""}
+                {ds != null ? ` • ${ds} dias` : ""}
+                {gTxt !== "—" ? ` • GMD ${gTxt}` : ""}
+              </div>
+
+              <button className="faz-btn" type="button" onClick={() => openFicha(a.ear_tag)}>
+                Ficha
+              </button>
+              <button className="faz-btn primary" type="button" onClick={() => openFichaWeigh(a.ear_tag)}>
+                Pesagem
+              </button>
+              <button
+                className="faz-btn"
+                type="button"
+                onClick={() =>
+                  onTransfer({
+                    mode: "animal",
+                    earTags: [a.ear_tag],
+                    notes: `Movimentação individual — ${a.ear_tag}`,
+                  })
+                }
+              >
+                Mover
+              </button>
+              <button className="faz-btn" type="button" onClick={() => openBaixa(a.ear_tag)}>
+                Baixa
+              </button>
+            </div>
+          );
+        })}
+      </div>
+    ) : (
+      <div className="texto-suave" style={{ marginTop: 12 }}>
+        Comece digitando um brinco acima para aparecer a lista de animais.
+      </div>
+    )}
+  </div>
+) : null}
+
+    {opQNorm && opMatches.length === 0 ? (
+      <div className="faz-emptyNice" style={{ marginTop: 12 }}>
+        Nenhum animal encontrado para <b>{opQNorm}</b>.
+      </div>
+    ) : null}
+
+    {opMatches.length > 0 ? (
+      <div className="faz-animals" style={{ marginTop: 12 }}>
+        {opMatches.map((a) => {
+          const lot = lotById.get(Number(a.lot_id));
+          const lotLabel = lot?.name || (a.lot_id != null ? `Lote ${a.lot_id}` : "—");
+          const ds = animalDays(a);
+          const stale = ds != null && ds > Number(staleDays);
+          const lastIso = animalLastDateIso(a);
+          const g = animalGmd(a);
+          const gv = fmtGmdValue(g);
+          const gTxt = gv.txt === "—" ? "—" : `${gv.txt} kg/d`;
+
+          return (
+            <div key={a.ear_tag} className={"faz-animal-row" + (stale ? " is-alert" : "")}>
+              <button type="button" className="link ear" onClick={() => openFicha(a.ear_tag)}>
+                {a.ear_tag}
+              </button>
+
+              <div className="meta">
+                <span className="ear">{a.category || "—"}</span>
+                {" • "}{lotLabel}
+                {" • "}{fmtKg(a.last_weight_kg)}
+                {lastIso ? ` • ${fmtDateShort(lastIso)}` : ""}
+                {ds != null ? ` • ${ds} dias` : ""}
+                {gTxt !== "—" ? ` • GMD ${gTxt}` : ""}
+              </div>
+
+              <button className="faz-btn" type="button" onClick={() => openFicha(a.ear_tag)}>
+                Ficha
+              </button>
+              <button className="faz-btn primary" type="button" onClick={() => openFichaWeigh(a.ear_tag)}>
+                Pesagem
+              </button>
+              <button
+                className="faz-btn"
+                type="button"
+                onClick={() =>
+                  onTransfer({
+                    mode: "animal",
+                    earTags: [a.ear_tag],
+                    notes: `Movimentação individual — ${a.ear_tag}`,
+                  })
+                }
+              >
+                Mover
+              </button>
+              <button className="faz-btn" type="button" onClick={() => openBaixa(a.ear_tag)}>
+                Baixa
+              </button>
+            </div>
+          );
+        })}
+      </div>
+    ) : (
+      <div className="texto-suave" style={{ marginTop: 12 }}>
+        Comece digitando um brinco acima para aparecer a lista de animais.
+      </div>
+    )}
+  </div>
+) : null}
+
+{tab === "operate" ? (
+  <div className="card">
+    <div className="card-header-row">
+      <div>
+        <div style={{ fontWeight: 900 }}>Operar (brinco)</div>
+        <div className="card-subtitle">
+          O que importa hoje. Clique nos cards para filtrar.
+        </div>
+      </div>
+      <div style={{ textAlign: "right" }}>
+        <div style={{ fontWeight: 950, fontSize: 18 }}>
+          {totalActive != null ? fmtInt(totalActive) : "—"}
+        </div>
+        <div className="texto-suave">ativos</div>
+      </div>
+    </div>
+
+    <div className="faz-kpiGrid">
+      <button
+        type="button"
+        className="faz-kpiCard"
+        onClick={() => {
+          setTab("operate");
+          setOnlyStale(false);
+          setOnlyNegGmd(false);
+          setFCategory("ALL");
+          setFLot("ALL");
+        }}
+      >
+        <div className="k">Cabeças ativas</div>
+        <div className="v">{totalActive != null ? fmtInt(totalActive) : "—"}</div>
+        <div className="s">Total no sistema</div>
+      </button>
+<button className="faz-btn primary" type="button" onClick={openQuickWeigh}>
+          Pesagem rápida
+        </button>
+        <button className="faz-btn" type="button" onClick={() => setTab("lots")}>
+          Ver lotes
+        </button>
+        <button className="faz-btn" type="button" onClick={seedDemo}>
+          Demo
+        </button>
+      </div>
+    </div>
+
+    <div style={{ marginTop: 12 }}>
+      <label className="form-label">Buscar brinco</label>
+      <input
+        className="input"
+        value={opQ}
+        onChange={(e) => setOpQ(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key !== "Enter") return;
+          if (opExact) return openFicha(opExact.ear_tag);
+          if (opMatches.length === 1) return openFicha(opMatches[0].ear_tag);
+        }}
+        placeholder="Ex.: A2402, N901, 7812..."
+      />
+      <div className="texto-suave" style={{ marginTop: 6 }}>
+        Dica: aperte <b>Enter</b> para abrir a ficha quando houver um match.
+      </div>
+    </div>
+
+    {Array.isArray(animalsAll) && animalsAll.length === 0 ? (
+      <div className="faz-emptyNice" style={{ marginTop: 12 }}>
+        Sem animais carregados no momento. Clique em <b>Demo</b> para preencher dados de exemplo.
+      </div>
+    ) : null}
+
+    {opQNorm && opMatches.length === 0 ? (
+      <div className="faz-emptyNice" style={{ marginTop: 12 }}>
+        Nenhum animal encontrado para <b>{opQNorm}</b>.
+      </div>
+    ) : null}
+
+    {opMatches.length > 0 ? (
+      <div className="faz-animals" style={{ marginTop: 12 }}>
+        {opMatches.map((a) => {
+          const lot = lotById.get(Number(a.lot_id));
+          const lotLabel = lot?.name || (a.lot_id != null ? `Lote ${a.lot_id}` : "—");
+          const ds = animalDays(a);
+          const stale = ds != null && ds > Number(staleDays);
+          const lastIso = animalLastDateIso(a);
+          const g = animalGmd(a);
+          const gv = fmtGmdValue(g);
+          const gTxt = gv.txt === "—" ? "—" : `${gv.txt} kg/d`;
+
+          return (
+            <div key={a.ear_tag} className={"faz-animal-row" + (stale ? " is-alert" : "")}>
+              <button type="button" className="link ear" onClick={() => openFicha(a.ear_tag)}>
+                {a.ear_tag}
+              </button>
+
+              <div className="meta">
+                <span className="ear">{a.category || "—"}</span>
+                {" • "}{lotLabel}
+                {" • "}{fmtKg(a.last_weight_kg)}
+                {lastIso ? ` • ${fmtDateShort(lastIso)}` : ""}
+                {ds != null ? ` • ${ds} dias` : ""}
+                {gTxt !== "—" ? ` • GMD ${gTxt}` : ""}
+              </div>
+
+              <button className="faz-btn" type="button" onClick={() => openFicha(a.ear_tag)}>
+                Ficha
+              </button>
+              <button className="faz-btn primary" type="button" onClick={() => openFichaWeigh(a.ear_tag)}>
+                Pesagem
+              </button>
+              <button
+                className="faz-btn"
+                type="button"
+                onClick={() =>
+                  onTransfer({
+                    mode: "animal",
+                    earTags: [a.ear_tag],
+                    notes: `Movimentação individual — ${a.ear_tag}`,
+                  })
+                }
+              >
+                Mover
+              </button>
+              <button className="faz-btn" type="button" onClick={() => openBaixa(a.ear_tag)}>
+                Baixa
+              </button>
+            </div>
+          );
+        })}
+      </div>
+    ) : (
+      <div className="texto-suave" style={{ marginTop: 12 }}>
+        Comece digitando um brinco acima para aparecer a lista de animais.
+      </div>
+    )}
+  </div>
+) : null}
+
+{tab === "overview" ? (
+  <div className="card">
+    <div className="card-header-row">
+      <div>
+        <div style={{ fontWeight: 900 }}>Visão geral</div>
+        <div className="card-subtitle">
+          O que importa hoje. Clique nos cards para filtrar.
+        </div>
+      </div>
+      <div style={{ textAlign: "right" }}>
+        <div style={{ fontWeight: 950, fontSize: 18 }}>
+          {totalActive != null ? fmtInt(totalActive) : "—"}
+        </div>
+        <div className="texto-suave">ativos</div>
+      </div>
+    </div>
+
+    <div className="faz-kpiGrid">
+      <button
+        type="button"
+        className="faz-kpiCard"
+        onClick={() => {
+          setTab("animals");
+          setOnlyStale(false);
+          setOnlyNegGmd(false);
+          setFCategory("ALL");
+          setFLot("ALL");
+        }}
+      >
+        <div className="k">Cabeças ativas</div>
+        <div className="v">{totalActive != null ? fmtInt(totalActive) : "—"}</div>
+        <div className="s">Total no sistema</div>
+      </button>
+
+      <button
+        type="button"
+        className="faz-kpiCard"
+        onClick={() => {
+          setTab("animals");
+          setOnlyStale(false);
+          setOnlyNegGmd(false);
+        }}
+      >
+        <div className="k">Pesagem em dia</div>
+        <div className="v">{weighingOkPct != null ? `${weighingOkPct}%` : "—"}</div>
+        <div className="s">No período</div>
+      </button>
+
+      <button
+        type="button"
+        className="faz-kpiCard"
+        onClick={() => {
+          setTab("animals");
+          setOnlyStale(true);
+          setOnlyNegGmd(false);
+        }}
+      >
+        <div className="k">Sem pesagem</div>
+        <div className="v">{fmtInt(staleCount)}</div>
+        <div className="s">&gt; {staleDays} dias</div>
+      </button>
+
+      <button
+        type="button"
+        className="faz-kpiCard"
+        onClick={() => {
+          setTab("animals");
+          setOnlyStale(false);
+          setOnlyNegGmd(true);
+        }}
+      >
+        <div className="k">GMD negativo</div>
+        <div className="v">{fmtInt(negGmdCount)}</div>
+        <div className="s">Atenção no lote</div>
+      </button>
+    </div>
+
+    <div className="faz-panels">
+      <div className="card" style={{ boxShadow: "none", border: "1px solid rgba(226,232,240,.92)" }}>
+        <div className="card-header-row">
+          <div>
+            <div style={{ fontWeight: 900 }}>Categorias</div>
+            <div className="card-subtitle">Clique para abrir a lista filtrada.</div>
+          </div>
+        </div>
+
+        <div className="faz-catGrid">
+          {Object.keys(byCat).length ? (
+            Object.keys(byCat)
+              .sort((a, b) => Number(byCat[b] || 0) - Number(byCat[a] || 0))
+              .slice(0, 12)
+              .map((k) => (
+                <button
+                  key={k}
+                  type="button"
+                  className="faz-catBtn"
+                  onClick={() => {
+                    setTab("animals");
+                    setFCategory(String(k));
+                    setOnlyStale(false);
+                    setOnlyNegGmd(false);
+                  }}
+                >
+                  <div className="top">
+                    <div className="name">{k}</div>
+                    <div className="num">{fmtInt(byCat[k])}</div>
+                  </div>
+                  <div className="sub">Ver animais dessa categoria</div>
+                </button>
+              ))
+          ) : (
+            <div className="faz-emptyNice">Sem categorias (use Demo para preencher).</div>
+          )}
+        </div>
+
+        <div className="faz-actions-row" style={{ marginTop: 12 }}>
+          <button className="faz-btn primary" type="button" onClick={() => setTab("lots")}>Abrir lotes</button>
+          <button className="faz-btn" type="button" onClick={() => setTab("animals")}>Abrir animais</button>
+          <button className="faz-btn" type="button" onClick={openQuickWeigh}>Pesagem rápida</button>
+          <button className="faz-btn" type="button" onClick={seedDemo}>Demo</button>
+        </div>
+      </div>
+
+      <div className="card" style={{ boxShadow: "none", border: "1px solid rgba(226,232,240,.92)" }}>
+        <div className="card-header-row">
+          <div>
+            <div style={{ fontWeight: 900 }}>Ações do dia</div>
+            <div className="card-subtitle">Atalhos rápidos (sem bagunça).</div>
+          </div>
+        </div>
+
+        <div className="faz-toggles" style={{ marginTop: 10 }}>
+          <button
+            type="button"
+            className={"faz-toggle" + (onlyStale ? " is-on" : "")}
+            onClick={() => {
+              setOnlyStale(true);
+              setOnlyNegGmd(false);
+              setTab("animals");
+            }}
+          >
+            Sem pesagem &gt; {staleDays}d
+          </button>
+
+          <button
+            type="button"
+            className={"faz-toggle" + (onlyNegGmd ? " is-on" : "")}
+            onClick={() => {
+              setOnlyStale(false);
+              setOnlyNegGmd(true);
+              setTab("animals");
+            }}
+          >
+            GMD negativo
+          </button>
+
+          <button type="button" className="faz-toggle" onClick={() => openTransferTab(selectedLotId)}>
+            Transferir lote
+          </button>
+
+          <button type="button" className="faz-toggle" onClick={() => setTab("lots")}>
+            Ver lotes
+          </button>
+        </div>
+
+        <div className="texto-suave" style={{ marginTop: 10 }}>
+          Dica: para o vaqueiro, use <b>Lotes</b> (busca por brinco) e registre pesagem/movimentação sem precisar de tabela.
+        </div>
+      </div>
+    </div>
+  </div>
+) : null}
+
+        {tab === "lots" ? (
+          <div className="cras-enc-split" data-enc-view="todos">
+            <div className="cras-enc-left">
+              <div className="card">
+                <div className="card-header-row">
+                  <div>
+                    <div style={{ fontWeight: 900 }}>Lotes</div>
+                    <div className="card-subtitle">Clique para ver animais do lote.</div>
+                  </div>
+                  <div className="texto-suave" style={{ textAlign: "right" }}>
+                    {loading ? "Carregando..." : `${lots.length} lotes`}
+                  </div>
+                </div>
+
+                <div className="faz-lots">
+                  {(lots || []).map((l) => {
+                    const isActive = Number(l.id) === Number(selectedLotId);
+                    return (
+                      <button
+                        key={l.id}
+                        type="button"
+                        className={"faz-lot-row" + (isActive ? " is-active" : "")}
+                        onClick={() => setSelectedLotId(Number(l.id))}
+                      >
+                        <div className="left">
+                          <div className="name">{l.name}</div>
+                          <div className="sub">{l.category} • {l.area_name}</div>
+                        </div>
+                        <div className="right">
+                          <div className="num">{fmtInt(l.heads)}</div>
+                          <div className="muted">cabeças</div>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="texto-suave" style={{ marginTop: 10 }}>
+                  Dica: seed demo preenche lotes, animais e pesagens para validar a tela.
+                </div>
+              </div>
+            </div>
+
+            <div className="cras-enc-right">
+              <div className="card">
+                <div className="card-header-row">
+                  <div>
+                    <div style={{ fontWeight: 900 }}>{selectedLot?.name || "Lote"}</div>
+                    <div className="card-subtitle">{selectedLot?.category} • {selectedLot?.area_name} • {fmtInt(selectedLot?.heads || 0)} cabeças</div>
+                  </div>
+                </div>
+
+                <div style={{ marginTop: 12 }}>
+                  <label className="form-label">Buscar brinco</label>
+                  <input className="input" value={qLot} onChange={(e) => setQLot(e.target.value)} placeholder="Ex.: 7812 ou A2391" />
+
+                  <div className="faz-animals">
+                    {filteredAnimalsLot.map((a) => {
+                      const ds = animalDays(a);
+                      const stale = ds != null && ds > 60;
+                      return (
+                        <div key={a.ear_tag} className={"faz-animal-row" + (stale ? " is-alert" : "")}
+                        >
+                          <button type="button" className="link ear" onClick={() => openFicha(a.ear_tag)}>{a.ear_tag}</button>
+                          <div className="meta">
+                            {(a.category || "—")} • {(a.sex || "—")} • {fmtKg(a.last_weight_kg)}
+                            {ds != null ? ` • ${ds} dias` : ""}
+                          </div>
+                          <button className="faz-btn" type="button" onClick={() => openFichaWeigh(a.ear_tag)}>Pesagem</button>
+                          <button
+                            className="faz-btn"
+                            type="button"
+                            onClick={() => onTransfer({ mode: "animal", earTags: [a.ear_tag], notes: `Movimentação individual — ${a.ear_tag}` })}
+                          >
+                            Mover
+                          </button>
+                        </div>
+                      );
+                    })}
+
+                    {filteredAnimalsLot.length === 0 ? (
+                      <div className="texto-suave" style={{ marginTop: 12 }}>
+                        Nenhum animal encontrado nessa busca.
+                      </div>
+                    ) : null}
+                  </div>
+
+                  <div className="faz-actions-row" style={{ marginTop: 12 }}>
+                    <button className="faz-btn primary" type="button" onClick={() => openTransferTab(selectedLotId)}>Transferir lote</button>
+                    <button className="faz-btn" type="button" onClick={openTransferPartial}>Separar parcial</button>
+                    <button className="faz-btn" type="button" onClick={seedDemo}>Seed (demo)</button>
+                  </div>
+
+                  <div className="texto-suave" style={{ marginTop: 10 }}>
+                    *Animais com mais de 60 dias sem pesagem ficam em destaque.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
+
+        {tab === "animals" ? (
+          <div className="card">
+            <div className="card-header-row">
+              <div>
+                <div style={{ fontWeight: 900 }}>Animais</div>
+                <div className="card-subtitle">Lista geral com filtros (clique no animal para abrir ficha).</div>
+              </div>
+              <div className="texto-suave" style={{ textAlign: "right" }}>
+                {loading ? "Carregando..." : `${fmtInt(filteredAnimalsAll.length)} itens`}
+              </div>
+            </div>
+
+            <div className="faz-rowActions" style={{ marginTop: 10, alignItems: "center", flexWrap: "wrap" }}>
+              <input
+                className="faz-input"
+                value={qAll}
+                onChange={(e) => setQAll(e.target.value)}
+                placeholder="Buscar brinco (ex.: 7820)"
+                style={{ minWidth: 220 }}
+              />
+
+              <select className="faz-input" value={fCategory} onChange={(e) => setFCategory(e.target.value)} style={{ minWidth: 170 }}>
+                {categories.map((c) => (
+                  <option key={c} value={c}>{c === "ALL" ? "Todas categorias" : c}</option>
+                ))}
+              </select>
+
+              <select className="faz-input" value={fLot} onChange={(e) => setFLot(e.target.value)} style={{ minWidth: 170 }}>
+                {lotOptions.map((o) => (
+                  <option key={o.id} value={o.id}>{o.label}</option>
+                ))}
+              </select>
+
+              <select className="faz-input" value={sortKey} onChange={(e) => setSortKey(e.target.value)} style={{ minWidth: 170 }}>
+                <option value="stale">Ordenar: + dias sem pesagem</option>
+                <option value="gmd">Ordenar: pior GMD</option>
+                <option value="weight">Ordenar: maior peso</option>
+                <option value="ear">Ordenar: brinco</option>
+              </select>
+
+              <label className="faz-pill" style={{ cursor: "pointer" }}>
+                <input type="checkbox" checked={onlyStale} onChange={(e) => setOnlyStale(e.target.checked)} style={{ marginRight: 6 }} />
+                Sem pesagem &gt; {staleDays}d
+              </label>
+
+              <label className="faz-pill" style={{ cursor: "pointer" }}>
+                <input type="checkbox" checked={onlyNegGmd} onChange={(e) => setOnlyNegGmd(e.target.checked)} style={{ marginRight: 6 }} />
+                GMD negativo
+              </label>
+
+<div className="faz-toggles" style={{ marginLeft: "auto" }}>
+  <button
+    type="button"
+    className={"faz-toggle" + (animalsView === "cards" ? " is-on" : "")}
+    onClick={() => setAnimalsView("cards")}
+  >
+    Lista
+  </button>
+  <button
+    type="button"
+    className={"faz-toggle" + (animalsView === "table" ? " is-on" : "")}
+    onClick={() => setAnimalsView("table")}
+  >
+    Tabela
+  </button>
+</div>
+
+            </div>
+
+                        {!loading && !err && !filteredAnimalsAll.length && lots.length ? (
+              <div className="faz-hint" style={{ marginTop: 10 }}>
+                Nenhum animal carregado do backend. Clique em <b>Seed Rebanho (demo)</b> e depois volte em <b>Animais</b>.
+              </div>
+            ) : null}
+
+{animalsView === "cards" ? (
+  <div className="faz-animals" style={{ marginTop: 10 }}>
+    {filteredAnimalsAll.length === 0 ? (
+      <div className="faz-emptyNice">Nenhum animal encontrado com esses filtros.</div>
+    ) : null}
+
+    {filteredAnimalsAll.map((a) => {
+      const lot = lotById.get(Number(a.lot_id));
+      const ds = animalDays(a);
+      const stale = ds != null && ds > Number(staleDays);
+      const lastIso = animalLastDateIso(a);
+      const g = animalGmd(a);
+      const gv = fmtGmdValue(g);
+      const gTxt = gv.txt === "—" ? "—" : `${gv.txt} kg/d`;
+
+      return (
+        <div key={a.ear_tag} className={"faz-animal-row" + (stale ? " is-alert" : "")}>
+          <button type="button" className="link ear" onClick={() => openFicha(a.ear_tag)}>{a.ear_tag}</button>
+
+          <div className="meta">
+            <span className="ear">{a.category || "—"}</span>
+            {" • "}{lot?.name || (a.lot_id != null ? `Lote ${a.lot_id}` : "—")}
+            {" • "}{fmtKg(a.last_weight_kg)}
+            {lastIso ? ` • ${fmtDateShort(lastIso)}` : ""}
+            {ds != null ? ` • ${ds} dias` : ""}
+            {gTxt !== "—" ? ` • GMD ${gTxt}` : ""}
+          </div>
+
+          <button className="faz-btn" type="button" onClick={() => openFicha(a.ear_tag)}>Ficha</button>
+          <button className="faz-btn primary" type="button" onClick={() => openFichaWeigh(a.ear_tag)}>Pesagem</button>
+          <button className="faz-btn" type="button" onClick={() => onTransfer({ mode: "animal", earTags: [a.ear_tag], notes: `Movimentação individual — ${a.ear_tag}` })}>Mover</button>
+          <button className="faz-btn" type="button" onClick={() => openBaixa(a.ear_tag)}>Baixa</button>
+        </div>
+      );
+    })}
+  </div>
+) : (
+  <div className="faz-tableWrap" style={{ marginTop: 10 }}>
+  <table className="faz-table">
+    <thead>
+      <tr>
+        <th>Brinco</th>
+        <th>Categoria</th>
+        <th>Lote</th>
+        <th>Último peso</th>
+        <th>Data</th>
+        <th>Dias</th>
+        <th>GMD</th>
+        <th>Status</th>
+        <th style={{ textAlign: "right" }}>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {filteredAnimalsAll.length === 0 ? (
+        <tr><td className="tdEmpty" colSpan={9}>Nenhum animal encontrado com esses filtros.</td></tr>
+      ) : null}
+
+      {filteredAnimalsAll.map((a) => {
+        const lot = lotById.get(Number(a.lot_id));
+        const ds = animalDays(a);
+        const stale = ds != null && ds > Number(staleDays);
+        const lastIso = animalLastDateIso(a);
+        const g = animalGmd(a);
+        const gv = fmtGmdValue(g);
+        const gTxt = gv.txt === "—" ? "—" : `${gv.txt} kg/d`;
+        const gLabel = gv.label;
+
+        return (
+          <tr key={a.ear_tag} style={stale ? { background: "rgba(244,63,94,.05)" } : undefined}>
+            <td className="tdStrong">
+              <button type="button" className="link" onClick={() => openFicha(a.ear_tag)} style={{ fontWeight: 950 }}>
+                {a.ear_tag}
+              </button>
+            </td>
+            <td>{a.category || "—"}</td>
+            <td className="tdMuted">{lot?.name || (a.lot_id != null ? `Lote ${a.lot_id}` : "—")}</td>
+            <td>{fmtKg(a.last_weight_kg)}</td>
+            <td className="tdMuted">{fmtDateShort(lastIso)}</td>
+            <td className="tdMuted">{ds == null ? "—" : `${ds}d`}</td>
+            <td className="tdMuted">{gTxt === "—" ? "—" : (<span className={`gmdBadge ${gLabel}`}><span className="gmdDot" aria-hidden="true" />{gTxt.replace(" kg/d","")}</span>)}</td>
+            <td className="tdMuted">{a.status || "active"}</td>
+            <td style={{ textAlign: "right" }}>
+              <div className="faz-rowActions" style={{ justifyContent: "flex-end" }}>
+                <button className="faz-btn" type="button" onClick={() => openFicha(a.ear_tag)}>Ficha</button>
+                <button className="faz-btn" type="button" onClick={() => openFichaWeigh(a.ear_tag)}>Pesagem</button>
+                <button className="faz-btn" type="button" onClick={() => onTransfer({ mode: "animal", earTags: [a.ear_tag], notes: `Movimentação individual — ${a.ear_tag}` })}>Mover</button>
+                <button className="faz-btn" type="button" onClick={() => openBaixa(a.ear_tag)}>Baixa</button>
+              </div>
+            </td>
+          </tr>
+        );
+      })}
+    </tbody>
+  </table>
+</div>
+)}
+
+
+            <div className="texto-suave" style={{ marginTop: 10 }}>
+              *GMD aparece quando houver histórico de 2+ pesagens por animal (entra completo na Ficha do Animal).
+            </div>
+          </div>
+        ) : null}
+
+        
+
+        {tab === "transfer" ? (
+          <div className="card">
+            <div className="card-header-row">
+              <div>
+                <div style={{ fontWeight: 900 }}>Transferir lote</div>
+                <div className="card-subtitle">Selecione os animais e confirme a movimentação (uma tela por vez).</div>
+              </div>
+              <div className="faz-rowActions" style={{ justifyContent: "flex-end" }}>
+                <button className="faz-btn" type="button" onClick={() => setTab('lots')}>Voltar</button>
+              </div>
+            </div>
+
+            {xferMsg ? (
+              <div className="texto-suave" style={{ marginTop: 10 }}><b>Aviso:</b> {xferMsg}</div>
+            ) : null}
+
+            <div className="faz-rowActions" style={{ marginTop: 12, flexWrap: 'wrap' }}>
+              <div style={{ minWidth: 180 }}>
+                <div className="form-label">Origem (lote)</div>
+                <select className="faz-input" value={xferFromLot ?? ''} onChange={(e) => setXferFromLot(Number(e.target.value))}>
+                  {(lots || []).map(l => (
+                    <option key={l.id} value={l.id}>{l.name || `Lote ${l.id}`}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div style={{ minWidth: 180 }}>
+                <div className="form-label">Destino (lote)</div>
+                <select className="faz-input" value={xferToLot ?? ''} onChange={(e) => setXferToLot(Number(e.target.value))}>
+                  {(lots || []).filter(l => Number(l.id) !== Number(xferFromLot)).map(l => (
+                    <option key={l.id} value={l.id}>{l.name || `Lote ${l.id}`}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div style={{ minWidth: 220, flex: 1 }}>
+                <div className="form-label">Buscar brinco</div>
+                <input className="faz-input" value={xferQ} onChange={(e) => setXferQ(e.target.value)} placeholder="Ex.: 7820" />
+              </div>
+
+              <div style={{ minWidth: 220 }}>
+                <div className="form-label">Motivo</div>
+                <select className="faz-input" value={xferReason} onChange={(e) => setXferReason(e.target.value)}>
+                  <option value="manejo">Manejo</option>
+                  <option value="aparta">Apartação</option>
+                  <option value="venda">Venda</option>
+                  <option value="reproducao">Reprodução</option>
+                  <option value="sanidade">Sanidade</option>
+                  <option value="outro">Outro</option>
+                </select>
+              </div>
+
+              <div style={{ minWidth: 260, flex: 1 }}>
+                <div className="form-label">Observação (opcional)</div>
+                <input className="faz-input" value={xferNote} onChange={(e) => setXferNote(e.target.value)} placeholder="Ex.: apartação para IATF" />
+              </div>
+            </div>
+
+            <div style={{ marginTop: 12 }}>
+              <div className="texto-suave">Selecione os animais:</div>
+              <div className="faz-animals" style={{ marginTop: 8 }}>
+                {(xferAnimals || [])
+                  .filter(a => {
+                    const qq = normalizeEarTag(xferQ);
+                    if (!qq) return true;
+                    return normalizeEarTag(a.ear_tag).includes(qq);
+                  })
+                  .map(a => (
+                    <label key={a.ear_tag} className="faz-animal-row" style={{ cursor: 'pointer' }}>
+                      <input
+                        type="checkbox"
+                        checked={!!xferPick[a.ear_tag]}
+                        onChange={(e) => setXferPick(prev => ({ ...prev, [a.ear_tag]: e.target.checked }))}
+                        style={{ marginRight: 10 }}
+                      />
+                      <div className="ear">{a.ear_tag}</div>
+                      <div className="meta">{a.category || '—'} • {a.sex || '—'} • {fmtKg(a.last_weight_kg)} </div>
+                    </label>
+                  ))}
+              </div>
+
+              <div className="faz-actions-row" style={{ marginTop: 12 }}>
+                <button className="faz-btn" type="button" onClick={() => {
+                  const all = {};
+                  (xferAnimals || []).forEach(a => { all[a.ear_tag] = true; });
+                  setXferPick(all);
+                }}>Selecionar todos</button>
+
+                <button className="faz-btn" type="button" onClick={() => setXferPick({})}>Limpar</button>
+
+                <button className="faz-btn primary" type="button" disabled={xferBusy} onClick={confirmTransfer}>
+                  {xferBusy ? 'Transferindo…' : 'Confirmar transferência'}
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : null}
+{tab === "animal" ? (
+          <div className="card">
+            <div className="card-header-row">
+              <div>
+                <div style={{ fontWeight: 900 }}>Ficha do animal</div>
+                <div className="card-subtitle">{selectedEar}</div>
+              </div>
+              <div className="faz-rowActions" style={{ justifyContent: "flex-end" }}>
+                <button className="faz-btn" type="button" onClick={() => {
+                  const back = (prevTab && prevTab !== "animal") ? prevTab : "animals";
+                  setTab(back);
+                  setShowWeighForm(false);
+                }}>Voltar</button>
+              </div>
+            </div>
+
+            {animalView.loading ? (
+              <div className="texto-suave" style={{ marginTop: 10 }}>Carregando ficha…</div>
+            ) : null}
+
+            {animalView.err ? (
+              <div className="texto-suave" style={{ marginTop: 10 }}><b>Falha ao carregar:</b> {animalView.err}</div>
+            ) : null}
+
+            {animalView.data ? (
+              (() => {
+                const a = animalView.data.animal || {};
+                const lot = animalView.data.lot || null;
+                const ws = Array.isArray(animalView.data.weighings) ? animalView.data.weighings : [];
+                const wsAsc = [...ws].slice().sort((a,b) => {
+                  const da = new Date(a.weighed_at).getTime();
+                  const db = new Date(b.weighed_at).getTime();
+                  return da - db;
+                });
+
+                function gmdWindow(list, windowDays){
+                  try {
+                    if (!Array.isArray(list) || list.length < 2) return null;
+                    const cutoff = Date.now() - Number(windowDays) * 86400000;
+                    const inside = list.filter(w => {
+                      const t = new Date(w.weighed_at).getTime();
+                      return Number.isFinite(t) && t >= cutoff;
+                    });
+                    if (inside.length < 2) return null;
+                    const first = inside[0];
+                    const last = inside[inside.length - 1];
+                    const g = gmdBetween(first, last);
+                    if (g == null) return null;
+                    const delta = Number(last.weight_kg) - Number(first.weight_kg);
+                    const days = (new Date(last.weighed_at).getTime() - new Date(first.weighed_at).getTime()) / 86400000;
+                    return { gmd: g, delta_kg: delta, days: Math.max(1, Math.round(days)) };
+                  } catch {
+                    return null;
+                  }
+                }
+
+                const m30 = gmdWindow(wsAsc, 30);
+                const m60 = gmdWindow(wsAsc, 60);
+
+                const path = svgPathFromWeights(wsAsc.map(w => ({ weighed_at: w.weighed_at, weight_kg: w.weight_kg })));
+                const lastW = animalView.data.last_weight_kg;
+                const lastAt = animalView.data.last_weighed_at;
+                const lastDays = daysSinceIso(lastAt);
+                const gmd = animalView.data.gmd_kg_day;
+
+                const stale = (lastDays == null) ? true : (Number(lastDays) > Number(staleDays));
+                const gInfo = fmtGmdValue(gmd);
+                const gStatClass = gInfo.label === "pos" ? " is-pos" : (gInfo.label === "neg" ? " is-neg" : "");
+
+                const b30 = m30?.gmd != null ? fmtGmdValue(m30.gmd) : { txt: "—", label: "none" };
+                const b60 = m60?.gmd != null ? fmtGmdValue(m60.gmd) : { txt: "—", label: "none" };
+
+                return (
+                  <div style={{ marginTop: 12 }}>
+                    <div className="faz-ficha-top">
+                      <div className="faz-stat">
+                        <div className="k">Categoria</div>
+                        <div className="v">{a.category || "—"}</div>
+                        <div className="s">{a.sex ? `Sexo: ${a.sex}` : ""}</div>
+                      </div>
+                      <div className="faz-stat">
+                        <div className="k">Lote</div>
+                        <div className="v">{lot?.name || (a.lot_id != null ? `Lote ${a.lot_id}` : "—")}</div>
+                        <div className="s">{lot?.area_name || a.area_name || ""}</div>
+                      </div>
+                      <div className={"faz-stat" + (stale ? " is-warn" : "")}>
+                        <div className="k">Último peso</div>
+                        <div className="v">{fmtKg(lastW)}</div>
+                        <div className="s">{lastAt ? `${fmtDateShort(lastAt)}${lastDays != null ? ` • ${lastDays}d` : ""}` : "Sem pesagem"}</div>
+                      </div>
+                      <div className={"faz-stat" + gStatClass}>
+                        <div className="k">GMD (trecho)</div>
+                        <div className="v">{gInfo.txt === "—" ? "—" : `${gInfo.txt} kg/d`}</div>
+                        <div className="s">Status: {a.status || "active"}{m30?.gmd != null ? ` • 30d ${b30.txt} kg/d` : ""}{m60?.gmd != null ? ` • 60d ${b60.txt} kg/d` : ""}</div>
+                      </div>
+                    </div>
+
+                    <div className="faz-badges" style={{ marginTop: 10 }}>
+                      <span className={"faz-badge" + (stale ? " is-warn" : " is-ok")}>
+                        {lastAt ? (stale ? `Atenção: ${lastDays}d sem pesagem` : `Pesagem em dia (${lastDays ?? 0}d)`) : "Sem pesagem registrada"}
+                      </span>
+                      <span className={"faz-badge" + (b30.label === "pos" ? " is-ok" : (b30.label === "neg" ? " is-bad" : ""))}>
+                        {m30 ? `GMD 30d: ${b30.txt} kg/d` : "GMD 30d: —"}
+                      </span>
+                      <span className={"faz-badge" + (b60.label === "pos" ? " is-ok" : (b60.label === "neg" ? " is-bad" : ""))}>
+                        {m60 ? `GMD 60d: ${b60.txt} kg/d` : "GMD 60d: —"}
+                      </span>
+                    </div>
+
+                    <div className="faz-actions-row" style={{ marginTop: 10 }}>
+                      <button className="faz-btn primary" type="button" onClick={() => setShowWeighForm(v => !v)}>
+                        {showWeighForm ? "Fechar pesagem" : "Registrar pesagem"}
+                      </button>
+                      <button className="faz-btn" type="button" onClick={() => onTransfer({ mode: "animal", earTags: [a.ear_tag], notes: `Movimentação individual — ${a.ear_tag}` })}>Mover lote</button>
+                      <button className="faz-btn danger" type="button" onClick={() => openBaixa(a.ear_tag)} disabled={!animalView.data}>Dar baixa</button>
+                    </div>
+
+                    {showWeighForm ? (
+                      <div className="faz-weigh-form" style={{ marginTop: 10 }}>
+                        <div className="faz-rowActions" style={{ alignItems: "flex-end" }}>
+                          <div style={{ minWidth: 180 }}>
+                            <div className="form-label">Data</div>
+                            <input className="faz-input" type="date" value={weighDate} onChange={(e) => setWeighDate(e.target.value)} />
+                          </div>
+                          <div style={{ minWidth: 160 }}>
+                            <div className="form-label">Peso (kg)</div>
+                            <input className="faz-input" inputMode="decimal" value={weighKg} onChange={(e) => setWeighKg(e.target.value)} placeholder="Ex.: 480" />
+                          </div>
+                          <div style={{ flex: 1, minWidth: 220 }}>
+                            <div className="form-label">Observação</div>
+                            <input className="faz-input" value={weighNote} onChange={(e) => setWeighNote(e.target.value)} placeholder="Opcional" />
+                          </div>
+                          <button className="faz-btn primary" type="button" onClick={submitWeighing} disabled={weighSaving}>
+                            {weighSaving ? "Salvando…" : "Salvar"}
+                          </button>
+                        </div>
+
+                        <div className="faz-healthBox">
+                          <label className="faz-healthToggle">
+                            <input type="checkbox" checked={healthEnabled} onChange={(e) => setHealthEnabled(e.target.checked)} />
+                            <span>Sanidade no curral (vacinas/verme/tratamento)</span>
+                          </label>
+
+                          {healthEnabled ? (
+                            <div className="faz-healthGrid">
+                              <div className="faz-healthOptions">
+                                {HEALTH_OPTIONS.map((o) => (
+                                  <label key={o.code} className="faz-healthOpt">
+                                    <input type="checkbox" checked={!!healthSelected[o.code]} onChange={() => toggleHealth(o.code)} />
+                                    <span className="lbl">💉 {o.name}</span>
+                                  </label>
+                                ))}
+
+                                <div className="faz-healthSectionTitle" style={{ gridColumn: "1 / -1" }}>
+                                  Reprodução (IATF/Resync)
+                                </div>
+                                {REPRO_OPTIONS.map((o) => (
+                                  <label key={o.code} className="faz-healthOpt">
+                                    <input type="checkbox" checked={!!reproSelected[o.code]} onChange={() => toggleRepro(o.code)} />
+                                    <span className="lbl">🧬 {o.name}</span>
+                                  </label>
+                                ))}
+                              </div>
+
+                              <div className="faz-healthMeta">
+                                <div>
+                                  <div className="form-label">Dose (opcional)</div>
+                                  <input className="faz-input" value={healthDose} onChange={(e) => setHealthDose(e.target.value)} placeholder="Ex.: 2 mL" />
+                                </div>
+                                <div>
+                                  <div className="form-label">Lote do produto (opcional)</div>
+                                  <input className="faz-input" value={healthBatch} onChange={(e) => setHealthBatch(e.target.value)} placeholder="Ex.: L1234" />
+                                </div>
+                                <div style={{ gridColumn: "1 / -1" }}>
+                                  <div className="form-label">Observação sanidade (opcional)</div>
+                                  <input className="faz-input" value={healthNote} onChange={(e) => setHealthNote(e.target.value)} placeholder="Ex.: reforço, via, etc." />
+                                </div>
+                                <div style={{ gridColumn: "1 / -1" }}>
+                                  <div className="form-label">Outro (opcional)</div>
+                                  <input className="faz-input" value={healthOther} onChange={(e) => setHealthOther(e.target.value)} placeholder="Ex.: vacina X / tratamento Y" />
+                                </div>
+
+                                <div style={{ gridColumn: "1 / -1", marginTop: 6 }}>
+                                  <div className="faz-healthSectionTitle">Reprodução (opcional)</div>
+                                </div>
+                                <div>
+                                  <div className="form-label">Touro/Sêmen (opcional)</div>
+                                  <input className="faz-input" value={reproSemen} onChange={(e) => setReproSemen(e.target.value)} placeholder="Ex.: Touro 123 / Sêmen X" />
+                                </div>
+                                <div>
+                                  <div className="form-label">Protocolo/Lote (opcional)</div>
+                                  <input className="faz-input" value={reproProtocol} onChange={(e) => setReproProtocol(e.target.value)} placeholder="Ex.: IATF-Jan/26" />
+                                </div>
+                                <div style={{ gridColumn: "1 / -1" }}>
+                                  <div className="form-label">Observação reprodução (opcional)</div>
+                                  <input className="faz-input" value={reproNote} onChange={(e) => setReproNote(e.target.value)} placeholder="Ex.: 2ª IATF, resync, DG, etc." />
+                                </div>
+                              </div>
+                            </div>
+                          ) : null}
+                        </div>
+
+                        {weighErr ? (
+                          <div className="texto-suave" style={{ marginTop: 6, color: "rgba(220,38,38,1)" }}>
+                            {weighErr}
+                          </div>
+                        ) : null}
+                      </div>
+                    ) : null}
+
+                    <div className="faz-ficha-grid" style={{ marginTop: 12 }}>
+                      <div className="faz-panel">
+                        <div style={{ display: "flex", justifyContent: "space-between", gap: 10, alignItems: "baseline" }}>
+                          <div>
+                            <div style={{ fontWeight: 950 }}>Pesagens</div>
+                            <div className="texto-suave">Gráfico + tabela (histórico).</div>
+                          </div>
+                          <div className="texto-suave">{ws.length} registros</div>
+                        </div>
+
+                        <div className="faz-chart" style={{ marginTop: 10 }}>
+                          {path ? (
+                            <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="faz-chart-svg">
+                              <path d={path} fill="none" stroke="currentColor" strokeWidth="1.8" />
+                            </svg>
+                          ) : (
+                            <div className="texto-suave">Sem histórico suficiente para gráfico (precisa de 2+ pesagens).</div>
+                          )}
+                        </div>
+
+                        <div className="faz-tableWrap" style={{ marginTop: 10 }}>
+                          <table className="faz-table">
+                            <thead>
+                              <tr>
+                                <th>Data</th>
+                                <th>Peso</th>
+                                <th>Δ</th>
+                                <th>GMD</th>
+                                <th>Obs</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {ws.length === 0 ? (
+                                <tr><td className="tdEmpty" colSpan={5}>Sem pesagens registradas.</td></tr>
+                              ) : null}
+                              {wsAsc.map((w, idx) => {
+                                const prevW = idx > 0 ? wsAsc[idx-1] : null;
+                                const delta = prevW ? (Number(w.weight_kg) - Number(prevW.weight_kg)) : null;
+                                const g = prevW ? gmdBetween(prevW, w) : null;
+                                return (
+                                  <tr key={w.id || `${w.weighed_at}-${idx}`}>
+                                    <td className="tdMuted">{fmtDateShort(w.weighed_at)}</td>
+                                    <td>{fmtKg(w.weight_kg)}</td>
+                                    <td className="tdMuted">{delta == null ? "—" : `${delta > 0 ? "+" : ""}${delta.toFixed(0)} kg`}</td>
+                                    <td className="tdMuted">{g == null ? "—" : `${g.toFixed(2)} kg/d`}</td>
+                                    <td className="tdMuted">{w.note || "—"}</td>
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+
+                      <div className="faz-panel">
+                        <div style={{ fontWeight: 950 }}>Timeline</div>
+                        <div className="texto-suave">Nesta etapa: pesagens e status (eventos entram na próxima).</div>
+
+                        <div style={{ marginTop: 10 }}>
+                          {(() => {
+                            const hsArr = Array.isArray(animalView.data?.health) ? animalView.data.health : [];
+                            const hs = hsArr.map((h) => ({
+                              _k: `h-${h.id}`,
+                              kind: "health",
+                              at: h.occurred_at,
+                              title: `Sanidade • ${h.name || h.code || "Registro"}`,
+                              sub: `${fmtDateShort(h.occurred_at)}${h.note ? ` • ${h.note}` : ""}`,
+                            }));
+                            const wsEv = wsAsc.map((w) => ({
+                              _k: `w-${w.id}`,
+                              kind: "weighing",
+                              at: w.weighed_at,
+                              title: `Pesagem • ${fmtKg(w.weight_kg)}`,
+                              sub: `${fmtDateShort(w.weighed_at)}${w.note ? ` • ${w.note}` : ""}`,
+                            }));
+                            const items = [...hs, ...wsEv].filter(i => !!i.at).sort((a,b) => {
+                              const da = new Date(a.at).getTime();
+                              const db = new Date(b.at).getTime();
+                              return db - da;
+                            }).slice(0, 12);
+                            return items.map((it) => (
+                              <div key={it._k} className="faz-timeline-row">
+                                <div className={`dot ${it.kind === "health" ? "health" : ""}`} aria-hidden="true" />
+                                <div>
+                                  <div style={{ fontWeight: 800 }}>{it.title}</div>
+                                  <div className="texto-suave">{it.sub}</div>
+                                </div>
+                              </div>
+                            ));
+                          })()}
+                          {ws.length === 0 ? (
+                            <div className="texto-suave">Sem eventos ainda.</div>
+                          ) : null}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()
+            ) : null}
+          </div>
+        ) : null}
+
+      </div>
+
+
+      {qwOpen ? (
+        <div className="faz-modalBack" role="dialog" aria-modal="true" onMouseDown={() => { setQwOpen(false); }}>
+          <div className="faz-modal" onMouseDown={(e) => e.stopPropagation()}>
+            <div className="faz-modalHead">
+              <div>
+                <div className="faz-modalTitle">Pesagem rápida</div>
+                <div className="faz-modalSub">Lançamento rápido de curral (funciona mesmo sem backend: modo demo).</div>
+              </div>
+              <button className="faz-btn" type="button" onClick={() => setQwOpen(false)}>Fechar</button>
+            </div>
+
+            {qwErr ? (
+              <div className="faz-modalErr">Falha: {qwErr}</div>
+            ) : null}
+
+            <div className="faz-modalGrid">
+              <div>
+                <label className="form-label">Brinco</label>
+                <input className="faz-input" value={qwEar} onChange={(e) => setQwEar(e.target.value)} placeholder="Ex.: 7812 ou A2391" />
+              </div>
+              <div>
+                <label className="form-label">Data</label>
+                <input className="faz-input" type="date" value={qwDate} onChange={(e) => setQwDate(e.target.value)} />
+              </div>
+              <div>
+                <label className="form-label">Peso (kg)</label>
+                <input className="faz-input" value={qwKg} onChange={(e) => setQwKg(e.target.value)} placeholder="Ex.: 420" />
+              </div>
+              <div>
+                <label className="form-label">Observação (opcional)</label>
+                <input className="faz-input" value={qwNote} onChange={(e) => setQwNote(e.target.value)} placeholder="Ex.: balança 2, jejum, etc." />
+              </div>
+            </div>
+
+            <div className="faz-modalActions">
+              <button className="faz-btn" type="button" onClick={() => setQwOpen(false)}>Cancelar</button>
+              <button className="faz-btn primary" type="button" disabled={qwSaving} onClick={submitQuickWeigh}>
+                {qwSaving ? "Salvando..." : "Registrar pesagem"}
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+
+      {baixaOpen ? (
+        <div className="faz-modalBack" role="dialog" aria-modal="true" onMouseDown={() => { setBaixaOpen(false); }}>
+          <div className="faz-modal" onMouseDown={(e) => e.stopPropagation()}>
+            <div className="faz-modalHead">
+              <div>
+                <div className="faz-modalTitle">Dar baixa</div>
+                <div className="faz-modalSub">Animal: <b>{baixaEar}</b></div>
+              </div>
+              <button className="faz-btn" type="button" onClick={() => setBaixaOpen(false)}>Fechar</button>
+            </div>
+
+            {baixaErr ? (
+              <div className="faz-modalErr">Falha: {baixaErr}</div>
+            ) : null}
+
+            <div className="faz-modalGrid">
+              <div>
+                <label className="form-label">Tipo de baixa</label>
+                <select className="faz-input" value={baixaKind} onChange={(e) => setBaixaKind(e.target.value)}>
+                  <option value="venda">Venda</option>
+                  <option value="morte">Morte</option>
+                  <option value="descarte">Descarte</option>
+                </select>
+              </div>
+              <div>
+                <label className="form-label">Data</label>
+                <input className="faz-input" type="date" value={baixaDate} onChange={(e) => setBaixaDate(e.target.value)} />
+              </div>
+              <div>
+                <label className="form-label">Peso (kg) (opcional)</label>
+                <input className="faz-input" value={baixaKg} onChange={(e) => setBaixaKg(e.target.value)} placeholder="Ex.: 480" />
+              </div>
+              <div>
+                <label className="form-label">Valor (R$) (opcional)</label>
+                <input className="faz-input" value={baixaBrl} onChange={(e) => setBaixaBrl(e.target.value)} placeholder="Ex.: 8.500" />
+              </div>
+            </div>
+
+            <div style={{ marginTop: 10 }}>
+              <label className="form-label">Observação</label>
+              <textarea className="faz-input" value={baixaNote} onChange={(e) => setBaixaNote(e.target.value)} rows={3} placeholder="Ex.: venda a prazo, motivo, comprador, etc." style={{ width: "100%" }} />
+            </div>
+
+            <div className="faz-modalActions">
+              <button className="faz-btn" type="button" onClick={() => setBaixaOpen(false)}>Cancelar</button>
+              <button className="faz-btn primary" type="button" disabled={baixaSaving} onClick={submitBaixa}>
+                {baixaSaving ? "Salvando..." : "Confirmar baixa"}
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+    </div>
+  );
+}

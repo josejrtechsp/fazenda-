@@ -1,0 +1,21 @@
+/* Moldura estilo CRAS: borda + glass + faixa roxa no topo */
+.fazHeroFrame{
+  position: relative;
+  border-radius: 28px;
+  border: 1px solid rgba(226,232,240,.92);
+  background: rgba(255,255,255,.72);
+  box-shadow: 0 26px 90px rgba(15,23,42,.10);
+  overflow: hidden;
+}
+
+.fazHeroFrame::before{
+  content:"";
+  position:absolute;
+  left:0; right:0; top:0;
+  height:6px;
+  background: linear-gradient(90deg, rgba(99,102,241,.95), rgba(168,85,247,.95), rgba(236,72,153,.55));
+}
+
+.fazHeroFrame .fazHeroInner{
+  padding: 18px 18px 16px;
+}

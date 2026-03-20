@@ -1,0 +1,162 @@
+/* V15J — Header -40%, Dashboard -30% + textos atualizados no TopHeader */
+
+:root{
+  --faz-purple:#6366f1;
+  --faz-violet:#a855f7;
+  --faz-green:#22c55e;
+  --faz-text:#0f172a;
+  --faz-muted:#64748b;
+  --faz-border:rgba(226,232,240,.92);
+  --faz-surface:rgba(255,255,255,.86);
+}
+
+/* =============================
+   HEADER (menos 40%)
+   ============================= */
+.fazTop{
+  position: relative;
+  padding: 10px 14px; /* menor */
+}
+
+.fazTopInner{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap: 12px;
+}
+
+.fazTopLeft{min-width: 0;}
+
+.fazTopPill{
+  display:inline-flex;
+  align-items:center;
+  border:1px solid var(--faz-border);
+  background: rgba(248,250,252,.82);
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 9px;
+  font-weight: 950;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--faz-muted);
+}
+
+.fazTopTitleRow{margin-top: 8px;}
+
+.fazTopTitle{
+  margin: 0;
+  font-size: 22px; /* ~40% menor vs 36 */
+  line-height: 1.1;
+  font-weight: 950;
+  letter-spacing: -0.02em;
+  color: var(--faz-text);
+}
+
+.fazTitleGradient{
+  background: linear-gradient(90deg, var(--faz-violet), var(--faz-green));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.fazTopSubtitle{
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--faz-muted);
+  font-weight: 650;
+  max-width: 62ch;
+}
+
+.fazTopRight{display:flex; align-items:flex-start;}
+
+.fazBrandLockup{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--faz-border);
+  background: rgba(255,255,255,.7);
+}
+
+.fazBrandLogo{
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  image-rendering: -webkit-optimize-contrast;
+  filter: none !important;
+  transform: none !important;
+}
+
+.idealTagline{
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, var(--faz-violet), var(--faz-green));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  white-space: nowrap;
+}
+
+@media (max-width: 860px){
+  .fazTopInner{flex-direction: column; align-items:flex-start;}
+  .fazTopRight{width: 100%;}
+  .fazBrandLockup{width: 100%; justify-content:center;}
+}
+
+/* =============================
+   DASHBOARD (menos 30%)
+   ============================= */
+
+/* KPIs */
+.faz-grid-kpis{
+  gap: 10px !important;
+}
+
+.faz-kpi{
+  padding: 10px 12px !important;
+  border-radius: 16px !important;
+}
+
+.faz-kpi .k{
+  font-size: 9px !important;
+  letter-spacing: .16em !important;
+}
+
+.faz-kpi .v{
+  font-size: 19px !important;
+}
+
+.faz-kpi .s{
+  font-size: 11px !important;
+}
+
+/* Painéis */
+.faz-panel{
+  padding: 10px 12px !important;
+  border-radius: 16px !important;
+}
+
+.faz-panel h3{
+  font-size: 13px !important;
+}
+
+.faz-muted{
+  font-size: 12px;
+}
+
+/* barras */
+.faz-bars{gap: 8px !important;}
+.faz-bar .name{font-size: 12px !important;}
+.faz-bar .val{font-size: 12px !important;}
+
+/* resumo */
+.faz-sline .t{font-size: 12px !important;}
+
+/* botões */
+.faz-btn{padding: 8px 10px !important; font-size: 13px !important;}
+.faz-btn.sm{padding: 8px 10px !important; font-size: 12px !important;}
+

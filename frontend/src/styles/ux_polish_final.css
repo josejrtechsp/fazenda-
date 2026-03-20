@@ -1,0 +1,302 @@
+/* UX polish final
+   Scope: only inside .cras-ui-v2
+   Goal: visual consistency across all tabs without changing business logic.
+*/
+
+.cras-ui-v2 {
+  --ux-ink: rgba(15, 23, 42, 1);
+  --ux-muted: rgba(100, 116, 139, 1);
+  --ux-border: rgba(226, 232, 240, 0.92);
+  --ux-border-soft: rgba(203, 213, 225, 0.9);
+  --ux-focus: rgba(99, 102, 241, 0.55);
+  --ux-focus-ring: 0 0 0 3px rgba(99, 102, 241, 0.14);
+  --ux-surface: rgba(255, 255, 255, 0.95);
+  --ux-surface-soft: rgba(248, 250, 252, 0.9);
+  --ux-radius-lg: 16px;
+  --ux-radius-md: 12px;
+  --ux-radius-sm: 10px;
+  --ux-shadow-xs: 0 8px 20px rgba(15, 23, 42, 0.05);
+  --ux-shadow-sm: 0 12px 28px rgba(15, 23, 42, 0.07);
+  --ux-shadow-md: 0 16px 36px rgba(15, 23, 42, 0.09);
+  --ux-ease: 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Vertical rhythm */
+.cras-ui-v2 :is(.cras-stage-v2, .cras-stage-body) {
+  gap: 12px !important;
+}
+
+.cras-ui-v2 :is(.faz-pageHead, .faz-fin-topbar, .stock-toolbar, .areas-summaryTop, .tp-summaryHead, .pd-subhead) {
+  gap: 10px;
+}
+
+/* Main surfaces */
+.cras-ui-v2 :is(
+  .card,
+  .faz-panel,
+  .pdClassic-card,
+  .faz-fin-hub-card,
+  .stock-kpi,
+  .tp-panel,
+  .tp-shell,
+  .nt-shell,
+  .areas-block,
+  .faz-weigh-form,
+  .faz-modal,
+  .stock-modal
+) {
+  border-color: var(--ux-border) !important;
+  border-radius: var(--ux-radius-lg) !important;
+  box-shadow: var(--ux-shadow-sm) !important;
+}
+
+.cras-ui-v2 :is(
+  .faz-fin-tableWrap,
+  .stock-tableWrap,
+  .faz-tableWrap,
+  .pd-tableWrap
+) {
+  border: 1px solid var(--ux-border) !important;
+  border-radius: 14px !important;
+  background: var(--ux-surface) !important;
+  box-shadow: var(--ux-shadow-xs);
+}
+
+/* Buttons */
+.cras-ui-v2 :is(
+  .faz-btn,
+  .btn-back,
+  .btn-refresh,
+  .stock-btn,
+  .faz-miniBtn,
+  .cras-action-btn,
+  .btn-primario,
+  .btn-secundario
+) {
+  transition:
+    transform var(--ux-ease),
+    box-shadow var(--ux-ease),
+    border-color var(--ux-ease),
+    background-color var(--ux-ease),
+    color var(--ux-ease);
+}
+
+.cras-ui-v2 :is(.faz-btn, .btn-back, .btn-refresh, .stock-btn, .faz-miniBtn, .cras-action-btn) {
+  border-radius: var(--ux-radius-md) !important;
+  min-height: 34px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.cras-ui-v2 :is(.faz-btn:hover, .btn-back:hover, .btn-refresh:hover, .stock-btn:hover, .faz-miniBtn:hover, .cras-action-btn:hover) {
+  transform: translateY(-1px);
+}
+
+.cras-ui-v2 :is(.btn-refresh, .stock-btn-primary, .btn-primario, .faz-btn.primary) {
+  color: #fff !important;
+  border-color: rgba(79, 70, 229, 0.7) !important;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.95), rgba(14, 165, 233, 0.92)) !important;
+  box-shadow: 0 10px 24px rgba(79, 70, 229, 0.2);
+}
+
+.cras-ui-v2 :is(.btn-back, .stock-btn-soft, .btn-secundario, .faz-btn.ghost, .faz-miniBtn, .cras-action-btn) {
+  border-color: var(--ux-border) !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  color: var(--ux-ink) !important;
+}
+
+.cras-ui-v2 :is(button, [role="button"], .faz-btn, .btn-back, .btn-refresh, .stock-btn, .faz-miniBtn, .cras-action-btn):focus-visible {
+  outline: none;
+  box-shadow: var(--ux-focus-ring);
+  border-color: var(--ux-focus) !important;
+}
+
+/* Form fields */
+.cras-ui-v2 :is(
+  .faz-input,
+  .stock-filter,
+  .areas-searchBar,
+  .input,
+  .stock-field input,
+  .stock-field select,
+  .stock-field textarea,
+  .faz-field input,
+  .faz-field select,
+  .faz-field textarea,
+  textarea.input,
+  select.input
+) {
+  border: 1px solid var(--ux-border-soft) !important;
+  border-radius: var(--ux-radius-md) !important;
+  background: #fff !important;
+  color: var(--ux-ink);
+  min-height: 36px;
+  transition: border-color var(--ux-ease), box-shadow var(--ux-ease), background-color var(--ux-ease);
+}
+
+.cras-ui-v2 :is(
+  .faz-input:focus,
+  .stock-filter:focus,
+  .areas-searchBar:focus,
+  .input:focus,
+  .stock-field input:focus,
+  .stock-field select:focus,
+  .stock-field textarea:focus,
+  .faz-field input:focus,
+  .faz-field select:focus,
+  .faz-field textarea:focus,
+  textarea.input:focus,
+  select.input:focus
+) {
+  outline: none;
+  border-color: var(--ux-focus) !important;
+  box-shadow: var(--ux-focus-ring) !important;
+}
+
+/* Table readability */
+.cras-ui-v2 :is(.faz-fin-table, .stock-table, .faz-table, .pd-table, .faz-cadastro-table, .faz-animals-table) thead th {
+  background: rgba(248, 250, 252, 0.96) !important;
+  color: var(--ux-muted) !important;
+  font-size: 11px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  border-bottom-color: var(--ux-border) !important;
+}
+
+.cras-ui-v2 :is(.faz-fin-table, .stock-table, .faz-table, .pd-table, .faz-cadastro-table, .faz-animals-table) tbody td {
+  border-bottom: 1px solid rgba(241, 245, 249, 0.95);
+}
+
+.cras-ui-v2 :is(.faz-fin-table, .stock-table, .faz-table, .pd-table, .faz-cadastro-table, .faz-animals-table) tbody tr:hover {
+  background: rgba(99, 102, 241, 0.04) !important;
+}
+
+.cras-ui-v2 :is(.faz-fin-tableWrap, .stock-tableWrap, .faz-tableWrap, .pd-tableWrap)::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+
+.cras-ui-v2 :is(.faz-fin-tableWrap, .stock-tableWrap, .faz-tableWrap, .pd-tableWrap)::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.45);
+  border-radius: 999px;
+}
+
+/* Chips and pills */
+.cras-ui-v2 :is(.chip, .faz-pill, .pd-pill, .faz-chip, .faz-chipLite, .cras-chip) {
+  border-radius: 999px;
+  border-color: var(--ux-border) !important;
+  font-weight: 800;
+}
+
+/* Empty and feedback states */
+.cras-ui-v2 :is(.faz-empty, .stock-empty, .faz-emptyNice, .pdClassic-empty) {
+  border: 1px dashed var(--ux-border) !important;
+  border-radius: 12px !important;
+  background: var(--ux-surface-soft) !important;
+  color: var(--ux-muted) !important;
+}
+
+.cras-ui-v2 :is(.faz-fin-alert, .stock-alert) {
+  border-radius: 12px !important;
+  border-left: 4px solid rgba(239, 68, 68, 0.6);
+}
+
+.cras-ui-v2 .faz-fin-note {
+  border-radius: 12px;
+  background: rgba(248, 250, 252, 0.82);
+  border: 1px solid rgba(226, 232, 240, 0.7);
+}
+
+/* Sidebar hierarchy polish */
+.cras-ui-v2 .cras-sidebar-v2-subitems {
+  margin-left: 10px;
+  padding-left: 10px;
+  border-left: 1px solid rgba(203, 213, 225, 0.8);
+  gap: 3px;
+}
+
+.cras-ui-v2 .cras-sidebar-v2-item.is-child {
+  font-size: 12.5px;
+  line-height: 1.2;
+}
+
+.cras-ui-v2 .cras-sidebar-v2-item.is-parent .cras-sidebar-v2-caret {
+  opacity: 0.8;
+}
+
+/* Dashboard tabs/buttons - avoid stretched bar look */
+.cras-ui-v2 .faz-producer-dashboard .pd-tabs {
+  align-items: center;
+}
+
+.cras-ui-v2 .faz-producer-dashboard .pd-tab {
+  width: auto !important;
+  flex: 0 0 auto !important;
+  border-radius: 999px !important;
+}
+
+.cras-ui-v2 .faz-producer-dashboard .faz-btn.sm {
+  width: auto !important;
+}
+
+/* Grid responsivity */
+@media (max-width: 1180px) {
+  .cras-ui-v2 .faz-fin-kpis {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .cras-ui-v2 :is(.tp-kpiGrid, .nt-kpiGrid, .stock-kpis, .herdKpis, .areas-metricGrid, .pdClassic-grid) {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 980px) {
+  .cras-ui-v2 :is(.faz-pageHead, .faz-fin-topbar, .tp-summaryHead, .areas-summaryTop, .pd-subhead) {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .cras-ui-v2 :is(.faz-fin-filters, .faz-fin-filters.faz-fin-filters-3, .faz-fin-filters.faz-fin-filters-4, .faz-formGrid, .faz-nutri-form, .faz-form-grid) {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .cras-ui-v2 .faz-fin-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .cras-ui-v2 :is(.tp-kpiGrid, .nt-kpiGrid, .stock-kpis, .herdKpis, .areas-metricGrid, .pdClassic-grid) {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .cras-ui-v2 .faz-fin-kpis {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Motion */
+@keyframes ux-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cras-ui-v2 :is(.card, .faz-panel, .pdClassic-card, .faz-fin-hub-card, .tp-panel, .areas-block, .stock-kpi) {
+    animation: ux-fade-up 220ms var(--ux-ease) both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cras-ui-v2 :is(.card, .faz-panel, .pdClassic-card, .faz-fin-hub-card, .tp-panel, .areas-block, .stock-kpi) {
+    animation: none !important;
+  }
+}

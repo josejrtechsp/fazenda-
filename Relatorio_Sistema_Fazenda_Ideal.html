@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <title>Relatório do Sistema Fazenda Ideal</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 36px; color: #1e293b; line-height: 1.45; }
+    h1 { font-size: 24px; margin-bottom: 4px; }
+    h2 { font-size: 18px; margin-top: 20px; margin-bottom: 8px; }
+    h3 { font-size: 15px; margin-top: 14px; margin-bottom: 6px; }
+    p, li { font-size: 12px; }
+    ul { margin-top: 4px; }
+    .meta { color: #475569; margin-bottom: 18px; }
+    .ok { color: #166534; font-weight: bold; }
+    .partial { color: #92400e; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Relatório do Sistema Fazenda Ideal</h1>
+  <p class="meta">Data de referência: 18/02/2026</p>
+
+  <h2>1. Resumo executivo</h2>
+  <p>
+    O sistema está em fase avançada e operacional para a rotina de gestão da fazenda.
+    Hoje cobre entrada no sistema, dashboard gerencial, financeiro, cadastros, máquinas,
+    clima, planejamento, tarefas, notificações, pecuária avançada, relatórios e validações
+    de integração com WhatsApp.
+  </p>
+
+  <h2>2. O que já está pronto</h2>
+
+  <h3>2.1 Acesso e navegação</h3>
+  <ul>
+    <li>Site institucional + página de login intermediária + entrada no sistema.</li>
+    <li>Navegação por módulos consolidada no menu lateral.</li>
+  </ul>
+
+  <h3>2.2 Dashboard (Início do mês)</h3>
+  <ul>
+    <li>Visão executiva com KPIs: receita, despesa, balanço e operação.</li>
+    <li>Blocos de resumo de rebanho e financeiro.</li>
+    <li>Ajustes visuais recentes aplicados no layout principal.</li>
+  </ul>
+
+  <h3>2.3 Financeiro (Custos e Receitas)</h3>
+  <ul>
+    <li>Lançamento de despesas e receitas.</li>
+    <li>Análises financeiras e visões gerenciais (incluindo DRE/fluxo no painel).</li>
+    <li>Plano de contas Inttegra e cadastro de pessoas/empresas.</li>
+    <li>Rotinas de seed para plano de contas e dados demo.</li>
+  </ul>
+
+  <h3>2.4 Cadastros gerais</h3>
+  <ul>
+    <li>Propriedades e safras com CRUD básico funcional.</li>
+    <li>Pessoas e empresas integradas ao financeiro.</li>
+  </ul>
+
+  <h3>2.5 Módulos operacionais e de gestão</h3>
+  <ul>
+    <li>Máquinas: cadastro, movimentações e resumo.</li>
+    <li>Clima: lançamentos mensais de chuva e histórico.</li>
+    <li>Planejamento: metas, DISC e mapa cultural.</li>
+    <li>Tarefas: criação, atualização e conclusão.</li>
+    <li>Notificações: leitura individual e marcação em lote.</li>
+    <li>Pecuária avançada: movimentações, efetivo mensal, áreas mensais e reprodução.</li>
+  </ul>
+
+  <h3>2.6 Relatórios</h3>
+  <ul>
+    <li>Fechamento trimestral/semestral consolidado.</li>
+    <li>Exportação CSV funcional.</li>
+    <li>PDF disponível via impressão da tela.</li>
+  </ul>
+
+  <h3>2.7 WhatsApp</h3>
+  <ul>
+    <li>Ingestão e validação de mensagens/eventos.</li>
+    <li>Follow-up de perguntas por evento.</li>
+    <li>Envio via API quando credenciais oficiais estiverem configuradas.</li>
+  </ul>
+
+  <h2>3. O que ainda está parcial</h2>
+  <ul>
+    <li><span class="partial">Rebanho:</span> parte da operação ainda usa localStorage no frontend; persistência backend ainda não está 100% fechada.</li>
+    <li><span class="partial">Mangas e pasto:</span> algumas telas ainda usam dados mockados.</li>
+    <li><span class="partial">Autenticação:</span> login atual não está ligado a perfis reais no backend.</li>
+    <li><span class="partial">WhatsApp oficial:</span> envio real depende de `WA_ACCESS_TOKEN` e `WA_PHONE_NUMBER_ID`.</li>
+  </ul>
+
+  <h2>4. Conclusão</h2>
+  <p>
+    O sistema já está pronto para uso operacional em boa parte da rotina da fazenda,
+    com foco forte em gestão e financeiro.
+  </p>
+  <p>Próximos passos técnicos para fechar ciclo completo:</p>
+  <ul>
+    <li>Finalizar persistência total do módulo Rebanho no backend.</li>
+    <li>Trocar mocks de Áreas/Pasto por dados reais.</li>
+    <li>Implementar autenticação real por usuários e perfis.</li>
+  </ul>
+
+  <h2>5. Status final</h2>
+  <p><span class="ok">Pronto hoje:</span> interface principal, dashboard, financeiro, cadastros, relatórios, tarefas/notificações, máquinas, clima, planejamento e pecuária avançada.</p>
+  <p><span class="partial">Em evolução:</span> rebanho 100% persistente, áreas/pasto sem mock e autenticação corporativa completa.</p>
+</body>
+</html>

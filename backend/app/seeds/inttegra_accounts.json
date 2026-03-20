@@ -1,0 +1,2487 @@
+[
+  {
+    "code": "1",
+    "name": "RECEITAS",
+    "level": 1,
+    "parent_code": null,
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.1",
+    "name": "RECEITAS AGRÍCOLAS E SILVICULTURAIS",
+    "level": 2,
+    "parent_code": "1",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.1.1",
+    "name": "AVEIA",
+    "level": 3,
+    "parent_code": "1.1",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.1.2",
+    "name": "AZEVÉM",
+    "level": 3,
+    "parent_code": "1.1",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.1.3",
+    "name": "CANA",
+    "level": 3,
+    "parent_code": "1.1",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.1.3.1",
+    "name": "CANA PRÓPRIA",
+    "level": 4,
+    "parent_code": "1.1.3",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.1.3.2",
+    "name": "CANA PARCERIA",
+    "level": 4,
+    "parent_code": "1.1.3",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.1.4",
+    "name": "EUCALIPTO",
+    "level": 3,
+    "parent_code": "1.1",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.1.5",
+    "name": "FEIJÃO",
+    "level": 3,
+    "parent_code": "1.1",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.1.6",
+    "name": "MANDIOCA",
+    "level": 3,
+    "parent_code": "1.1",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.1.6.1",
+    "name": "MANDIOCA PRÓPRIA",
+    "level": 4,
+    "parent_code": "1.1.6",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.1.6.2",
+    "name": "MANDIOCA PARCERIA",
+    "level": 4,
+    "parent_code": "1.1.6",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.1.7",
+    "name": "MILHETO",
+    "level": 3,
+    "parent_code": "1.1",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.1.8",
+    "name": "MILHO SAFRINHA",
+    "level": 3,
+    "parent_code": "1.1",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.1.9",
+    "name": "MILHO VERÃO",
+    "level": 3,
+    "parent_code": "1.1",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.1.10",
+    "name": "SERINGUEIRA",
+    "level": 3,
+    "parent_code": "1.1",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.1.11",
+    "name": "SOJA",
+    "level": 3,
+    "parent_code": "1.1",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.1.11.1",
+    "name": "SOJA PRÓPRIA",
+    "level": 4,
+    "parent_code": "1.1.11",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.1.11.2",
+    "name": "SOJA PARCERIA",
+    "level": 4,
+    "parent_code": "1.1.11",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.1.12",
+    "name": "SORGO",
+    "level": 3,
+    "parent_code": "1.1",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.1.13",
+    "name": "OUTRAS RECEITAS AGRÍCOLAS",
+    "level": 3,
+    "parent_code": "1.1",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.2",
+    "name": "RECEITAS OUTROS",
+    "level": 2,
+    "parent_code": "1",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.2.1",
+    "name": "ARRENDAMENTO DE PASTAGEM",
+    "level": 3,
+    "parent_code": "1.2",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.2.2",
+    "name": "ARRENDAMENTO DE LAVOURA",
+    "level": 3,
+    "parent_code": "1.2",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.2.3",
+    "name": "COMPOSTAGEM",
+    "level": 3,
+    "parent_code": "1.2",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.2.4",
+    "name": "FERRAMENTAS E EQUIPAMENTOS",
+    "level": 3,
+    "parent_code": "1.2",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.2.5",
+    "name": "MADEIRAS",
+    "level": 3,
+    "parent_code": "1.2",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.2.6",
+    "name": "PRESTAÇÃO DE SERVIÇOS",
+    "level": 3,
+    "parent_code": "1.2",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.2.7",
+    "name": "RECICLÁVEIS",
+    "level": 3,
+    "parent_code": "1.2",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.2.8",
+    "name": "RENDIMENTO FINANCEIRO",
+    "level": 3,
+    "parent_code": "1.2",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.2.9",
+    "name": "VEÍCULOS, TRATORES E IMPLEMENTOS",
+    "level": 3,
+    "parent_code": "1.2",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.2.10",
+    "name": "OUTRAS RECEITAS",
+    "level": 3,
+    "parent_code": "1.2",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.3",
+    "name": "RECEITAS PECUÁRIAS",
+    "level": 2,
+    "parent_code": "1",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.3.1",
+    "name": "FÊMEAS ABATE",
+    "level": 3,
+    "parent_code": "1.3",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.3.2",
+    "name": "FÊMEAS DESCARTE",
+    "level": 3,
+    "parent_code": "1.3",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.3.3",
+    "name": "FÊMEAS RECRIA",
+    "level": 3,
+    "parent_code": "1.3",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.3.4",
+    "name": "FÊMEAS REPRODUÇÃO",
+    "level": 3,
+    "parent_code": "1.3",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.3.5",
+    "name": "MACHOS ABATE",
+    "level": 3,
+    "parent_code": "1.3",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.3.6",
+    "name": "MACHOS RECRIA",
+    "level": 3,
+    "parent_code": "1.3",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.3.7",
+    "name": "MACHOS REPRODUÇÃO",
+    "level": 3,
+    "parent_code": "1.3",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.3.8",
+    "name": "SÊMEN E EMBRIÕES",
+    "level": 3,
+    "parent_code": "1.3",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.3.9",
+    "name": "CANA FORRAGEIRA",
+    "level": 3,
+    "parent_code": "1.3",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.3.10",
+    "name": "FENO",
+    "level": 3,
+    "parent_code": "1.3",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.3.11",
+    "name": "SILAGEM DE MILHETO",
+    "level": 3,
+    "parent_code": "1.3",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.3.12",
+    "name": "SILAGEM DE MILHO",
+    "level": 3,
+    "parent_code": "1.3",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.3.13",
+    "name": "SILAGEM DE SORGO",
+    "level": 3,
+    "parent_code": "1.3",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.3.14",
+    "name": "OUTRAS RECEITAS PECUÁRIAS",
+    "level": 3,
+    "parent_code": "1.3",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.4",
+    "name": "RECEITAS TROPA E OUTROS ANIMAIS",
+    "level": 2,
+    "parent_code": "1",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.4.1",
+    "name": "AVES",
+    "level": 3,
+    "parent_code": "1.4",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.4.2",
+    "name": "OVINOS",
+    "level": 3,
+    "parent_code": "1.4",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.4.3",
+    "name": "SUINOS",
+    "level": 3,
+    "parent_code": "1.4",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.4.4",
+    "name": "TROPA DE SERVIÇO",
+    "level": 3,
+    "parent_code": "1.4",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.4.5",
+    "name": "TROPA DE REPRODUÇÃO",
+    "level": 3,
+    "parent_code": "1.4",
+    "category": "RECEITA"
+  },
+  {
+    "code": "1.4.6",
+    "name": "OUTRAS RECEITAS COM",
+    "level": 3,
+    "parent_code": "1.4",
+    "category": "RECEITA"
+  },
+  {
+    "code": "2",
+    "name": "AGRICULTURA E SILVICULTURA",
+    "level": 1,
+    "parent_code": null,
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.1",
+    "name": "CANA",
+    "level": 2,
+    "parent_code": "2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.1.1",
+    "name": "ARRENDAMENTO",
+    "level": 3,
+    "parent_code": "2.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.1.2",
+    "name": "COLHEITA E TRANSPORTE",
+    "level": 3,
+    "parent_code": "2.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.1.3",
+    "name": "CORRETIVOS E FERTILIZANTES",
+    "level": 3,
+    "parent_code": "2.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.1.3.1",
+    "name": "CORRETIVOS",
+    "level": 4,
+    "parent_code": "2.1.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.1.3.2",
+    "name": "FERTILIZANTES NATURAIS",
+    "level": 4,
+    "parent_code": "2.1.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.1.3.3",
+    "name": "FERTILIZANTES QUÍMICOS",
+    "level": 4,
+    "parent_code": "2.1.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.1.4",
+    "name": "DEFENSIVOS",
+    "level": 3,
+    "parent_code": "2.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.1.4.1",
+    "name": "DEFENSIVOS BIOLÓGICOS",
+    "level": 4,
+    "parent_code": "2.1.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.1.4.2",
+    "name": "DEFENSIVOS QUÍMICOS",
+    "level": 4,
+    "parent_code": "2.1.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.1.5",
+    "name": "MÃO DE OBRA TERCEIRIZADA (FUNCIONÁRIOS DIARISTAS)",
+    "level": 3,
+    "parent_code": "2.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.1.6",
+    "name": "OPERAÇÕES MECANIZADAS TERCEIRIZADAS (SEM COLHEITA E FRETE)",
+    "level": 3,
+    "parent_code": "2.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.1.7",
+    "name": "PARCERIA AGRÍCOLA",
+    "level": 3,
+    "parent_code": "2.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.1.8",
+    "name": "PLANTA DE COBERTURA",
+    "level": 3,
+    "parent_code": "2.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.1.9",
+    "name": "SECAGEM E ARMAZENAMENTO",
+    "level": 3,
+    "parent_code": "2.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.1.10",
+    "name": "SEGURO AGRÍCOLA",
+    "level": 3,
+    "parent_code": "2.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.1.11",
+    "name": "SEMENTES/MUDAS E TRATAMENTO",
+    "level": 3,
+    "parent_code": "2.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.1.12",
+    "name": "TAXAS E IMPOSTOS NISP (NÃO INCIDENTE SOBRE A PRODUÇÃO)",
+    "level": 3,
+    "parent_code": "2.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.1.13",
+    "name": "OUTRAS DESPESAS COM CANA",
+    "level": 3,
+    "parent_code": "2.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.2",
+    "name": "EUCALIPTO",
+    "level": 2,
+    "parent_code": "2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.2.1",
+    "name": "ARRENDAMENTO",
+    "level": 3,
+    "parent_code": "2.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.2.2",
+    "name": "COLHEITA E TRANSPORTE",
+    "level": 3,
+    "parent_code": "2.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.2.3",
+    "name": "CORRETIVOS E FERTILIZANTES",
+    "level": 3,
+    "parent_code": "2.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.2.3.1",
+    "name": "CORRETIVOS",
+    "level": 4,
+    "parent_code": "2.2.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.2.3.2",
+    "name": "FERTILIZANTES NATURAIS",
+    "level": 4,
+    "parent_code": "2.2.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.2.3.3",
+    "name": "FERTILIZANTES QUÍMICOS",
+    "level": 4,
+    "parent_code": "2.2.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.2.4",
+    "name": "DEFENSIVOS",
+    "level": 3,
+    "parent_code": "2.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.2.4.1",
+    "name": "DEFENSIVOS BIOLÓGICOS",
+    "level": 4,
+    "parent_code": "2.2.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.2.4.2",
+    "name": "DEFENSIVOS QUÍMICOS",
+    "level": 4,
+    "parent_code": "2.2.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.2.5",
+    "name": "MÃO DE OBRA TERCEIRIZADA (FUNCIONÁRIOS DIARISTAS)",
+    "level": 3,
+    "parent_code": "2.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.2.6",
+    "name": "OPERAÇÕES MECANIZADAS TERCEIRIZADAS (SEM COLHEITA E FRETE)",
+    "level": 3,
+    "parent_code": "2.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.2.7",
+    "name": "PARCERIA AGRÍCOLA",
+    "level": 3,
+    "parent_code": "2.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.2.8",
+    "name": "PLANTA DE COBERTURA",
+    "level": 3,
+    "parent_code": "2.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.2.9",
+    "name": "SECAGEM E ARMAZENAMENTO",
+    "level": 3,
+    "parent_code": "2.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.2.10",
+    "name": "SEGURO AGRÍCOLA",
+    "level": 3,
+    "parent_code": "2.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.2.11",
+    "name": "SEMENTES/MUDAS E TRATAMENTO",
+    "level": 3,
+    "parent_code": "2.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.2.12",
+    "name": "TAXAS E IMPOSTOS NISP (NÃO INCIDENTE SOBRE A PRODUÇÃO)",
+    "level": 3,
+    "parent_code": "2.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.2.13",
+    "name": "OUTRAS DESPESAS COM EUCALIPTO",
+    "level": 3,
+    "parent_code": "2.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.3",
+    "name": "FEIJÃO",
+    "level": 2,
+    "parent_code": "2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.3.1",
+    "name": "ARRENDAMENTO",
+    "level": 3,
+    "parent_code": "2.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.3.2",
+    "name": "COLHEITA E TRANSPORTE",
+    "level": 3,
+    "parent_code": "2.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.3.3",
+    "name": "CORRETIVOS E FERTILIZANTES",
+    "level": 3,
+    "parent_code": "2.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.3.3.1",
+    "name": "CORRETIVOS",
+    "level": 4,
+    "parent_code": "2.3.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.3.3.2",
+    "name": "FERTILIZANTES NATURAIS",
+    "level": 4,
+    "parent_code": "2.3.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.3.3.3",
+    "name": "FERTILIZANTES QUÍMICOS",
+    "level": 4,
+    "parent_code": "2.3.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.3.4",
+    "name": "DEFENSIVOS",
+    "level": 3,
+    "parent_code": "2.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.3.4.1",
+    "name": "DEFENSIVOS BIOLÓGICOS",
+    "level": 4,
+    "parent_code": "2.3.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.3.4.2",
+    "name": "DEFENSIVOS QUÍMICOS",
+    "level": 4,
+    "parent_code": "2.3.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.3.5",
+    "name": "MÃO DE OBRA TERCEIRIZADA (FUNCIONÁRIOS DIARISTAS)",
+    "level": 3,
+    "parent_code": "2.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.3.6",
+    "name": "OPERAÇÕES MECANIZADAS TERCEIRIZADAS (SEM COLHEITA E FRETE)",
+    "level": 3,
+    "parent_code": "2.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.3.7",
+    "name": "PARCERIA AGRÍCOLA",
+    "level": 3,
+    "parent_code": "2.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.3.8",
+    "name": "PLANTA DE COBERTURA",
+    "level": 3,
+    "parent_code": "2.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.3.9",
+    "name": "SECAGEM E ARMAZENAMENTO",
+    "level": 3,
+    "parent_code": "2.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.3.10",
+    "name": "SEGURO AGRÍCOLA",
+    "level": 3,
+    "parent_code": "2.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.3.11",
+    "name": "SEMENTES/MUDAS E TRATAMENTO",
+    "level": 3,
+    "parent_code": "2.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.3.12",
+    "name": "TAXAS E IMPOSTOS NISP (NÃO INCIDENTE SOBRE A PRODUÇÃO)",
+    "level": 3,
+    "parent_code": "2.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.3.13",
+    "name": "OUTRAS DESPESAS COM FEIJÃO",
+    "level": 3,
+    "parent_code": "2.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.4",
+    "name": "MANDIOCA",
+    "level": 2,
+    "parent_code": "2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.4.1",
+    "name": "ARRENDAMENTO",
+    "level": 3,
+    "parent_code": "2.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.4.2",
+    "name": "COLHEITA E TRANSPORTE",
+    "level": 3,
+    "parent_code": "2.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.4.3",
+    "name": "CORRETIVOS E FERTILIZANTES",
+    "level": 3,
+    "parent_code": "2.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.4.3.1",
+    "name": "CORRETIVOS",
+    "level": 4,
+    "parent_code": "2.4.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.4.3.2",
+    "name": "FERTILIZANTES NATURAIS",
+    "level": 4,
+    "parent_code": "2.4.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.4.3.3",
+    "name": "FERTILIZANTES QUÍMICOS",
+    "level": 4,
+    "parent_code": "2.4.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.4.4",
+    "name": "DEFENSIVOS",
+    "level": 3,
+    "parent_code": "2.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.4.4.1",
+    "name": "DEFENSIVOS BIOLÓGICOS",
+    "level": 4,
+    "parent_code": "2.4.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.4.4.2",
+    "name": "DEFENSIVOS QUÍMICOS",
+    "level": 4,
+    "parent_code": "2.4.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.4.5",
+    "name": "MÃO DE OBRA TERCEIRIZADA (FUNCIONÁRIOS DIARISTAS)",
+    "level": 3,
+    "parent_code": "2.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.4.6",
+    "name": "OPERAÇÕES MECANIZADAS TERCEIRIZADAS (SEM COLHEITA E FRETE)",
+    "level": 3,
+    "parent_code": "2.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.4.7",
+    "name": "PARCERIA AGRÍCOLA",
+    "level": 3,
+    "parent_code": "2.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.4.8",
+    "name": "PLANTA DE COBERTURA",
+    "level": 3,
+    "parent_code": "2.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.4.9",
+    "name": "SECAGEM E ARMAZENAMENTO",
+    "level": 3,
+    "parent_code": "2.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.4.10",
+    "name": "SEGURO AGRÍCOLA",
+    "level": 3,
+    "parent_code": "2.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.4.11",
+    "name": "SEMENTES/MUDAS E TRATAMENTO",
+    "level": 3,
+    "parent_code": "2.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.4.12",
+    "name": "TAXAS E IMPOSTOS NISP (NÃO INCIDENTE SOBRE A PRODUÇÃO)",
+    "level": 3,
+    "parent_code": "2.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.4.13",
+    "name": "OUTRAS DESPESAS COM MANDIOCA",
+    "level": 3,
+    "parent_code": "2.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.5",
+    "name": "MILHO SAFRINHA",
+    "level": 2,
+    "parent_code": "2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.5.1",
+    "name": "ARRENDAMENTO",
+    "level": 3,
+    "parent_code": "2.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.5.2",
+    "name": "COLHEITA E TRANSPORTE",
+    "level": 3,
+    "parent_code": "2.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.5.3",
+    "name": "CORRETIVOS E FERTILIZANTES",
+    "level": 3,
+    "parent_code": "2.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.5.3.1",
+    "name": "CORRETIVOS",
+    "level": 4,
+    "parent_code": "2.5.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.5.3.2",
+    "name": "FERTILIZANTES NATURAIS",
+    "level": 4,
+    "parent_code": "2.5.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.5.3.3",
+    "name": "FERTILIZANTES QUÍMICOS",
+    "level": 4,
+    "parent_code": "2.5.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.5.4",
+    "name": "DEFENSIVOS",
+    "level": 3,
+    "parent_code": "2.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.5.4.1",
+    "name": "DEFENSIVOS BIOLÓGICOS",
+    "level": 4,
+    "parent_code": "2.5.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.5.4.2",
+    "name": "DEFENSIVOS QUÍMICOS",
+    "level": 4,
+    "parent_code": "2.5.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.5.5",
+    "name": "MÃO DE OBRA TERCEIRIZADA (FUNCIONÁRIOS DIARISTAS)",
+    "level": 3,
+    "parent_code": "2.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.5.6",
+    "name": "OPERAÇÕES MECANIZADAS TERCEIRIZADAS (SEM COLHEITA E FRETE)",
+    "level": 3,
+    "parent_code": "2.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.5.7",
+    "name": "PARCERIA AGRÍCOLA",
+    "level": 3,
+    "parent_code": "2.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.5.8",
+    "name": "PLANTA DE COBERTURA",
+    "level": 3,
+    "parent_code": "2.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.5.9",
+    "name": "SECAGEM E ARMAZENAMENTO",
+    "level": 3,
+    "parent_code": "2.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.5.10",
+    "name": "SEGURO AGRÍCOLA",
+    "level": 3,
+    "parent_code": "2.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.5.11",
+    "name": "SEMENTES/MUDAS E TRATAMENTO",
+    "level": 3,
+    "parent_code": "2.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.5.12",
+    "name": "TAXAS E IMPOSTOS NISP (NÃO INCIDENTE SOBRE A PRODUÇÃO)",
+    "level": 3,
+    "parent_code": "2.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.5.13",
+    "name": "OUTRAS DESPESAS COM MILHO SAFRINHA",
+    "level": 3,
+    "parent_code": "2.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.6",
+    "name": "MILHO VERÃO",
+    "level": 2,
+    "parent_code": "2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.6.1",
+    "name": "ARRENDAMENTO",
+    "level": 3,
+    "parent_code": "2.6",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.6.2",
+    "name": "COLHEITA E TRANSPORTE",
+    "level": 3,
+    "parent_code": "2.6",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.6.3",
+    "name": "CORRETIVOS E FERTILIZANTES",
+    "level": 3,
+    "parent_code": "2.6",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.6.3.1",
+    "name": "CORRETIVOS",
+    "level": 4,
+    "parent_code": "2.6.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.6.3.2",
+    "name": "FERTILIZANTES NATURAIS",
+    "level": 4,
+    "parent_code": "2.6.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.6.3.3",
+    "name": "FERTILIZANTES QUÍMICOS",
+    "level": 4,
+    "parent_code": "2.6.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.6.4",
+    "name": "DEFENSIVOS",
+    "level": 3,
+    "parent_code": "2.6",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.6.4.1",
+    "name": "DEFENSIVOS BIOLÓGICOS",
+    "level": 4,
+    "parent_code": "2.6.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.6.4.2",
+    "name": "DEFENSIVOS QUÍMICOS",
+    "level": 4,
+    "parent_code": "2.6.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.6.5",
+    "name": "MÃO DE OBRA TERCEIRIZADA (FUNCIONÁRIOS DIARISTAS)",
+    "level": 3,
+    "parent_code": "2.6",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.6.6",
+    "name": "OPERAÇÕES MECANIZADAS TERCEIRIZADAS (SEM COLHEITA E FRETE)",
+    "level": 3,
+    "parent_code": "2.6",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.6.7",
+    "name": "PARCERIA AGRÍCOLA",
+    "level": 3,
+    "parent_code": "2.6",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.6.8",
+    "name": "PLANTA DE COBERTURA",
+    "level": 3,
+    "parent_code": "2.6",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.6.9",
+    "name": "SECAGEM E ARMAZENAMENTO",
+    "level": 3,
+    "parent_code": "2.6",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.6.10",
+    "name": "SEGURO AGRÍCOLA",
+    "level": 3,
+    "parent_code": "2.6",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.6.11",
+    "name": "SEMENTES/MUDAS E TRATAMENTO",
+    "level": 3,
+    "parent_code": "2.6",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.6.12",
+    "name": "TAXAS E IMPOSTOS NISP (NÃO INCIDENTE SOBRE A PRODUÇÃO)",
+    "level": 3,
+    "parent_code": "2.6",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.6.13",
+    "name": "OUTRAS DESPESAS COM MILHO VERÃO",
+    "level": 3,
+    "parent_code": "2.6",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.7",
+    "name": "SERINGUEIRA",
+    "level": 2,
+    "parent_code": "2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.7.1",
+    "name": "ARRENDAMENTO",
+    "level": 3,
+    "parent_code": "2.7",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.7.2",
+    "name": "COLHEITA E TRANSPORTE",
+    "level": 3,
+    "parent_code": "2.7",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.7.3",
+    "name": "CORRETIVOS E FERTILIZANTES",
+    "level": 3,
+    "parent_code": "2.7",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.7.3.1",
+    "name": "CORRETIVOS",
+    "level": 4,
+    "parent_code": "2.7.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.7.3.2",
+    "name": "FERTILIZANTES NATURAIS",
+    "level": 4,
+    "parent_code": "2.7.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.7.3.3",
+    "name": "FERTILIZANTES QUÍMICOS",
+    "level": 4,
+    "parent_code": "2.7.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.7.4",
+    "name": "DEFENSIVOS",
+    "level": 3,
+    "parent_code": "2.7",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.7.4.1",
+    "name": "DEFENSIVOS BIOLÓGICOS",
+    "level": 4,
+    "parent_code": "2.7.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.7.4.2",
+    "name": "DEFENSIVOS QUÍMICOS",
+    "level": 4,
+    "parent_code": "2.7.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.7.5",
+    "name": "MÃO DE OBRA TERCEIRIZADA (FUNCIONÁRIOS DIARISTAS)",
+    "level": 3,
+    "parent_code": "2.7",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.7.6",
+    "name": "OPERAÇÕES MECANIZADAS TERCEIRIZADAS (SEM COLHEITA E FRETE)",
+    "level": 3,
+    "parent_code": "2.7",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.7.7",
+    "name": "PARCERIA AGRÍCOLA",
+    "level": 3,
+    "parent_code": "2.7",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.7.8",
+    "name": "PLANTA DE COBERTURA",
+    "level": 3,
+    "parent_code": "2.7",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.7.9",
+    "name": "SECAGEM E ARMAZENAMENTO",
+    "level": 3,
+    "parent_code": "2.7",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.7.10",
+    "name": "SEGURO AGRÍCOLA",
+    "level": 3,
+    "parent_code": "2.7",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.7.11",
+    "name": "SEMENTES/MUDAS E TRATAMENTO",
+    "level": 3,
+    "parent_code": "2.7",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.7.12",
+    "name": "TAXAS E IMPOSTOS NISP (NÃO INCIDENTE SOBRE A PRODUÇÃO)",
+    "level": 3,
+    "parent_code": "2.7",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.7.13",
+    "name": "OUTRAS DESPESAS COM SERINGUEIRA",
+    "level": 3,
+    "parent_code": "2.7",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.8",
+    "name": "SOJA",
+    "level": 2,
+    "parent_code": "2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.8.1",
+    "name": "ARRENDAMENTO",
+    "level": 3,
+    "parent_code": "2.8",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.8.2",
+    "name": "COLHEITA E TRANSPORTE",
+    "level": 3,
+    "parent_code": "2.8",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.8.3",
+    "name": "CORRETIVOS E FERTILIZANTES",
+    "level": 3,
+    "parent_code": "2.8",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.8.3.1",
+    "name": "CORRETIVOS",
+    "level": 4,
+    "parent_code": "2.8.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.8.3.2",
+    "name": "FERTILIZANTES NATURAIS",
+    "level": 4,
+    "parent_code": "2.8.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.8.3.3",
+    "name": "FERTILIZANTES QUÍMICOS",
+    "level": 4,
+    "parent_code": "2.8.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.8.4",
+    "name": "DEFENSIVOS",
+    "level": 3,
+    "parent_code": "2.8",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.8.4.1",
+    "name": "DEFENSIVOS BIOLÓGICOS",
+    "level": 4,
+    "parent_code": "2.8.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.8.4.2",
+    "name": "DEFENSIVOS QUÍMICOS",
+    "level": 4,
+    "parent_code": "2.8.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.8.5",
+    "name": "MÃO DE OBRA TERCEIRIZADA (FUNCIONÁRIOS DIARISTAS)",
+    "level": 3,
+    "parent_code": "2.8",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.8.6",
+    "name": "OPERAÇÕES MECANIZADAS TERCEIRIZADAS (SEM COLHEITA E FRETE)",
+    "level": 3,
+    "parent_code": "2.8",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.8.7",
+    "name": "PARCERIA AGRÍCOLA",
+    "level": 3,
+    "parent_code": "2.8",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.8.8",
+    "name": "PLANTA DE COBERTURA",
+    "level": 3,
+    "parent_code": "2.8",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.8.9",
+    "name": "SECAGEM E ARMAZENAMENTO",
+    "level": 3,
+    "parent_code": "2.8",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.8.10",
+    "name": "SEGURO AGRÍCOLA",
+    "level": 3,
+    "parent_code": "2.8",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.8.11",
+    "name": "SEMENTES/MUDAS E TRATAMENTO",
+    "level": 3,
+    "parent_code": "2.8",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.8.12",
+    "name": "TAXAS E IMPOSTOS NISP (NÃO INCIDENTE SOBRE A PRODUÇÃO)",
+    "level": 3,
+    "parent_code": "2.8",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.8.13",
+    "name": "OUTRAS DESPESAS COM SOJA",
+    "level": 3,
+    "parent_code": "2.8",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.9",
+    "name": "OUTRAS CULTURAS",
+    "level": 2,
+    "parent_code": "2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.9.1",
+    "name": "OUTRAS DESPESAS COM OUTRAS CULTURAS",
+    "level": 3,
+    "parent_code": "2.9",
+    "category": "DESPESA"
+  },
+  {
+    "code": "2.9.2",
+    "name": "OUTRAS DESPESAS COM PARCERIAS AGRÍCOLAS",
+    "level": 3,
+    "parent_code": "2.9",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3",
+    "name": "INVESTIMENTOS",
+    "level": 1,
+    "parent_code": null,
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.1",
+    "name": "INVESTIMENTOS EM BOVINOS",
+    "level": 2,
+    "parent_code": "3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.1.1",
+    "name": "COMPRA DE BOVINOS",
+    "level": 3,
+    "parent_code": "3.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.1.2",
+    "name": "COMISSÕES",
+    "level": 3,
+    "parent_code": "3.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.1.3",
+    "name": "DESLOCAMENTO, ALIMENTAÇÃO E HOSPEDAGEM",
+    "level": 3,
+    "parent_code": "3.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.1.4",
+    "name": "FRETE: COMPRA E TRANSFERÊNCIA DE BOVINOS",
+    "level": 3,
+    "parent_code": "3.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.1.5",
+    "name": "OUTRAS DESPESAS COM INVESTIMENTOS EM",
+    "level": 3,
+    "parent_code": "3.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.2",
+    "name": "INVESTIMENTOS EM INFRAESTRUTURA",
+    "level": 2,
+    "parent_code": "3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.2.1",
+    "name": "BARRACÕES",
+    "level": 3,
+    "parent_code": "3.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.2.2",
+    "name": "CERCAS",
+    "level": 3,
+    "parent_code": "3.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.2.3",
+    "name": "ESTRADAS E PONTES",
+    "level": 3,
+    "parent_code": "3.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.2.4",
+    "name": "FERRAMENTAS E EQUIPAMENTOS",
+    "level": 3,
+    "parent_code": "3.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.2.5",
+    "name": "HORTA, POMAR E JARDINS",
+    "level": 3,
+    "parent_code": "3.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.2.6",
+    "name": "INFORMÁTICA, TELEFONIA E COMUNICAÇÃO",
+    "level": 3,
+    "parent_code": "3.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.2.7",
+    "name": "INSTALAÇÕES PECUÁRIAS",
+    "level": 3,
+    "parent_code": "3.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.2.8",
+    "name": "INSTALAÇÕES RESIDENCIAIS",
+    "level": 3,
+    "parent_code": "3.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.2.9",
+    "name": "MÓVEIS E ELETRODOMÉSTICOS",
+    "level": 3,
+    "parent_code": "3.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.2.10",
+    "name": "PROJETOS E MEDIÇÕES",
+    "level": 3,
+    "parent_code": "3.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.2.11",
+    "name": "REDE ELÉTRICA",
+    "level": 3,
+    "parent_code": "3.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.2.12",
+    "name": "REDE HIDRÁULICA",
+    "level": 3,
+    "parent_code": "3.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.2.13",
+    "name": "REFLORESTAMENTO",
+    "level": 3,
+    "parent_code": "3.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.2.14",
+    "name": "SEGURANÇA",
+    "level": 3,
+    "parent_code": "3.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.2.15",
+    "name": "SOLO CONTENÇÕES, DESTOCA E RECUPERAÇÃO",
+    "level": 3,
+    "parent_code": "3.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.2.16",
+    "name": "OUTRAS DESPESAS COM INVESTIMENTOS EM INFRAESTRUTURA",
+    "level": 3,
+    "parent_code": "3.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.3",
+    "name": "INVESTIMENTOS EM TROPA E OUTROS ANIMAIS",
+    "level": 2,
+    "parent_code": "3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.3.1",
+    "name": "AVES",
+    "level": 3,
+    "parent_code": "3.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.3.2",
+    "name": "OVINOS",
+    "level": 3,
+    "parent_code": "3.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.3.3",
+    "name": "SUINOS",
+    "level": 3,
+    "parent_code": "3.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.3.4",
+    "name": "TROPA DE SERVIÇO",
+    "level": 3,
+    "parent_code": "3.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.3.5",
+    "name": "TROPA DE REPRODUÇÃO",
+    "level": 3,
+    "parent_code": "3.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.3.6",
+    "name": "OUTRAS DESPESAS COM INVESTIMENTOS EM OUTROS ANIMAIS",
+    "level": 3,
+    "parent_code": "3.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.4",
+    "name": "INVESTIMENTOS EM RH",
+    "level": 2,
+    "parent_code": "3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.4.1",
+    "name": "EVENTOS PRESENTES",
+    "level": 3,
+    "parent_code": "3.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.4.2",
+    "name": "TREINAMENTOS",
+    "level": 3,
+    "parent_code": "3.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.4.3",
+    "name": "UNIFORMES E EPI",
+    "level": 3,
+    "parent_code": "3.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.4.4",
+    "name": "OUTRAS DESPESAS COM INVESTIMENTOS EM RH",
+    "level": 3,
+    "parent_code": "3.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.5",
+    "name": "INVESTIMENTOS EM PARQUE DE MÁQUINAS",
+    "level": 2,
+    "parent_code": "3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.5.1",
+    "name": "VEÍCULOS",
+    "level": 3,
+    "parent_code": "3.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.5.2",
+    "name": "MÁQUINAS",
+    "level": 3,
+    "parent_code": "3.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.5.3",
+    "name": "IMPLEMENTOS",
+    "level": 3,
+    "parent_code": "3.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.5.4",
+    "name": "OUTRAS DESPESAS COM INVESTIMENTOS EM PARQUE DE MÁQUINAS",
+    "level": 3,
+    "parent_code": "3.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.6",
+    "name": "INVESTIMENTOS EM PASTAGENS",
+    "level": 2,
+    "parent_code": "3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.6.1",
+    "name": "FORMAÇÃO DE PASTO",
+    "level": 3,
+    "parent_code": "3.6",
+    "category": "DESPESA"
+  },
+  {
+    "code": "3.6.2",
+    "name": "OUTRAS DESPESAS COM INVESTIMENTOS EM PASTAGENS",
+    "level": 3,
+    "parent_code": "3.6",
+    "category": "DESPESA"
+  },
+  {
+    "code": "4",
+    "name": "MÃO DE OBRA PERMANENTE",
+    "level": 1,
+    "parent_code": null,
+    "category": "DESPESA"
+  },
+  {
+    "code": "4.1",
+    "name": "MÃO DE OBRA PERMANENTE",
+    "level": 2,
+    "parent_code": "4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "4.1.1",
+    "name": "PRÊMIOS E BENEFÍCIOS",
+    "level": 3,
+    "parent_code": "4.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "4.1.2",
+    "name": "RESCISÕES E ACERTOS",
+    "level": 3,
+    "parent_code": "4.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "4.1.3",
+    "name": "SALÁRIOS E ENCARGOS",
+    "level": 3,
+    "parent_code": "4.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "4.1.4",
+    "name": "OUTRAS DESPESAS COM MÃO DE OBRA",
+    "level": 3,
+    "parent_code": "4.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5",
+    "name": "PECUÁRIA",
+    "level": 1,
+    "parent_code": null,
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.1",
+    "name": "FORRAGEIRAS, CULTURAS ANUAIS E OUTROS: PASTEJO",
+    "level": 2,
+    "parent_code": "5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.1.1",
+    "name": "AVEIA",
+    "level": 3,
+    "parent_code": "5.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.1.2",
+    "name": "AZEVÉM",
+    "level": 3,
+    "parent_code": "5.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.1.3",
+    "name": "MILHETO",
+    "level": 3,
+    "parent_code": "5.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.1.4",
+    "name": "SORGO",
+    "level": 3,
+    "parent_code": "5.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.1.5",
+    "name": "OUTRAS DESPESAS COM FORRAGEIRAS, CULTURAS ANUAIS E",
+    "level": 3,
+    "parent_code": "5.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.2",
+    "name": "FORRAGEIRAS, SILAGENS E OUTROS: COCHO",
+    "level": 2,
+    "parent_code": "5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.2.1",
+    "name": "CANA FORRAGEIRA",
+    "level": 3,
+    "parent_code": "5.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.2.2",
+    "name": "FENO",
+    "level": 3,
+    "parent_code": "5.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.2.3",
+    "name": "SILAGEM DE MILHETO",
+    "level": 3,
+    "parent_code": "5.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.2.4",
+    "name": "SILAGEM DE MILHO",
+    "level": 3,
+    "parent_code": "5.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.2.5",
+    "name": "SILAGEM DE SORGO",
+    "level": 3,
+    "parent_code": "5.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.2.6",
+    "name": "OUTRAS DESPESAS COM FORRAGEIRAS, SILAGENS E OUTROS: COCHO",
+    "level": 3,
+    "parent_code": "5.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.3",
+    "name": "PASTAGENS",
+    "level": 2,
+    "parent_code": "5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.3.1",
+    "name": "ARRENDAMENTO DE PASTAGEM",
+    "level": 3,
+    "parent_code": "5.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.3.2",
+    "name": "COMPOSTAGEM",
+    "level": 3,
+    "parent_code": "5.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.3.2.1",
+    "name": "ADITIVOS E FERTILIZANTES",
+    "level": 4,
+    "parent_code": "5.3.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.3.2.2",
+    "name": "ESTERCO",
+    "level": 4,
+    "parent_code": "5.3.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.3.2.3",
+    "name": "OUTRAS DESPESAS COM COMPOSTAGEM",
+    "level": 4,
+    "parent_code": "5.3.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.3.3",
+    "name": "MANUTENÇÃO DE PASTAGEM",
+    "level": 3,
+    "parent_code": "5.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.3.4",
+    "name": "OUTRAS DESPESAS COM PASTAGEM",
+    "level": 3,
+    "parent_code": "5.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.4",
+    "name": "REBANHO COMERCIAL",
+    "level": 2,
+    "parent_code": "5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.4.1",
+    "name": "DESPESAS COMERCIAIS",
+    "level": 3,
+    "parent_code": "5.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.4.2",
+    "name": "FRETE: MOVIMENTAÇÕES INTERNAS DE GADO",
+    "level": 3,
+    "parent_code": "5.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.4.3",
+    "name": "IDENTIFICAÇÃO E RASTREABILIDADE",
+    "level": 3,
+    "parent_code": "5.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.4.4",
+    "name": "NUTRIÇÃO",
+    "level": 3,
+    "parent_code": "5.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.4.5",
+    "name": "REPRODUÇÃO",
+    "level": 3,
+    "parent_code": "5.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.4.5.1",
+    "name": "INSEMINAÇÃO",
+    "level": 4,
+    "parent_code": "5.4.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.4.5.2",
+    "name": "REPRODUÇÃO",
+    "level": 4,
+    "parent_code": "5.4.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.4.6",
+    "name": "SANIDADE",
+    "level": 3,
+    "parent_code": "5.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.4.6.1",
+    "name": "VETERINÁRIO",
+    "level": 4,
+    "parent_code": "5.4.6",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.4.7",
+    "name": "MELHORAMENTO GENÉTICO",
+    "level": 3,
+    "parent_code": "5.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.4.8",
+    "name": "OUTRAS DESPESAS COM REBANHO COMERCIAL",
+    "level": 3,
+    "parent_code": "5.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.5",
+    "name": "REBANHO GENÉTICA",
+    "level": 2,
+    "parent_code": "5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.5.1",
+    "name": "DESPESAS COMERCIAIS",
+    "level": 3,
+    "parent_code": "5.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.5.2",
+    "name": "FRETE: MOVIMENTAÇÕES INTERNAS DE GADO",
+    "level": 3,
+    "parent_code": "5.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.5.3",
+    "name": "IDENTIFICAÇÃO E RASTREABILIDADE",
+    "level": 3,
+    "parent_code": "5.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.5.4",
+    "name": "NUTRIÇÃO",
+    "level": 3,
+    "parent_code": "5.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.5.5",
+    "name": "REPRODUÇÃO",
+    "level": 3,
+    "parent_code": "5.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.5.5.1",
+    "name": "INSEMINAÇÃO",
+    "level": 4,
+    "parent_code": "5.5.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.5.5.2",
+    "name": "REPRODUÇÃO",
+    "level": 4,
+    "parent_code": "5.5.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.5.6",
+    "name": "SANIDADE",
+    "level": 3,
+    "parent_code": "5.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.5.6.1",
+    "name": "VETERINÁRIO",
+    "level": 4,
+    "parent_code": "5.5.6",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.5.7",
+    "name": "MELHORAMENTO GENÉTICO",
+    "level": 3,
+    "parent_code": "5.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "5.5.8",
+    "name": "OUTRAS DESPESAS COM REBANHO GENÉTICA",
+    "level": 3,
+    "parent_code": "5.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6",
+    "name": "SUPORTE PRODUÇÃO",
+    "level": 1,
+    "parent_code": null,
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.1",
+    "name": "ADMINISTRAÇÃO",
+    "level": 2,
+    "parent_code": "6",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.1.1",
+    "name": "COMUNICAÇÃO E ENERGIA",
+    "level": 3,
+    "parent_code": "6.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.1.2",
+    "name": "CONTABILIDADE, JURÍDICO E CONSULTORIA",
+    "level": 3,
+    "parent_code": "6.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.1.3",
+    "name": "DESLOCAMENTO, ALIMENTAÇÃO E HOSPEDAGEM",
+    "level": 3,
+    "parent_code": "6.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.1.4",
+    "name": "DESPESA FINANCEIRA",
+    "level": 3,
+    "parent_code": "6.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.1.5",
+    "name": "DESPESAS CASA SEDE",
+    "level": 3,
+    "parent_code": "6.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.1.6",
+    "name": "OUTRAS DESPESAS ADMINISTRATIVAS",
+    "level": 3,
+    "parent_code": "6.1",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.2",
+    "name": "MANUTENÇÃO DE INFRAESTRUTURA",
+    "level": 2,
+    "parent_code": "6",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.2.1",
+    "name": "BARRACÕES",
+    "level": 3,
+    "parent_code": "6.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.2.2",
+    "name": "CERCAS",
+    "level": 3,
+    "parent_code": "6.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.2.3",
+    "name": "ESTRADAS E PONTES",
+    "level": 3,
+    "parent_code": "6.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.2.4",
+    "name": "FERRAMENTAS E EQUIPAMENTOS",
+    "level": 3,
+    "parent_code": "6.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.2.5",
+    "name": "HORTA, POMAR E JARDINS",
+    "level": 3,
+    "parent_code": "6.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.2.6",
+    "name": "IDENTIFICAÇÃO DE INSTALAÇÕES",
+    "level": 3,
+    "parent_code": "6.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.2.7",
+    "name": "INFORMÁTICA, TELEFONIA E COMUNICAÇÃO",
+    "level": 3,
+    "parent_code": "6.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.2.8",
+    "name": "INSTALAÇÕES PECUÁRIAS",
+    "level": 3,
+    "parent_code": "6.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.2.9",
+    "name": "INSTALAÇÕES RESIDENCIAIS",
+    "level": 3,
+    "parent_code": "6.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.2.10",
+    "name": "MÓVEIS E ELETRODOMÉSTICOS",
+    "level": 3,
+    "parent_code": "6.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.2.11",
+    "name": "REDE ELÉTRICA",
+    "level": 3,
+    "parent_code": "6.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.2.12",
+    "name": "REDE HIDRÁULICA",
+    "level": 3,
+    "parent_code": "6.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.2.13",
+    "name": "SEGURANÇA",
+    "level": 3,
+    "parent_code": "6.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.2.14",
+    "name": "OUTRAS DESPESAS COM MANUTENÇÃO DE INFRAESTRUTURA",
+    "level": 3,
+    "parent_code": "6.2",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.3",
+    "name": "TROPA E OUTROS ANIMAIS",
+    "level": 2,
+    "parent_code": "6",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.3.1",
+    "name": "AVES",
+    "level": 3,
+    "parent_code": "6.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.3.2",
+    "name": "OVINOS",
+    "level": 3,
+    "parent_code": "6.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.3.3",
+    "name": "SUINOS",
+    "level": 3,
+    "parent_code": "6.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.3.4",
+    "name": "TROPA DE SERVIÇO",
+    "level": 3,
+    "parent_code": "6.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.3.5",
+    "name": "TROPA DE REPRODUÇÃO",
+    "level": 3,
+    "parent_code": "6.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.3.6",
+    "name": "OUTRAS DESPESAS COM OUTROS ANIMAIS",
+    "level": 3,
+    "parent_code": "6.3",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.4",
+    "name": "PARQUE DE MÁQUINAS",
+    "level": 2,
+    "parent_code": "6",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.4.1",
+    "name": "COMBUSTÍVEIS",
+    "level": 3,
+    "parent_code": "6.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.4.2",
+    "name": "MANUTENÇÃO E CONSERTO",
+    "level": 3,
+    "parent_code": "6.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.4.3",
+    "name": "SEGUROS, IMPOSTOS E MULTAS",
+    "level": 3,
+    "parent_code": "6.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.4.4",
+    "name": "OUTRAS DESPESAS COM PARQUE DE MÁQUINAS",
+    "level": 3,
+    "parent_code": "6.4",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.5",
+    "name": "TAXAS E IMPOSTOS",
+    "level": 2,
+    "parent_code": "6",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.5.1",
+    "name": "TAXAS E IMPOSTOS SOBRE A VENDA",
+    "level": 3,
+    "parent_code": "6.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.5.2",
+    "name": "TAXAS E IMPOSTOS SOBRE O LUCRO",
+    "level": 3,
+    "parent_code": "6.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.5.3",
+    "name": "TAXAS, IMPOSTOS E OUTROS",
+    "level": 3,
+    "parent_code": "6.5",
+    "category": "DESPESA"
+  },
+  {
+    "code": "6.6",
+    "name": "OUTRAS DESPESAS",
+    "level": 2,
+    "parent_code": "6",
+    "category": "DESPESA"
+  },
+  {
+    "code": "7",
+    "name": "DIVIDENDOS",
+    "level": 1,
+    "parent_code": null,
+    "category": "DESPESA"
+  },
+  {
+    "code": "7.1",
+    "name": "DIVIDENDOS",
+    "level": 2,
+    "parent_code": "7",
+    "category": "DESPESA"
+  },
+  {
+    "code": "8",
+    "name": "FINANCIAMENTOS DÉBITOS",
+    "level": 1,
+    "parent_code": null,
+    "category": "DESPESA"
+  },
+  {
+    "code": "8.1",
+    "name": "FINANCIAMENTOS DÉBITOS",
+    "level": 2,
+    "parent_code": "8",
+    "category": "DESPESA"
+  },
+  {
+    "code": "9",
+    "name": "OUTROS DÉBITOS",
+    "level": 1,
+    "parent_code": null,
+    "category": "DESPESA"
+  },
+  {
+    "code": "10",
+    "name": "FINANCIAMENTOS CRÉDITOS",
+    "level": 1,
+    "parent_code": null,
+    "category": "RECEITA"
+  },
+  {
+    "code": "10.1",
+    "name": "FINANCIAMENTOS CRÉDITOS",
+    "level": 2,
+    "parent_code": "10",
+    "category": "RECEITA"
+  },
+  {
+    "code": "11",
+    "name": "OUTROS CRÉDITOS",
+    "level": 1,
+    "parent_code": null,
+    "category": "RECEITA"
+  },
+  {
+    "code": "11.1",
+    "name": "OUTROS CRÉDITOS",
+    "level": 2,
+    "parent_code": "11",
+    "category": "RECEITA"
+  }
+]

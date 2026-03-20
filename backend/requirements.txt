@@ -1,0 +1,10 @@
+fastapi==0.115.6
+uvicorn[standard]==0.30.6
+sqlmodel==0.0.21
+pydantic==2.9.2
+python-multipart==0.0.12
+python-dotenv==1.0.1
+httpx==0.28.1
+
+# websockets 16+ quebrou API usada pelo uvicorn 0.30.x
+websockets==13.1
