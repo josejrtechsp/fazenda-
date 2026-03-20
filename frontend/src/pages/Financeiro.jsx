@@ -3208,6 +3208,29 @@ export default function Financeiro() {
     const selectedRevAccount = accountsRevenueOptions.find((a) => String(a?.code || "") === String(finRevForm.account_code || ""));
     const selectedSupplier = suppliers.find((p) => String(p?.id || "") === String(finCostForm.supplier_id || ""));
     const selectedCustomer = customers.find((p) => String(p?.id || "") === String(finRevForm.customer_id || ""));
+    const isCostTab = finTab === "despesa";
+    const launchAccountLabel = isCostTab
+      ? selectedCostAccount
+        ? accountOptionLabel(selectedCostAccount)
+        : "Conta N4 ainda não escolhida"
+      : selectedRevAccount
+      ? accountOptionLabel(selectedRevAccount)
+      : "Conta N4 ainda não escolhida";
+    const launchPersonLabel = isCostTab
+      ? selectedSupplier?.name || "Fornecedor ainda não escolhido"
+      : selectedCustomer?.name || "Cliente ainda não escolhido";
+    const launchReadyCount = [
+      !!(isCostTab ? finCostForm.account_code : finRevForm.account_code),
+      !!(isCostTab ? finCostForm.supplier_id : finRevForm.customer_id),
+      Number.isFinite(parseBRNumber(isCostTab ? finCostForm.value_brl : finRevForm.value_brl)) &&
+        parseBRNumber(isCostTab ? finCostForm.value_brl : finRevForm.value_brl) > 0,
+    ].filter(Boolean).length;
+    const launchOverviewTone =
+      launchReadyCount >= 3 ? "ok" : launchReadyCount === 2 ? "warn" : "rec";
+    const launchOverviewTitle = isCostTab ? "Preparar nova despesa" : "Preparar nova receita";
+    const launchOverviewText = isCostTab
+      ? "Defina conta contábil, fornecedor e valor antes de partir para aprovação, pagamento e conciliação."
+      : "Defina conta contábil, cliente e valor para entrar com segurança na fila de recebimentos.";
 
     return (
       <>
@@ -3224,16 +3247,55 @@ export default function Financeiro() {
           <FinanceiroCadastros embedded hideHeader showAccounts={false} showPeople />
         ) : (
           <>
-            <div className="faz-fin-kpis">
-              <div className="kpi"><span>Contas N4 (despesa)</span><b>{toNum(accountsCostOptions.length, 0)}</b></div>
-              <div className="kpi"><span>Contas N4 (receita)</span><b>{toNum(accountsRevenueOptions.length, 0)}</b></div>
-              <div className="kpi"><span>Fornecedores</span><b>{toNum(suppliers.length, 0)}</b></div>
-              <div className="kpi"><span>Clientes</span><b>{toNum(customers.length, 0)}</b></div>
+            <div className={`faz-fin-launch-overview tone-${launchOverviewTone}`}>
+              <div className="main">
+                <div className="eyebrow">Lançamentos guiados</div>
+                <h4>{launchOverviewTitle}</h4>
+                <p>{launchOverviewText}</p>
+                <small>
+                  Regra ativa: despesa exige <b>fornecedor</b>, receita exige <b>cliente</b>, e ambos exigem <b>conta N4</b>.
+                  Cadastros ficam em <b>Custos & Receitas → Lançamentos → Pessoas e empresas</b>.
+                </small>
+              </div>
+              <div className="metrics">
+                <div className="mini">
+                  <span>Conta escolhida</span>
+                  <b>{isCostTab ? (finCostForm.account_code ? "OK" : "Pendente") : finRevForm.account_code ? "OK" : "Pendente"}</b>
+                  <small>{launchAccountLabel}</small>
+                </div>
+                <div className="mini">
+                  <span>{isCostTab ? "Fornecedor" : "Cliente"}</span>
+                  <b>{isCostTab ? (finCostForm.supplier_id ? "OK" : "Pendente") : finRevForm.customer_id ? "OK" : "Pendente"}</b>
+                  <small>{launchPersonLabel}</small>
+                </div>
+                <div className="mini">
+                  <span>Pronto para salvar</span>
+                  <b>{launchReadyCount}/3</b>
+                  <small>{isCostTab ? "Conta + fornecedor + valor" : "Conta + cliente + valor"}</small>
+                </div>
+              </div>
             </div>
 
-            <div className="faz-fin-note">
-              Regra ativa: despesa exige <b>fornecedor</b> e receita exige <b>cliente</b>. Ambos exigem <b>conta N4</b>.
-              Cadastros ficam em <b>Custos & Receitas → Lançamentos → Pessoas e empresas</b>.
+            <div className="faz-fin-launch-checklist">
+              <div className={`item ${isCostTab ? (finCostForm.account_code ? "ok" : "warn") : finRevForm.account_code ? "ok" : "warn"}`}>
+                <span>Conta N4</span>
+                <b>{launchAccountLabel}</b>
+              </div>
+              <div className={`item ${isCostTab ? (finCostForm.supplier_id ? "ok" : "warn") : finRevForm.customer_id ? "ok" : "warn"}`}>
+                <span>{isCostTab ? "Pessoa do lançamento" : "Origem da receita"}</span>
+                <b>{launchPersonLabel}</b>
+              </div>
+              <div
+                className={`item ${
+                  Number.isFinite(parseBRNumber(isCostTab ? finCostForm.value_brl : finRevForm.value_brl)) &&
+                  parseBRNumber(isCostTab ? finCostForm.value_brl : finRevForm.value_brl) > 0
+                    ? "ok"
+                    : "warn"
+                }`}
+              >
+                <span>Valor informado</span>
+                <b>{toBRL(parseBRNumber(isCostTab ? finCostForm.value_brl : finRevForm.value_brl))}</b>
+              </div>
             </div>
 
             <div className="faz-fin-switches">
@@ -3412,6 +3474,10 @@ export default function Financeiro() {
 
           <div className="faz-fin-tableWrap faz-fin-launch-card">
             <h4>Conferência do lançamento</h4>
+            <p className="faz-fin-launch-card-lead">
+              Revise o vínculo contábil, a pessoa escolhida e a situação do título antes de salvar. Isso evita retrabalho em aprovação,
+              programação e conciliação.
+            </p>
             {finTab === "despesa" ? (
               <>
                 <div className="faz-fin-note">
