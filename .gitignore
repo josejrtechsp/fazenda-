@@ -36,6 +36,18 @@ frontend/node_modules.__OLD__*/
 frontend/_env_bak/
 *.bak
 *.bak_*
+PATCH_*/
+patches/
+patch_meta/
+README_PATCH_*.md
+README.txt
+README_RUN_ALL.txt
+Relatorio_*.docx
+Relatorio_*.html
+Resumo_Sistema_*.rtf
+Sistema Fazenda.docx
+Arquivo/
+data/
 
 # OS
 .DS_Store
