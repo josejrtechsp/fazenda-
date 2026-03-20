@@ -1994,6 +1994,48 @@ export default function ProducerDashboard({ monthKey, onNavigate }) {
     "Leitura consolidada de fazenda, rebanho e financeiro em um único painel.",
     "Fluxo de decisão rápida: custos, alertas e prioridades do mês.",
   ];
+  const totalOverdueCount = receivableOverdueCount + payableOverdueCount;
+  const totalApprovalPendingCount = receivablePendingApprovalCount + payablePendingApprovalCount;
+  const totalReconciliationPendingCount = receivablePendingReconciliationCount + payablePendingReconciliationCount;
+  const heroStatusTone =
+    balanceTotal < 0 || totalOverdueCount > 0
+      ? "is-warn"
+      : totalApprovalPendingCount > 0 || totalReconciliationPendingCount > 0
+      ? "is-attention"
+      : "is-ok";
+  const heroStatusTitle =
+    balanceTotal < 0
+      ? "Mês pressionado pelo custo"
+      : totalOverdueCount > 0
+      ? "Existem pendências vencidas"
+      : totalApprovalPendingCount > 0 || totalReconciliationPendingCount > 0
+      ? "Mês exige conferência financeira"
+      : "Mês sob controle";
+  const heroStatusText =
+    balanceTotal < 0
+      ? `O balanço está em ${formatBRL(balanceTotal)}. O foco imediato é reduzir o peso de ${topExpenseGroups[0]?.label || "custos operacionais"} e revisar o caixa.`
+      : totalOverdueCount > 0
+      ? `Há ${formatNumber(totalOverdueCount)} título(s) vencido(s) entre pagar e receber. Vale atacar essa fila antes do fechamento do mês.`
+      : totalApprovalPendingCount > 0 || totalReconciliationPendingCount > 0
+      ? `Existem ${formatNumber(totalApprovalPendingCount)} pendência(s) de aprovação e ${formatNumber(totalReconciliationPendingCount)} de conciliação.`
+      : "Receitas, despesas e operação estão sem alerta crítico. O momento é de acompanhar produtividade e consolidar fechamento.";
+  const heroFocusPills = [
+    {
+      label: "Maior custo",
+      value: topExpenseGroups[0] ? `${topExpenseGroups[0].label} • ${formatBRL(topExpenseGroups[0].value)}` : "Sem despesa relevante",
+      tone: balanceTotal < 0 ? "is-warn" : "",
+    },
+    {
+      label: "Pendências",
+      value: `${formatNumber(pendingCounts.operationalTotal)} operacionais`,
+      tone: pendingCounts.operationalTotal > 0 ? "is-warn" : "is-ok",
+    },
+    {
+      label: "Financeiro",
+      value: `${formatNumber(totalOverdueCount)} vencidos • ${formatNumber(totalApprovalPendingCount)} aprovação`,
+      tone: totalOverdueCount > 0 || totalApprovalPendingCount > 0 ? "is-warn" : "is-ok",
+    },
+  ];
 
   return (
     <div className="faz-page faz-producer-dashboard">
@@ -2088,42 +2130,70 @@ export default function ProducerDashboard({ monthKey, onNavigate }) {
             {!connOk ? <span className="pd-pill">Offline</span> : null}
           </div>
 
-          <section className="pdOverview-hero">
-            <div className="pdOverview-heroHead">
-              <div>
+          <section className={`pdOverview-hero ${heroStatusTone}`}>
+            <div className="pdOverview-heroMain">
+              <div className="pdOverview-heroLead">
                 <div className="pdOverview-kicker">Visão executiva</div>
                 <h2>Painel geral da operação</h2>
+                <p className="pdOverview-heroText">{heroStatusText}</p>
+
+                <div className={`pdOverview-heroStatus ${heroStatusTone}`}>
+                  <strong>{heroStatusTitle}</strong>
+                  <span>
+                    {formatNumber(totalOverdueCount)} vencidos • {formatNumber(totalApprovalPendingCount)} aguardando aprovação •{" "}
+                    {formatNumber(totalReconciliationPendingCount)} aguardando conciliação
+                  </span>
+                </div>
+
+                <div className="pdOverview-heroFocus">
+                  {heroFocusPills.map((pill) => (
+                    <article key={pill.label} className={`pdOverview-heroFocusItem ${pill.tone || ""}`}>
+                      <span>{pill.label}</span>
+                      <b>{pill.value}</b>
+                    </article>
+                  ))}
+                </div>
               </div>
-              <div className="pdOverview-heroActions">
-                <button className="faz-btn sm" type="button" onClick={() => setView(VIEWS.COST_EVOLUTION)}>Ver evolução</button>
-                <button className="faz-btn sm" type="button" onClick={() => setView(VIEWS.SUMMARY)}>Resumo detalhado</button>
-              </div>
+
+              <aside className="pdOverview-heroAside">
+                <div className="pdOverview-heroActions">
+                  <button className="faz-btn sm" type="button" onClick={() => setView(VIEWS.COST_EVOLUTION)}>Ver evolução</button>
+                  <button className="faz-btn sm" type="button" onClick={() => setView(VIEWS.SUMMARY)}>Resumo detalhado</button>
+                </div>
+
+                <div className="pdOverview-heroMetricGrid">
+                  <article className="pdOverview-heroMetric">
+                    <span>Receita</span>
+                    <strong className="is-pos">{formatBRL(revenueTotal)}</strong>
+                  </article>
+                  <article className="pdOverview-heroMetric">
+                    <span>Despesa</span>
+                    <strong className="is-neg">{formatBRL(costTotal)}</strong>
+                  </article>
+                  <article className="pdOverview-heroMetric">
+                    <span>Balanço</span>
+                    <strong className={balanceTotal >= 0 ? "is-pos" : "is-neg"}>{formatBRL(balanceTotal)}</strong>
+                  </article>
+                  <article className="pdOverview-heroMetric">
+                    <span>Efetivo ativo</span>
+                    <strong>{formatNumber(overviewData.activeHeads)} cab</strong>
+                  </article>
+                </div>
+              </aside>
             </div>
 
-            <div className="pdOverview-kpiGrid">
-              <article className="pdOverview-kpi">
-                <span>Receita</span>
-                <strong className="is-pos">{formatBRL(revenueTotal)}</strong>
-              </article>
-              <article className="pdOverview-kpi">
-                <span>Despesa</span>
-                <strong className="is-neg">{formatBRL(costTotal)}</strong>
-              </article>
-              <article className="pdOverview-kpi">
-                <span>Balanço</span>
-                <strong className={balanceTotal >= 0 ? "is-pos" : "is-neg"}>{formatBRL(balanceTotal)}</strong>
-              </article>
-              <article className="pdOverview-kpi">
+            <div className="pdOverview-heroStrip">
+              <article className="pdOverview-heroStripItem">
                 <span>Custo (R$/@)</span>
-                <strong>{formatBRLPerArroba(data?.cost_per_arroba_brl)}</strong>
+                <b>{formatBRLPerArroba(data?.cost_per_arroba_brl)}</b>
               </article>
-              <article className="pdOverview-kpi">
-                <span>Arrobas estimadas no rebanho (@)</span>
-                <strong>{hasHerdArrobas ? `${formatNumber(herdArrobas)} @` : "0 @"}</strong>
+              <article className="pdOverview-heroStripItem">
+                <span>Arrobas estimadas</span>
+                <b>{hasHerdArrobas ? `${formatNumber(herdArrobas)} @` : "0 @"}</b>
               </article>
-              <article className="pdOverview-kpi">
-                <span>Efetivo ativo</span>
-                <strong>{formatNumber(overviewData.activeHeads)} cab</strong>
+              <article className="pdOverview-heroStripItem">
+                <span>Pendências operacionais</span>
+                <b>{formatNumber(pendingCounts.operationalTotal)}</b>
               </article>
             </div>
           </section>

@@ -1047,19 +1047,30 @@
   margin-top: 10px;
   border: 1px solid rgba(226,232,240,.92);
   border-radius: 16px;
-  padding: 14px;
+  padding: 16px;
   background:
     linear-gradient(130deg, rgba(255,255,255,.98), rgba(248,250,252,.92)) padding-box,
     linear-gradient(120deg, rgba(59,130,246,.35), rgba(16,185,129,.25)) border-box;
   box-shadow: 0 12px 28px rgba(15,23,42,.05);
 }
 
-.faz-producer-dashboard .pdOverview-heroHead{
+.faz-producer-dashboard .pdOverview-hero.is-warn{
+  background:
+    linear-gradient(130deg, rgba(255,255,255,.98), rgba(255,247,247,.94)) padding-box,
+    linear-gradient(120deg, rgba(244,63,94,.36), rgba(249,115,22,.28)) border-box;
+}
+
+.faz-producer-dashboard .pdOverview-hero.is-attention{
+  background:
+    linear-gradient(130deg, rgba(255,255,255,.98), rgba(255,251,235,.94)) padding-box,
+    linear-gradient(120deg, rgba(234,179,8,.34), rgba(59,130,246,.28)) border-box;
+}
+
+.faz-producer-dashboard .pdOverview-heroMain{
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 10px;
-  flex-wrap: wrap;
+  gap: 14px;
 }
 
 .faz-producer-dashboard .pdOverview-kicker{
@@ -1070,38 +1081,135 @@
   color: var(--pd-muted);
 }
 
-.faz-producer-dashboard .pdOverview-heroHead h2{
+.faz-producer-dashboard .pdOverview-heroLead{
+  flex: 1.45;
+  min-width: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.faz-producer-dashboard .pdOverview-heroLead h2{
   margin: 6px 0 0;
-  font-size: clamp(22px, 2.6vw, 30px);
-  line-height: 1.05;
+  font-size: clamp(24px, 2.8vw, 34px);
+  line-height: 1.02;
   letter-spacing: -.01em;
   color: var(--pd-ink);
 }
 
+.faz-producer-dashboard .pdOverview-heroText{
+  margin: 0;
+  max-width: 720px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: rgba(71,85,105,.96);
+}
+
+.faz-producer-dashboard .pdOverview-heroStatus{
+  border: 1px solid rgba(226,232,240,.9);
+  border-radius: 14px;
+  padding: 12px 14px;
+  background: rgba(248,250,252,.85);
+  display: grid;
+  gap: 6px;
+}
+
+.faz-producer-dashboard .pdOverview-heroStatus strong{
+  font-size: 15px;
+  letter-spacing: -.01em;
+  color: var(--pd-ink);
+}
+
+.faz-producer-dashboard .pdOverview-heroStatus span{
+  font-size: 13px;
+  line-height: 1.45;
+  color: rgba(71,85,105,.94);
+}
+
+.faz-producer-dashboard .pdOverview-heroStatus.is-warn{
+  border-color: rgba(251,113,133,.35);
+  background: rgba(255,241,242,.9);
+}
+
+.faz-producer-dashboard .pdOverview-heroStatus.is-attention{
+  border-color: rgba(250,204,21,.35);
+  background: rgba(254,252,232,.92);
+}
+
+.faz-producer-dashboard .pdOverview-heroStatus.is-ok{
+  border-color: rgba(52,211,153,.28);
+  background: rgba(236,253,245,.9);
+}
+
+.faz-producer-dashboard .pdOverview-heroFocus{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.faz-producer-dashboard .pdOverview-heroFocusItem{
+  border: 1px solid rgba(226,232,240,.9);
+  border-radius: 14px;
+  padding: 12px;
+  background: rgba(255,255,255,.92);
+  display: grid;
+  gap: 6px;
+}
+
+.faz-producer-dashboard .pdOverview-heroFocusItem span{
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .11em;
+  font-weight: 900;
+  color: var(--pd-muted);
+}
+
+.faz-producer-dashboard .pdOverview-heroFocusItem b{
+  font-size: 14px;
+  line-height: 1.35;
+  color: var(--pd-ink);
+}
+
+.faz-producer-dashboard .pdOverview-heroFocusItem.is-warn{
+  border-color: rgba(251,113,133,.28);
+  background: rgba(255,241,242,.76);
+}
+
+.faz-producer-dashboard .pdOverview-heroFocusItem.is-ok{
+  border-color: rgba(52,211,153,.24);
+  background: rgba(236,253,245,.76);
+}
+
+.faz-producer-dashboard .pdOverview-heroAside{
+  flex: .95;
+  min-width: 330px;
+  display: grid;
+  gap: 10px;
+}
+
 .faz-producer-dashboard .pdOverview-heroActions{
   display: flex;
+  justify-content: flex-end;
   gap: 8px;
   flex-wrap: wrap;
 }
 
-.faz-producer-dashboard .pdOverview-kpiGrid{
-  margin-top: 12px;
+.faz-producer-dashboard .pdOverview-heroMetricGrid{
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
 }
 
-.faz-producer-dashboard .pdOverview-kpi{
+.faz-producer-dashboard .pdOverview-heroMetric{
   border: 1px solid rgba(226,232,240,.92);
-  border-radius: 12px;
-  padding: 10px;
+  border-radius: 14px;
+  padding: 12px;
   background: rgba(255,255,255,.98);
   box-shadow: 0 8px 22px rgba(15,23,42,.04);
   display: grid;
   gap: 6px;
 }
 
-.faz-producer-dashboard .pdOverview-kpi span{
+.faz-producer-dashboard .pdOverview-heroMetric span{
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: .12em;
@@ -1109,19 +1217,51 @@
   color: var(--pd-muted);
 }
 
-.faz-producer-dashboard .pdOverview-kpi strong{
-  font-size: clamp(18px, 1.8vw, 24px);
+.faz-producer-dashboard .pdOverview-heroMetric strong{
+  font-size: clamp(20px, 2vw, 28px);
   line-height: 1;
   letter-spacing: -.01em;
   color: var(--pd-ink);
 }
 
-.faz-producer-dashboard .pdOverview-kpi strong.is-pos{
+.faz-producer-dashboard .pdOverview-heroMetric strong.is-pos{
   color: rgba(22,101,52,1);
 }
 
-.faz-producer-dashboard .pdOverview-kpi strong.is-neg{
+.faz-producer-dashboard .pdOverview-heroMetric strong.is-neg{
   color: rgba(190,24,93,1);
+}
+
+.faz-producer-dashboard .pdOverview-heroStrip{
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(226,232,240,.78);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.faz-producer-dashboard .pdOverview-heroStripItem{
+  border: 1px solid rgba(226,232,240,.9);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: rgba(248,250,252,.78);
+  display: grid;
+  gap: 5px;
+}
+
+.faz-producer-dashboard .pdOverview-heroStripItem span{
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  font-weight: 900;
+  color: var(--pd-muted);
+}
+
+.faz-producer-dashboard .pdOverview-heroStripItem b{
+  font-size: 19px;
+  line-height: 1.1;
+  color: var(--pd-ink);
 }
 
 .faz-producer-dashboard .pdOverview-grid{
@@ -1509,8 +1649,25 @@
 }
 
 @media (max-width: 1200px){
-  .faz-producer-dashboard .pdOverview-kpiGrid{
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .faz-producer-dashboard .pdOverview-heroMain{
+    flex-direction: column;
+  }
+
+  .faz-producer-dashboard .pdOverview-heroAside{
+    min-width: 0;
+    width: 100%;
+  }
+
+  .faz-producer-dashboard .pdOverview-heroActions{
+    justify-content: flex-start;
+  }
+
+  .faz-producer-dashboard .pdOverview-heroFocus{
+    grid-template-columns: 1fr;
+  }
+
+  .faz-producer-dashboard .pdOverview-heroStrip{
+    grid-template-columns: 1fr;
   }
 
   .faz-producer-dashboard .pdOverview-card{
@@ -1519,8 +1676,8 @@
 }
 
 @media (max-width: 720px){
-  .faz-producer-dashboard .pdOverview-kpiGrid{
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .faz-producer-dashboard .pdOverview-heroMetricGrid{
+    grid-template-columns: 1fr;
   }
 
   .faz-producer-dashboard .pdOverview-miniGrid{
