@@ -438,6 +438,47 @@ function buildCloseDiffCards(summary, latestSaved) {
   });
 }
 
+function buildCloseReadiness({ monthLocked, blockerPending, alertPending, pendingItems = [] }) {
+  const topPending = (Array.isArray(pendingItems) ? pendingItems : []).slice(0, 3);
+  if (monthLocked) {
+    return {
+      tone: "locked",
+      title: "Mês travado",
+      summary: "O período já foi congelado e alterações financeiras estão bloqueadas até destravar.",
+      helper: "Use isso quando o mês já estiver conferido e oficializado.",
+      reasons: topPending,
+    };
+  }
+
+  if (blockerPending <= 0 && alertPending <= 0) {
+    return {
+      tone: "ready",
+      title: "Pronto para travar",
+      summary: "Não há bloqueios nem alertas pendentes. O mês está limpo para fechamento.",
+      helper: "Se a conferência estiver concluída, já dá para registrar o snapshot e travar.",
+      reasons: [],
+    };
+  }
+
+  if (blockerPending <= 0) {
+    return {
+      tone: "review",
+      title: "Pode travar com ressalvas",
+      summary: "Não existe bloqueio duro, mas ainda há pontos que merecem revisão antes do travamento.",
+      helper: "Você pode travar, mas vale confirmar se os alertas em aberto devem seguir para o próximo mês.",
+      reasons: topPending,
+    };
+  }
+
+  return {
+    tone: "blocked",
+    title: "Ainda não está pronto para travar",
+    summary: "Existem pendências que bloqueiam o fechamento do mês e precisam ser resolvidas antes da trava.",
+    helper: "Resolva aprovação, conciliação e vencidos antes de oficializar o período.",
+    reasons: topPending,
+  };
+}
+
 function closeDiffLabel(delta) {
   const n = asNum(delta);
   if (Math.abs(n) <= 0.009) return "Sem mudança";
@@ -3867,6 +3908,19 @@ export default function Financeiro() {
     const alerts = checklist.filter((item) => item.level === "alert");
     const blockerPending = blockers.filter((item) => !item.ok).length;
     const alertPending = alerts.filter((item) => !item.ok).length;
+    const readiness = buildCloseReadiness({
+      monthLocked,
+      blockerPending,
+      alertPending,
+      pendingItems: checklist.filter((item) => !item.ok),
+    });
+    const lockButtonLabel = monthLocked
+      ? "Destravar mês"
+      : blockerPending > 0
+        ? "Travar mesmo assim"
+        : alertPending > 0
+          ? "Travar com ressalvas"
+          : "Travar mês";
 
     return (
       <>
@@ -3880,17 +3934,45 @@ export default function Financeiro() {
           ) : null}
         </div>
 
-        <div className={`faz-fin-lock-note ${monthLocked ? "locked" : "open"}`}>
-          <b>{monthLocked ? "Mês travado" : "Mês aberto"}</b>
-          <span>
-            {monthLocked
-              ? ` Alterações financeiras de ${monthLabel(monthKey)} estão bloqueadas.`
-              : ` Ainda é possível lançar, aprovar, programar, baixar e conciliar em ${monthLabel(monthKey)}.`}
-          </span>
-          {monthLocked && monthState?.locked_at ? (
-            <small>
-              Travado em {formatDateTimeBR(monthState.locked_at)} por {monthState?.locked_by || "usuário"}.
-            </small>
+        <div className={`faz-fin-close-status tone-${readiness.tone}`}>
+          <div className="main">
+            <span className="eyebrow">{monthLocked ? "Status do mês" : "Prontidão de fechamento"}</span>
+            <h3>{readiness.title}</h3>
+            <p>{readiness.summary}</p>
+            <small>{readiness.helper}</small>
+            {monthLocked && monthState?.locked_at ? (
+              <small>
+                Travado em {formatDateTimeBR(monthState.locked_at)} por {monthState?.locked_by || "usuário"}.
+              </small>
+            ) : (
+              <small>
+                {`Enquanto o mês estiver aberto, ainda é possível lançar, aprovar, programar, baixar e conciliar em ${monthLabel(monthKey)}.`}
+              </small>
+            )}
+          </div>
+          <div className="side">
+            <div className="metric">
+              <span>Bloqueios</span>
+              <b>{toNum(blockerPending, 0)}</b>
+            </div>
+            <div className="metric">
+              <span>Alertas</span>
+              <b>{toNum(alertPending, 0)}</b>
+            </div>
+            <div className="metric">
+              <span>Snapshot</span>
+              <b>{latestSaved ? "Salvo" : "Não salvo"}</b>
+            </div>
+          </div>
+          {readiness.reasons?.length ? (
+            <div className="reasons">
+              {readiness.reasons.map((item) => (
+                <div key={item.key} className={`reason ${item.level}`}>
+                  <b>{item.title}</b>
+                  <small>{item.detail}</small>
+                </div>
+              ))}
+            </div>
           ) : null}
         </div>
 
@@ -3979,7 +4061,7 @@ export default function Financeiro() {
               onClick={() => handleLockCloseMonth(monthLocked)}
               disabled={closeLockBusy}
             >
-              {closeLockBusy ? "Processando..." : monthLocked ? "Destravar mês" : "Travar mês"}
+              {closeLockBusy ? "Processando..." : lockButtonLabel}
             </button>
             <button type="button" className="btn-refresh" onClick={exportCloseMonthCsv} disabled={closeExportBusy}>
               {closeExportBusy ? "Exportando..." : "Exportar CSV"}
