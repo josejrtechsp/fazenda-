@@ -8,9 +8,9 @@ frontend/yarn-error.log*
 
 # Python
 backend/.venv
-backend/**/__pycache__/
-backend/**/*.pyc
-backend/**/*.pyo
+**/__pycache__/
+**/*.pyc
+**/*.pyo
 backend/.pytest_cache
 backend/.mypy_cache
 
@@ -32,6 +32,10 @@ frontend__OLD__*/
 ~$*.docx
 ~$*.xlsx
 Arquivo/_tmp/
+frontend/node_modules.__OLD__*/
+frontend/_env_bak/
+*.bak
+*.bak_*
 
 # OS
 .DS_Store
