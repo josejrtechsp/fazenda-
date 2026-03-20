@@ -22,10 +22,14 @@ export default function FazendaTopHeader(props) {
   const activeTab = props.activeTab ?? "";
   const setActiveTab =
     typeof props.setActiveTab === "function" ? props.setActiveTab : () => {};
-  const drasticTitleBox = { width: "20%", maxWidth: "20%", gap: "2px" };
-  const drasticTag = { fontSize: "7px", padding: "2px 6px", letterSpacing: ".06em" };
-  const drasticTitle = { fontSize: "16px", marginTop: "2px", lineHeight: 1.02 };
-  const drasticSubtitle = { fontSize: "8px", marginTop: "1px", lineHeight: 1.1, maxWidth: "100%" };
+  const contextLeft = String(props.contextLeft || "").trim();
+  const contextRight = String(props.contextRight || "").trim();
+  const mode = props.mode === "produtor" ? "produtor" : "vaqueiro";
+  const modeLabel = mode === "produtor" ? "Visão do produtor" : "Operação de campo";
+  const modeHint =
+    mode === "produtor"
+      ? "Leitura gerencial e tomada de decisão."
+      : "Rotina rápida por brinco, lote e manejo.";
 
   return (
     <header className="app-header app-header-fazenda">
@@ -47,15 +51,38 @@ export default function FazendaTopHeader(props) {
           </button>
         ) : null}
 
-        <div className="app-header-title" style={drasticTitleBox}>
-          <div className="app-title-tag" style={drasticTag}>{titleTag}</div>
+        <div className="app-header-title">
+          <div className="app-title-tag">{titleTag}</div>
 
-          <h1 className="app-title" style={drasticTitle}>
+          <h1 className="app-title">
             <span className="app-title-prefix">Sistema</span>
             <span className="app-title-highlight">{titleRight}</span>
           </h1>
 
-          <p className="app-subtitle" style={drasticSubtitle}>{subtitle}</p>
+          <p className="app-subtitle">{subtitle}</p>
+        </div>
+
+        <div className="faz-header-context" aria-label="Resumo do contexto atual">
+          <div className="faz-header-chip">
+            <span className="k">Modo</span>
+            <strong>{modeLabel}</strong>
+          </div>
+          {contextLeft ? (
+            <div className="faz-header-chip">
+              <span className="k">Tela</span>
+              <strong>{contextLeft}</strong>
+            </div>
+          ) : null}
+          {contextRight ? (
+            <div className="faz-header-chip">
+              <span className="k">Período</span>
+              <strong>{contextRight}</strong>
+            </div>
+          ) : null}
+          <div className="faz-header-chip is-soft">
+            <span className="k">Foco</span>
+            <strong>{modeHint}</strong>
+          </div>
         </div>
 
         {Array.isArray(tabs) && tabs.length > 0 ? (
