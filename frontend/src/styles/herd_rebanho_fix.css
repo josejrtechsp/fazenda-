@@ -200,6 +200,61 @@
 .faz-herd .faz-modalTitle{font-weight:950;font-size:16px}
 .faz-herd .faz-modalSub{font-size:12px;color:rgba(100,116,139,1);margin-top:2px}
 .faz-herd .faz-modalErr{margin-top:10px;border:1px solid rgba(244,63,94,.35);background:rgba(244,63,94,.06);padding:10px;border-radius:12px;color:rgba(127,29,29,1);font-size:13px}
+.faz-herd .faz-modalSummary{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin-top:14px;
+}
+@media (max-width: 920px){.faz-herd .faz-modalSummary{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media (max-width: 620px){.faz-herd .faz-modalSummary{grid-template-columns:1fr;}}
+.faz-herd .faz-modalFacts{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+  margin-top:12px;
+}
+.faz-herd .faz-modalSection{
+  border:1px solid rgba(226,232,240,.95);
+  border-radius:14px;
+  background:rgba(248,250,252,.7);
+  padding:12px;
+}
+.faz-herd .faz-modalSectionTitle{
+  font-size:11px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  font-weight:950;
+  color:rgba(100,116,139,1);
+  margin-bottom:10px;
+}
+.faz-herd .faz-modalInfoGrid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
+@media (max-width: 620px){.faz-herd .faz-modalInfoGrid{grid-template-columns:1fr;}}
+.faz-herd .faz-modalInfoItem{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  padding:10px 12px;
+  background:#fff;
+  border:1px solid rgba(226,232,240,.95);
+  border-radius:12px;
+}
+.faz-herd .faz-modalInfoItem .lbl{
+  font-size:10px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  font-weight:900;
+  color:rgba(100,116,139,1);
+}
+.faz-herd .faz-modalInfoItem strong{
+  font-size:14px;
+  font-weight:900;
+  color:rgba(15,23,42,1);
+}
 .faz-herd .faz-modalGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
 @media (max-width: 720px){.faz-herd .faz-modalGrid{grid-template-columns:1fr;}}
 .faz-herd .faz-modalActions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}

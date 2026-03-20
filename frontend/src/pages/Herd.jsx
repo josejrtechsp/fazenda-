@@ -2102,6 +2102,59 @@ if (!inRange && !alreadyConfirmed) {
       .sort((x, y) => String(x.ear).localeCompare(String(y.ear), "pt-BR"));
   }, [activeAnimals, gSearch, gCat, gPreg, gVac, health]);
 
+  const editAnimalData = useMemo(() => {
+    const ear = normEar(editEar);
+    if (!ear) return null;
+    const animal =
+      (Array.isArray(activeAnimals) ? activeAnimals : []).find((item) => normEar(item?.ear) === ear) ||
+      (Array.isArray(animals) ? animals : []).find((item) => normEar(item?.ear) === ear) ||
+      null;
+    const h = healthFor(ear);
+    const sheet = h.sheet || {};
+    const sexoRaw = normalizeSexValue(sheet.sexoLabel || animal?.sex) || String(animal?.sex || "").toUpperCase() || "";
+    const sexoLabel = sexoRaw === "F" ? "Fêmea" : sexoRaw === "M" ? "Macho" : sexoRaw || "—";
+    const loteLabel = asText(sheet.loteLabel || (animal ? animalLotLabel(animal) : "") || "Sem lote");
+    const pesoKg = Number.isFinite(Number(animal?.lastWeightKg)) ? Number(animal.lastWeightKg) : null;
+    const pesoArroba = Number.isFinite(Number(sheet.pesoArroba))
+      ? Number(sheet.pesoArroba)
+      : Number.isFinite(pesoKg)
+      ? Number((pesoKg / 15).toFixed(2))
+      : null;
+    const dataPeso = normalizeIsoDate(sheet.dataPeso || animal?.lastWeighedAt || "");
+    const gmdBase = animal ? calcAnimalGmdFromHistory(animal, weighs) : null;
+    const gmdGeral = Number.isFinite(Number(sheet.gmdGeral)) ? Number(sheet.gmdGeral) : gmdBase;
+    const categoriaLabel = asText(sheet.categoriaLabel || animal?.category || "Sem categoria");
+    const idadeMeses = Number.isFinite(Number(sheet.idadeMeses))
+      ? Number(sheet.idadeMeses)
+      : ageMonths(h.birth);
+    const idadeAtual = h.birth ? ageLabel(h.birth) : idadeMeses == null ? "—" : `${idadeMeses}m`;
+    const pregStatus = String(h.pregStatus || "ND").toUpperCase();
+    const situacaoReprodutiva = asText(
+      sheet.situacaoReprodutiva ||
+      (pregStatus === "PRENHA" ? "Prenha" : pregStatus === "VAZIA" ? "Vazia" : "")
+    );
+    const dpp = pregStatus === "PRENHA" ? dppIso(h.pregStart) : "";
+    return {
+      ear,
+      animal,
+      health: h,
+      sexoLabel,
+      loteLabel,
+      pesoKg,
+      pesoArroba,
+      dataPeso,
+      gmdGeral,
+      categoriaLabel,
+      raca: asText(sheet.raca || "—"),
+      idadeMeses,
+      idadeAtual,
+      situacaoReprodutiva: situacaoReprodutiva || "—",
+      numeroMae: asText(sheet.numeroMae || "—"),
+      dpp,
+      vacStatus: h.vacNext && isoBefore(h.vacNext, todayIso()) ? "Atrasada" : h.vacDate ? "Em dia" : "Sem vacina",
+    };
+  }, [activeAnimals, animals, editEar, health, weighs]);
+
   function openEdit(ear) {
     const k = normEar(ear);
     if (!k) return;
@@ -4373,12 +4426,112 @@ useEffect(() => {
             <div className="faz-modalHead">
               <div>
                 <div className="faz-modalTitle">Cadastro do animal • {editEar}</div>
-                <div className="faz-modalSub">Preencha o que tiver (idade, prenhez e vacinas).</div>
+                <div className="faz-modalSub">Ficha rápida do animal com dados operacionais, reprodução e vacina.</div>
               </div>
-              <button className="faz-btn" type="button" onClick={() => setEditOpen(false)}>
-                Fechar
-              </button>
+              <div className="faz-rowActions">
+                <button
+                  className="faz-btn"
+                  type="button"
+                  onClick={() => {
+                    if (editEar) goOperateEar(editEar, "");
+                  }}
+                >
+                  Pesar agora
+                </button>
+                <button className="faz-btn" type="button" onClick={() => setEditOpen(false)}>
+                  Fechar
+                </button>
+              </div>
             </div>
+
+            {editAnimalData ? (
+              <>
+                <div className="faz-modalSummary">
+                  <div className="faz-stat">
+                    <div className="k">Brinco</div>
+                    <div className="v">{editAnimalData.ear}</div>
+                    <div className="s">{editAnimalData.sexoLabel}</div>
+                  </div>
+                  <div className="faz-stat">
+                    <div className="k">Lote</div>
+                    <div className="v">{editAnimalData.loteLabel}</div>
+                    <div className="s">{editAnimalData.categoriaLabel}</div>
+                  </div>
+                  <div className="faz-stat">
+                    <div className="k">Peso atual</div>
+                    <div className="v">{fmtKg(editAnimalData.pesoKg)}</div>
+                    <div className="s">
+                      {editAnimalData.pesoArroba == null ? "Sem arroba calculada" : `${fmtArroba(editAnimalData.pesoArroba)} @`}
+                    </div>
+                  </div>
+                  <div className={"faz-stat " + (editAnimalData.gmdGeral != null && editAnimalData.gmdGeral >= 0 ? "is-pos" : "")}>
+                    <div className="k">GMD geral</div>
+                    <div className="v">
+                      {editAnimalData.gmdGeral == null ? "—" : `${editAnimalData.gmdGeral > 0 ? "+" : ""}${editAnimalData.gmdGeral.toFixed(2)} kg`}
+                    </div>
+                    <div className="s">por dia</div>
+                  </div>
+                  <div className="faz-stat">
+                    <div className="k">Idade</div>
+                    <div className="v">{editAnimalData.idadeAtual}</div>
+                    <div className="s">
+                      {editAnimalData.health.birth ? fmtDateShort(editAnimalData.health.birth) : "Nascimento não informado"}
+                    </div>
+                  </div>
+                  <div className={"faz-stat " + (editAnimalData.vacStatus === "Atrasada" ? "is-warn" : "")}>
+                    <div className="k">Vacina</div>
+                    <div className="v">{editAnimalData.vacStatus}</div>
+                    <div className="s">
+                      {editAnimalData.health.vacName
+                        ? `${editAnimalData.health.vacName} • ${fmtDateShort(editAnimalData.health.vacDate)}`
+                        : "Sem registro"}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="faz-modalFacts">
+                  <div className="faz-modalSection">
+                    <div className="faz-modalSectionTitle">Leitura operacional</div>
+                    <div className="faz-modalInfoGrid">
+                      <div className="faz-modalInfoItem">
+                        <span className="lbl">Raça</span>
+                        <strong>{editAnimalData.raca}</strong>
+                      </div>
+                      <div className="faz-modalInfoItem">
+                        <span className="lbl">Data da última pesagem</span>
+                        <strong>{fmtDateShort(editAnimalData.dataPeso)}</strong>
+                      </div>
+                      <div className="faz-modalInfoItem">
+                        <span className="lbl">Situação reprodutiva</span>
+                        <strong>{editAnimalData.situacaoReprodutiva}</strong>
+                      </div>
+                      <div className="faz-modalInfoItem">
+                        <span className="lbl">Número da mãe</span>
+                        <strong>{editAnimalData.numeroMae}</strong>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="faz-modalSection">
+                    <div className="faz-modalSectionTitle">Alertas e próximos passos</div>
+                    <div className="faz-badges">
+                      <span className={"faz-badge " + (editAnimalData.situacaoReprodutiva === "Prenha" ? "is-ok" : "is-warn")}>
+                        Reprodução: {editAnimalData.situacaoReprodutiva}
+                      </span>
+                      <span className={"faz-badge " + (editAnimalData.vacStatus === "Atrasada" ? "is-bad" : "is-ok")}>
+                        Vacina: {editAnimalData.vacStatus}
+                      </span>
+                      <span className="faz-badge">
+                        Última pesagem: {fmtDateShort(editAnimalData.dataPeso)}
+                      </span>
+                      {editAnimalData.dpp ? (
+                        <span className="faz-badge is-ok">DPP estimada: {fmtDateShort(editAnimalData.dpp)}</span>
+                      ) : null}
+                    </div>
+                  </div>
+                </div>
+              </>
+            ) : null}
 
             <div className="faz-modalGrid">
               <div>
