@@ -3528,6 +3528,19 @@ export default function Financeiro() {
   const renderPagar = () => {
     const payableSupplierConcentration = buildConcentrationSummary(filteredPayableRows, "person_name", "fornecedor");
     const payableCenterConcentration = buildConcentrationSummary(filteredPayableRows, "center", "centro de custo");
+    const payableNextAction =
+      payableQueueStats.overdue.count > 0
+        ? `Prioridade imediata: atacar ${toNum(payableQueueStats.overdue.count, 0)} pagamento(s) vencido(s).`
+        : payableQueueStats.approval.count > 0
+        ? `A fila pede aprovação de ${toNum(payableQueueStats.approval.count, 0)} título(s) antes da baixa.`
+        : payableQueueStats.unscheduled.count > 0
+        ? `Vale programar ${toNum(payableQueueStats.unscheduled.count, 0)} pagamento(s) ainda sem data definida.`
+        : "A fila está limpa. O próximo passo é acompanhar concentração e fechar o mês.";
+    const payableRiskText =
+      payableSupplierConcentration.items[0]
+        ? `${payableSupplierConcentration.items[0].key} concentra ${toNum(payableSupplierConcentration.top1Pct, 1)}% da despesa filtrada.`
+        : "Sem concentração relevante de fornecedor no filtro atual.";
+    const payableExposureText = `${toBRL(payQueueTotal)} em análise • ${toBRL(payableQueueStats.overdue.amount)} vencido • ${toBRL(payableQueueStats.unscheduled.amount)} sem programação`;
 
     return (
     <>
@@ -3580,6 +3593,20 @@ export default function Financeiro() {
         <button type="button" className={`chip ${payStatus === "ALL" && payFocus === "all" ? "rec" : ""}`} onClick={() => applyPayQueuePreset("all")}>
           Limpar fila
         </button>
+      </div>
+      <div className="faz-fin-queue-decision">
+        <div className="item">
+          <span>Próxima ação</span>
+          <b>{payableNextAction}</b>
+        </div>
+        <div className="item">
+          <span>Maior risco</span>
+          <b>{payableRiskText}</b>
+        </div>
+        <div className="item">
+          <span>Exposição do mês</span>
+          <b>{payableExposureText}</b>
+        </div>
       </div>
       <div className="faz-fin-aging">
         <div className="faz-fin-aging-head">
@@ -3842,6 +3869,19 @@ export default function Financeiro() {
   const renderReceber = () => {
     const receivableClientConcentration = buildConcentrationSummary(filteredReceivableRows, "person_name", "cliente");
     const receivableCenterConcentration = buildConcentrationSummary(filteredReceivableRows, "center", "centro de custo");
+    const receivableNextAction =
+      receivableQueueStats.overdue.count > 0
+        ? `Prioridade imediata: cobrar ${toNum(receivableQueueStats.overdue.count, 0)} recebimento(s) vencido(s).`
+        : receivableQueueStats.approval.count > 0
+        ? `Existem ${toNum(receivableQueueStats.approval.count, 0)} título(s) aguardando aprovação para avançar.`
+        : receivableQueueStats.unscheduled.count > 0
+        ? `Vale programar ${toNum(receivableQueueStats.unscheduled.count, 0)} recebimento(s) ainda sem data definida.`
+        : "A fila está sob controle. O foco passa a ser concentração de clientes e fechamento.";
+    const receivableRiskText =
+      receivableClientConcentration.items[0]
+        ? `${receivableClientConcentration.items[0].key} responde por ${toNum(receivableClientConcentration.top1Pct, 1)}% da receita filtrada.`
+        : "Sem concentração crítica de cliente no filtro atual.";
+    const receivableExposureText = `${toBRL(receberOpen)} em aberto • ${toBRL(receivableQueueStats.overdue.amount)} vencido • ${toBRL(receivableQueueStats.unscheduled.amount)} sem programação`;
 
     return (
     <>
@@ -3894,6 +3934,20 @@ export default function Financeiro() {
         <button type="button" className={`chip ${recvStatus === "ALL" && recvFocus === "all" ? "rec" : ""}`} onClick={() => applyRecvQueuePreset("all")}>
           Limpar fila
         </button>
+      </div>
+      <div className="faz-fin-queue-decision">
+        <div className="item">
+          <span>Próxima ação</span>
+          <b>{receivableNextAction}</b>
+        </div>
+        <div className="item">
+          <span>Maior risco</span>
+          <b>{receivableRiskText}</b>
+        </div>
+        <div className="item">
+          <span>Exposição do mês</span>
+          <b>{receivableExposureText}</b>
+        </div>
       </div>
       <div className="faz-fin-kpis">
         <div className="kpi"><span>Em aberto</span><b>{toBRL(receberOpen)}</b></div>
