@@ -3001,6 +3001,29 @@ useEffect(() => {
     else focusEar(true);
   }
 
+  function openTransferForEar(ear) {
+    const tag = normEar(ear);
+    if (!tag) return;
+    setTRaw(tag);
+    setTDest("");
+    setTab("transfer");
+    setEditOpen(false);
+    setOpMsg(`Animal ${tag} preparado para transferência. Escolha a manga destino.`);
+  }
+
+  function openBaixaForEar(ear) {
+    const tag = normEar(ear);
+    if (!tag) return;
+    setTab("operate");
+    setOpSub("basic");
+    setOpAdvancedOpen(true);
+    setEarQ(tag);
+    setKgQ("");
+    setEditOpen(false);
+    setOpMsg(`Animal ${tag} preparado para baixa. Confira o motivo e confirme no bloco operacional.`);
+    focusEar(true);
+  }
+
   function goPending(focus = "ALL") {
     setTab("log");
     setLogRange("pending");
@@ -4595,6 +4618,46 @@ useEffect(() => {
                             <span className="lbl">Número da mãe</span>
                             <strong>{editAnimalData.numeroMae}</strong>
                           </div>
+                        </div>
+                      </div>
+
+                      <div className="faz-modalSection">
+                        <div className="faz-modalSectionTitle">Ações rápidas</div>
+                        <div className="faz-rowActions" style={{ justifyContent: "flex-start", marginBottom: 10 }}>
+                          <button
+                            className="faz-btn"
+                            type="button"
+                            onClick={() => {
+                              if (editAnimalData.ear) goOperateEar(editAnimalData.ear, "");
+                              setEditOpen(false);
+                            }}
+                          >
+                            Abrir no operar
+                          </button>
+                          <button
+                            className="faz-btn"
+                            type="button"
+                            onClick={() => openTransferForEar(editAnimalData.ear)}
+                          >
+                            Mover de lote
+                          </button>
+                          <button
+                            className="faz-btn"
+                            type="button"
+                            onClick={() => setEditView("sanidade")}
+                          >
+                            Registrar vacina
+                          </button>
+                          <button
+                            className="faz-btn danger"
+                            type="button"
+                            onClick={() => openBaixaForEar(editAnimalData.ear)}
+                          >
+                            Dar baixa
+                          </button>
+                        </div>
+                        <div className="texto-suave">
+                          As ações abrem o fluxo correto já com o brinco preparado, para evitar retrabalho e reduzir erro operacional.
                         </div>
                       </div>
 
