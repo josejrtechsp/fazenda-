@@ -1478,6 +1478,82 @@ if (!inRange && !alreadyConfirmed) {
     };
   }, [activeAnimals, totalArrobas, totalPesoVivoKg, health, lots]);
 
+  const reproductiveSummary = useMemo(() => {
+    const byLot = new Map();
+    let matrices = 0;
+    let prenhas = 0;
+    let vazias = 0;
+    let paridas = 0;
+    let semInfo = 0;
+
+    for (const a of Array.isArray(activeAnimals) ? activeAnimals : []) {
+      const sex = normalizeSexValue(a?.sex);
+      if (sex !== "F") continue;
+
+      matrices += 1;
+      const h = healthFor(a?.ear);
+      const preg = String(h?.pregStatus || "ND").toUpperCase();
+      const situacaoTexto = String(h?.sheet?.situacaoReprodutiva || "").trim().toUpperCase();
+      const isParida = situacaoTexto.includes("PARIDA");
+      const lotId = Number(a?.lotId);
+      const lotKey = Number.isFinite(lotId) && lotId > 0 ? String(lotId) : "0";
+      const current = byLot.get(lotKey) || {
+        lotId: Number.isFinite(lotId) && lotId > 0 ? lotId : 0,
+        lotName: Number.isFinite(lotId) && lotId > 0 ? lotLabelById(lotId) : "Sem lote",
+        matrices: 0,
+        prenhas: 0,
+        vazias: 0,
+        paridas: 0,
+        semInfo: 0,
+      };
+      current.matrices += 1;
+
+      if (isParida) {
+        paridas += 1;
+        current.paridas += 1;
+      }
+
+      if (preg === "PRENHA") {
+        prenhas += 1;
+        current.prenhas += 1;
+      } else if (preg === "VAZIA") {
+        vazias += 1;
+        current.vazias += 1;
+      } else {
+        semInfo += 1;
+        current.semInfo += 1;
+      }
+
+      byLot.set(lotKey, current);
+    }
+
+    const taxaPrenhez = matrices > 0 ? (prenhas / matrices) * 100 : 0;
+    const taxaVazias = matrices > 0 ? (vazias / matrices) * 100 : 0;
+    const rows = Array.from(byLot.values())
+      .map((row) => ({
+        ...row,
+        taxaPrenhez: row.matrices > 0 ? (row.prenhas / row.matrices) * 100 : 0,
+        taxaVazias: row.matrices > 0 ? (row.vazias / row.matrices) * 100 : 0,
+      }))
+      .sort((a, b) => {
+        if (b.vazias !== a.vazias) return b.vazias - a.vazias;
+        if (b.matrices !== a.matrices) return b.matrices - a.matrices;
+        return String(a.lotName).localeCompare(String(b.lotName), "pt-BR");
+      })
+      .slice(0, 8);
+
+    return {
+      matrices,
+      prenhas,
+      vazias,
+      paridas,
+      semInfo,
+      taxaPrenhez,
+      taxaVazias,
+      rows,
+    };
+  }, [activeAnimals, health]);
+
   const lotCategories = useMemo(() => {
     const set = new Set();
     lotsSorted.forEach((l) => {
@@ -3222,6 +3298,103 @@ useEffect(() => {
                 ))}
                 {!dashboardSummary.lotRows.length ? (
                   <div className="faz-emptyNice">Nenhuma manga com animais no momento.</div>
+                ) : null}
+              </div>
+            </section>
+          </div>
+
+          <div className="herdGrid2">
+            <section className="herdPanel">
+              <div className="herdPanelHead">
+                <div>
+                  <div className="title">Radar reprodutivo</div>
+                  <div className="sub">Leitura das matrizes ativas para decidir manejo e pressão sobre os lotes.</div>
+                </div>
+              </div>
+
+              <div className="faz-detail-grid" style={{ marginTop: 10 }}>
+                <div className="faz-mini">
+                  <div className="k">Matrizes ativas</div>
+                  <div className="v">{fmtInt(reproductiveSummary.matrices)}</div>
+                </div>
+                <div className={"faz-mini " + (reproductiveSummary.taxaPrenhez >= 50 ? "is-good" : reproductiveSummary.taxaPrenhez >= 30 ? "is-warn" : "is-bad")}>
+                  <div className="k">Taxa prenhez</div>
+                  <div className="v">{reproductiveSummary.taxaPrenhez.toFixed(1)}%</div>
+                </div>
+                <div className={"faz-mini " + (reproductiveSummary.vazias > 0 ? "is-warn" : "is-good")}>
+                  <div className="k">Vazias</div>
+                  <div className="v">{fmtInt(reproductiveSummary.vazias)}</div>
+                </div>
+                <div className="faz-mini">
+                  <div className="k">Paridas</div>
+                  <div className="v">{fmtInt(reproductiveSummary.paridas)}</div>
+                </div>
+                <div className={"faz-mini " + (reproductiveSummary.semInfo > 0 ? "is-warn" : "")}>
+                  <div className="k">Sem status</div>
+                  <div className="v">{fmtInt(reproductiveSummary.semInfo)}</div>
+                </div>
+              </div>
+
+              <div className="herdQuick">
+                <button
+                  className="faz-btn"
+                  type="button"
+                  onClick={() => {
+                    setGPreg("PRENHA");
+                    setTab("cadastro");
+                  }}
+                >
+                  Ver prenhas
+                </button>
+                <button
+                  className="faz-btn"
+                  type="button"
+                  onClick={() => {
+                    setGPreg("VAZIA");
+                    setTab("cadastro");
+                  }}
+                >
+                  Ver vazias
+                </button>
+                <button
+                  className="faz-btn"
+                  type="button"
+                  onClick={() => {
+                    setGPreg("ND");
+                    setTab("cadastro");
+                  }}
+                >
+                  Ver sem status
+                </button>
+              </div>
+            </section>
+
+            <section className="herdPanel">
+              <div className="herdPanelHead">
+                <div>
+                  <div className="title">Reprodução por lote</div>
+                  <div className="sub">Mostra onde estão as matrizes e quais lotes concentram vazias.</div>
+                </div>
+              </div>
+
+              <div className="herdMetricList">
+                {reproductiveSummary.rows.map((row) => (
+                  <div key={String(row.lotId)} className="herdMetricRow">
+                    <div className="left">
+                      <div className="name">{row.lotName}</div>
+                      <div className="meta">
+                        {fmtInt(row.matrices)} matrizes • {fmtInt(row.prenhas)} prenhas • {fmtInt(row.vazias)} vazias
+                      </div>
+                    </div>
+                    <div className="right">
+                      <span className={"pill " + (row.taxaPrenhez >= 50 ? "ok" : row.taxaPrenhez >= 30 ? "warn" : "bad")}>
+                        {row.taxaPrenhez.toFixed(0)}% prenhez
+                      </span>
+                    </div>
+                  </div>
+                ))}
+                {!reproductiveSummary.rows.length ? (
+                  <div className="faz-emptyNice">Sem fêmeas ativas suficientes para montar o radar reprodutivo.</div>
                 ) : null}
               </div>
             </section>
