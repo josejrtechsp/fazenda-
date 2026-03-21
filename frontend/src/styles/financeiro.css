@@ -1616,6 +1616,12 @@
   padding: 6px 8px;
 }
 
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-recon-action{
+  padding: 7px 10px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
 @media (max-width: 1080px){
   .cras-ui-v2 .faz-financeiro-v2 .faz-fin-launch-overview{
     grid-template-columns: 1fr;

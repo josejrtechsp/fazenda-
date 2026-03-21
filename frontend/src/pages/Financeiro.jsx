@@ -3192,6 +3192,61 @@ export default function Financeiro() {
     }
   }
 
+  function openReconciliationAsLaunch(row) {
+    const direction = String(row?.direction || "payable");
+    const movementDate = String(row?.movement_date || todayYMD()).slice(0, 10) || todayYMD();
+    const movementMonth = /^\d{4}-\d{2}-\d{2}$/.test(movementDate) ? movementDate.slice(0, 7) : nowMonthKey();
+    const rawDescription = String(row?.description || "").trim();
+    const rawDoc = String(row?.doc_number || "").trim();
+    const amountValue = Number(row?.amount_brl || 0);
+    const amountText = Number.isFinite(amountValue) && amountValue > 0 ? amountValue.toFixed(2).replace(".", ",") : "";
+    const noteParts = [
+      rawDescription || "Importado do extrato bancário",
+      rawDoc ? `Documento: ${rawDoc}` : "",
+      `Linha do extrato: ${String(row?.row_index || "—")}`,
+    ].filter(Boolean);
+
+    setScreen("lancamentos");
+    setLancamentosSubtab("lancamentos");
+    setMonthKey(movementMonth);
+
+    if (direction === "payable") {
+      setFinTab("despesa");
+      setFinCostForm((prev) => ({
+        ...prev,
+        date: movementDate,
+        due_date: movementDate,
+        competence_month: movementMonth,
+        status: "open",
+        value_brl: amountText,
+        planned_value_brl: "",
+        doc_number: rawDoc,
+        notes: noteParts.join(" • "),
+      }));
+    } else {
+      setFinTab("receita");
+      setFinRevForm((prev) => ({
+        ...prev,
+        date: movementDate,
+        due_date: movementDate,
+        competence_month: movementMonth,
+        status: "open",
+        value_brl: amountText,
+        planned_value_brl: "",
+        doc_number: rawDoc,
+        notes: noteParts.join(" • "),
+      }));
+    }
+
+    setReconMsg(
+      `✅ Linha ${String(row?.row_index || "—")} enviada para ${direction === "payable" ? "nova despesa" : "nova receita"}. Complete conta e pessoa antes de salvar.`
+    );
+
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }
+
   const renderHub = () => (
     <section className="faz-fin-hub">
       {REPORTS.map((r) => (
@@ -4883,7 +4938,7 @@ export default function Financeiro() {
                     <th>Direção</th>
                     <th>Status</th>
                     <th>Título sugerido</th>
-                    <th>Resolver ambígua</th>
+                    <th>Ação</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -4933,6 +4988,14 @@ export default function Financeiro() {
                             </select>
                           ) : st === "matched" ? (
                             <span className="chip ok">Automático</span>
+                          ) : st === "unmatched" ? (
+                            <button
+                              type="button"
+                              className="btn-back faz-fin-recon-action"
+                              onClick={() => openReconciliationAsLaunch(row)}
+                            >
+                              Criar título
+                            </button>
                           ) : (
                             "—"
                           )}
