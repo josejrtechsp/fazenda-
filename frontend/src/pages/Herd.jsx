@@ -1554,6 +1554,72 @@ if (!inRange && !alreadyConfirmed) {
     };
   }, [activeAnimals, health]);
 
+  const herdRiskSummary = useMemo(() => {
+    let clinicalAttention = 0;
+    let clinicalTreatment = 0;
+    let clinicalDiscard = 0;
+    let lowBodyScore = 0;
+    let overdueVaccine = 0;
+    let semStatus = 0;
+    let vazias = 0;
+    const animals = [];
+
+    for (const a of Array.isArray(activeAnimals) ? activeAnimals : []) {
+      const h = healthFor(a?.ear);
+      const sheet = h?.sheet && typeof h.sheet === "object" ? h.sheet : {};
+      const clinicalStatus = String(sheet?.clinicalStatus || "ESTAVEL").toUpperCase();
+      const bodyScore = Number(sheet?.bodyScore);
+      const pregStatus = String(h?.pregStatus || "ND").toUpperCase();
+      const vacOverdue = !!(h?.vacNext && isoBefore(h.vacNext, todayIso()));
+      const lowScore = Number.isFinite(bodyScore) && bodyScore < 2.5;
+
+      if (clinicalStatus === "ATENCAO") clinicalAttention += 1;
+      if (clinicalStatus === "TRATAMENTO") clinicalTreatment += 1;
+      if (clinicalStatus === "DESCARTE") clinicalDiscard += 1;
+      if (lowScore) lowBodyScore += 1;
+      if (vacOverdue) overdueVaccine += 1;
+      if (pregStatus === "ND") semStatus += 1;
+      if (pregStatus === "VAZIA") vazias += 1;
+
+      const reasons = [];
+      if (clinicalStatus !== "ESTAVEL") reasons.push(`Clínica ${asText(sheet?.clinicalStatus || clinicalStatus)}`);
+      if (lowScore) reasons.push(`Escore ${bodyScore.toFixed(1)}`);
+      if (vacOverdue) reasons.push(`Vacina vence/venceu em ${fmtDateShort(h.vacNext)}`);
+      if (pregStatus === "ND") reasons.push("Sem status reprodutivo");
+      if (pregStatus === "VAZIA") reasons.push("Matriz vazia");
+
+      if (reasons.length) {
+        const priority =
+          (clinicalStatus === "DESCARTE" ? 40 : 0) +
+          (clinicalStatus === "TRATAMENTO" ? 30 : 0) +
+          (clinicalStatus === "ATENCAO" ? 20 : 0) +
+          (vacOverdue ? 15 : 0) +
+          (lowScore ? 12 : 0) +
+          (pregStatus === "VAZIA" ? 8 : 0) +
+          (pregStatus === "ND" ? 6 : 0);
+        animals.push({
+          ear: String(a?.ear || ""),
+          lot: animalLotLabel(a),
+          priority,
+          reasons,
+        });
+      }
+    }
+
+    animals.sort((x, y) => y.priority - x.priority || String(x.ear).localeCompare(String(y.ear), "pt-BR"));
+
+    return {
+      clinicalAttention,
+      clinicalTreatment,
+      clinicalDiscard,
+      lowBodyScore,
+      overdueVaccine,
+      semStatus,
+      vazias,
+      animals: animals.slice(0, 6),
+    };
+  }, [activeAnimals, health]);
+
   const lotCategories = useMemo(() => {
     const set = new Set();
     lotsSorted.forEach((l) => {
@@ -3497,6 +3563,107 @@ useEffect(() => {
                 ))}
                 {!reproductiveSummary.rows.length ? (
                   <div className="faz-emptyNice">Sem fêmeas ativas suficientes para montar o radar reprodutivo.</div>
+                ) : null}
+              </div>
+            </section>
+          </div>
+
+          <div className="herdGrid2">
+            <section className="herdPanel">
+              <div className="herdPanelHead">
+                <div>
+                  <div className="title">Alertas clínicos e reprodutivos</div>
+                  <div className="sub">Onde o rebanho está pedindo revisão imediata antes de virar problema maior.</div>
+                </div>
+              </div>
+
+              <div className="faz-detail-grid" style={{ marginTop: 10 }}>
+                <div className={"faz-mini " + (herdRiskSummary.clinicalTreatment > 0 ? "is-bad" : "is-good")}>
+                  <div className="k">Em tratamento</div>
+                  <div className="v">{fmtInt(herdRiskSummary.clinicalTreatment)}</div>
+                </div>
+                <div className={"faz-mini " + (herdRiskSummary.clinicalAttention > 0 ? "is-warn" : "is-good")}>
+                  <div className="k">Em atenção</div>
+                  <div className="v">{fmtInt(herdRiskSummary.clinicalAttention)}</div>
+                </div>
+                <div className={"faz-mini " + (herdRiskSummary.lowBodyScore > 0 ? "is-warn" : "is-good")}>
+                  <div className="k">Escore baixo</div>
+                  <div className="v">{fmtInt(herdRiskSummary.lowBodyScore)}</div>
+                </div>
+                <div className={"faz-mini " + (herdRiskSummary.overdueVaccine > 0 ? "is-bad" : "is-good")}>
+                  <div className="k">Vacina atrasada</div>
+                  <div className="v">{fmtInt(herdRiskSummary.overdueVaccine)}</div>
+                </div>
+                <div className={"faz-mini " + (herdRiskSummary.vazias > 0 ? "is-warn" : "is-good")}>
+                  <div className="k">Matrizes vazias</div>
+                  <div className="v">{fmtInt(herdRiskSummary.vazias)}</div>
+                </div>
+                <div className={"faz-mini " + (herdRiskSummary.semStatus > 0 ? "is-warn" : "is-good")}>
+                  <div className="k">Sem status reprodutivo</div>
+                  <div className="v">{fmtInt(herdRiskSummary.semStatus)}</div>
+                </div>
+              </div>
+
+              <div className="herdQuick">
+                <button
+                  className="faz-btn"
+                  type="button"
+                  onClick={() => {
+                    setGVac("DUE");
+                    setTab("cadastro");
+                  }}
+                >
+                  Ver vacinas atrasadas
+                </button>
+                <button
+                  className="faz-btn"
+                  type="button"
+                  onClick={() => {
+                    setGPreg("VAZIA");
+                    setTab("cadastro");
+                  }}
+                >
+                  Ver matrizes vazias
+                </button>
+                <button
+                  className="faz-btn"
+                  type="button"
+                  onClick={() => {
+                    setGPreg("ND");
+                    setTab("cadastro");
+                  }}
+                >
+                  Ver sem status
+                </button>
+              </div>
+            </section>
+
+            <section className="herdPanel">
+              <div className="herdPanelHead">
+                <div>
+                  <div className="title">Animais prioritários</div>
+                  <div className="sub">Lista curta para o gerente abrir a ficha e agir sem procurar no cadastro.</div>
+                </div>
+              </div>
+
+              <div className="herdMetricList">
+                {herdRiskSummary.animals.map((row) => (
+                  <div key={row.ear} className="herdMetricRow">
+                    <div className="left">
+                      <div className="name">{row.ear}</div>
+                      <div className="meta">
+                        {row.lot} • {row.reasons.join(" • ")}
+                      </div>
+                    </div>
+                    <div className="right">
+                      <button className="faz-btn" type="button" onClick={() => openEdit(row.ear)}>
+                        Abrir ficha
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                {!herdRiskSummary.animals.length ? (
+                  <div className="faz-emptyNice">Sem alertas clínicos ou reprodutivos relevantes no momento.</div>
                 ) : null}
               </div>
             </section>
