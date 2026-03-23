@@ -2099,6 +2099,10 @@ if (!inRange && !alreadyConfirmed) {
   const [editClinicalDate, setEditClinicalDate] = useState("");
   const [editClinicalNote, setEditClinicalNote] = useState("");
   const [editReproProtocol, setEditReproProtocol] = useState("");
+  const [editTreatmentDate, setEditTreatmentDate] = useState("");
+  const [editTreatmentReason, setEditTreatmentReason] = useState("");
+  const [editTreatmentConduct, setEditTreatmentConduct] = useState("");
+  const [editTreatmentObservation, setEditTreatmentObservation] = useState("");
   const [editView, setEditView] = useState("resumo");
 
   useEffect(() => {
@@ -2203,6 +2207,16 @@ if (!inRange && !alreadyConfirmed) {
         idadeMeses: intOrNull(sheet.idadeMeses),
         situacaoReprodutiva: asText(sheet.situacaoReprodutiva || ""),
         numeroMae: asText(sheet.numeroMae || ""),
+        clinicalStatus: asText(sheet.clinicalStatus || ""),
+        clinicalDate: normalizeIsoDate(sheet.clinicalDate || ""),
+        clinicalNote: asText(sheet.clinicalNote || ""),
+        reproProtocol: asText(sheet.reproProtocol || ""),
+        bodyScore: numOrNull(sheet.bodyScore),
+        locomotionScore: numOrNull(sheet.locomotionScore),
+        treatmentDate: normalizeIsoDate(sheet.treatmentDate || ""),
+        treatmentReason: asText(sheet.treatmentReason || ""),
+        treatmentConduct: asText(sheet.treatmentConduct || ""),
+        treatmentObservation: asText(sheet.treatmentObservation || ""),
       },
     };
   }
@@ -2289,6 +2303,10 @@ if (!inRange && !alreadyConfirmed) {
     const clinicalDate = normalizeIsoDate(sheet.clinicalDate || "");
     const clinicalNote = asText(sheet.clinicalNote || "—");
     const reproProtocol = asText(sheet.reproProtocol || "—");
+    const treatmentDate = normalizeIsoDate(sheet.treatmentDate || "");
+    const treatmentReason = asText(sheet.treatmentReason || "—");
+    const treatmentConduct = asText(sheet.treatmentConduct || "—");
+    const treatmentObservation = asText(sheet.treatmentObservation || "—");
     return {
       ear,
       animal,
@@ -2314,6 +2332,10 @@ if (!inRange && !alreadyConfirmed) {
       clinicalDate,
       clinicalNote,
       reproProtocol,
+      treatmentDate,
+      treatmentReason,
+      treatmentConduct,
+      treatmentObservation,
     };
   }, [activeAnimals, animals, editEar, health, weighs]);
 
@@ -2387,6 +2409,16 @@ if (!inRange && !alreadyConfirmed) {
             main: "Protocolo associado",
             sub: asText(sheet.reproProtocol),
             value: h?.pregStart ? fmtDateShort(h.pregStart) : "Sem data",
+          }
+        : null,
+      sheet?.treatmentDate || sheet?.treatmentReason || sheet?.treatmentConduct
+        ? {
+            key: "clinical-treatment",
+            main: sheet?.treatmentDate ? fmtDateShort(sheet.treatmentDate) : "Tratamento registrado",
+            sub: [asText(sheet.treatmentReason || ""), asText(sheet.treatmentConduct || ""), asText(sheet.treatmentObservation || "")]
+              .filter((part) => part && part !== "—")
+              .join(" • "),
+            value: asText(sheet?.clinicalStatus || "Tratamento"),
           }
         : null,
     ].filter(Boolean);
@@ -2472,6 +2504,10 @@ if (!inRange && !alreadyConfirmed) {
     setEditClinicalDate(String(h?.sheet?.clinicalDate || ""));
     setEditClinicalNote(String(h?.sheet?.clinicalNote || ""));
     setEditReproProtocol(String(h?.sheet?.reproProtocol || ""));
+    setEditTreatmentDate(String(h?.sheet?.treatmentDate || ""));
+    setEditTreatmentReason(String(h?.sheet?.treatmentReason || ""));
+    setEditTreatmentConduct(String(h?.sheet?.treatmentConduct || ""));
+    setEditTreatmentObservation(String(h?.sheet?.treatmentObservation || ""));
     setEditView("resumo");
     setEditOpen(true);
   }
@@ -2510,6 +2546,10 @@ if (!inRange && !alreadyConfirmed) {
         clinicalDate: editClinicalDate || "",
         clinicalNote: editClinicalNote || "",
         reproProtocol: editReproProtocol || "",
+        treatmentDate: editTreatmentDate || "",
+        treatmentReason: editTreatmentReason || "",
+        treatmentConduct: editTreatmentConduct || "",
+        treatmentObservation: editTreatmentObservation || "",
       },
       updatedAt: todayIso(),
     };
@@ -5278,6 +5318,18 @@ useEffect(() => {
                           <span className="lbl">Observação clínica</span>
                           <strong>{editAnimalData.clinicalNote}</strong>
                         </div>
+                        <div className="faz-modalInfoItem">
+                          <span className="lbl">Último tratamento</span>
+                          <strong>{fmtDateShort(editAnimalData.treatmentDate)}</strong>
+                        </div>
+                        <div className="faz-modalInfoItem">
+                          <span className="lbl">Motivo / conduta</span>
+                          <strong>
+                            {[editAnimalData.treatmentReason, editAnimalData.treatmentConduct]
+                              .filter((part) => part && part !== "—")
+                              .join(" • ") || "—"}
+                          </strong>
+                        </div>
                       </div>
 
                       <div className="faz-rowActions" style={{ justifyContent: "flex-start", marginTop: 12 }}>
@@ -5297,6 +5349,7 @@ useEffect(() => {
                           onClick={() => {
                             setEditClinicalStatus("TRATAMENTO");
                             if (!editClinicalDate) setEditClinicalDate(todayIso());
+                            if (!editTreatmentDate) setEditTreatmentDate(todayIso());
                           }}
                         >
                           Registrar tratamento
@@ -5386,6 +5439,46 @@ useEffect(() => {
                           onChange={(e) => setEditClinicalNote(e.target.value)}
                           placeholder="Ex.: casco sensível, revisar no próximo manejo"
                         />
+                      </div>
+                    </div>
+
+                    <div className="faz-modalSection">
+                      <div className="faz-modalSectionTitle">Fluxo de tratamento</div>
+                      <div className="faz-modalGrid" style={{ marginTop: 0 }}>
+                        <div>
+                          <label className="form-label">Data do tratamento</label>
+                          <input className="input" type="date" value={editTreatmentDate} onChange={(e) => setEditTreatmentDate(e.target.value)} />
+                        </div>
+
+                        <div>
+                          <label className="form-label">Motivo</label>
+                          <input
+                            className="input"
+                            value={editTreatmentReason}
+                            onChange={(e) => setEditTreatmentReason(e.target.value)}
+                            placeholder="Ex.: claudicação, mastite, queda de escore"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="form-label">Conduta</label>
+                          <input
+                            className="input"
+                            value={editTreatmentConduct}
+                            onChange={(e) => setEditTreatmentConduct(e.target.value)}
+                            placeholder="Ex.: antibiótico, observação, manejo separado"
+                          />
+                        </div>
+
+                        <div style={{ gridColumn: "1 / -1" }}>
+                          <label className="form-label">Observação do tratamento</label>
+                          <input
+                            className="input"
+                            value={editTreatmentObservation}
+                            onChange={(e) => setEditTreatmentObservation(e.target.value)}
+                            placeholder="Ex.: responder em 72h, revisar casco no próximo curral"
+                          />
+                        </div>
                       </div>
                     </div>
 
