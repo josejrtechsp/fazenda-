@@ -10,7 +10,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 
 from app.db.session import get_session
-from app.models import ChartAccount
+from app.models import ChartAccount, ChartAccountCreate, ChartAccountUpdate
 
 router = APIRouter(prefix="/accounts", tags=["accounts"])
 
@@ -108,6 +108,21 @@ def _build_tree(rows: List[ChartAccount]) -> List[Dict[str, Any]]:
     return roots
 
 
+def _serialize(obj: ChartAccount) -> Dict[str, Any]:
+    return {
+        "id": obj.id,
+        "code": obj.code,
+        "name": obj.name,
+        "level": obj.level,
+        "parent_code": obj.parent_code,
+        "category": obj.category,
+        "source": obj.source,
+        "is_active": obj.is_active,
+        "created_at": obj.created_at,
+        "updated_at": obj.updated_at,
+    }
+
+
 @router.get("")
 def list_accounts(
     q: Optional[str] = None,
@@ -142,6 +157,99 @@ def list_accounts(
         rows = [r for r in rows if nq in _norm_text(r.code) or nq in _norm_text(r.name)]
 
     return rows[:limit]
+
+
+@router.post("")
+def create_account(payload: ChartAccountCreate, session: Session = Depends(get_session)) -> Dict[str, Any]:
+    code = str(payload.code or "").strip()
+    name = str(payload.name or "").strip()
+    level = int(payload.level or 0)
+    category = str(payload.category or "DESPESA").strip().upper() or "DESPESA"
+    parent_code = str(payload.parent_code or "").strip() or None
+    source = str(payload.source or "MANUAL").strip().upper() or "MANUAL"
+
+    if not code:
+        raise HTTPException(status_code=422, detail="codigo da conta e obrigatorio")
+    if not name:
+        raise HTTPException(status_code=422, detail="nome da conta e obrigatorio")
+    if level < 1 or level > 4:
+        raise HTTPException(status_code=422, detail="nivel deve estar entre 1 e 4")
+    if category not in {"RECEITA", "DESPESA", "OUTROS"}:
+        raise HTTPException(status_code=422, detail="categoria invalida")
+
+    exists = session.exec(select(ChartAccount).where(ChartAccount.code == code).limit(1)).first()
+    if exists:
+        raise HTTPException(status_code=422, detail="codigo da conta ja existe")
+
+    if level > 1 and not parent_code:
+        raise HTTPException(status_code=422, detail="contas acima do nivel 1 exigem conta pai")
+    if parent_code:
+        parent = session.exec(select(ChartAccount).where(ChartAccount.code == parent_code).limit(1)).first()
+        if not parent:
+            raise HTTPException(status_code=422, detail="conta pai nao encontrada")
+        if int(parent.level or 0) != level - 1:
+            raise HTTPException(status_code=422, detail="conta pai deve estar exatamente no nivel anterior")
+        if str(parent.category or "").upper() != category:
+            raise HTTPException(status_code=422, detail="categoria da conta pai deve ser igual a da conta filha")
+
+    obj = ChartAccount(
+        code=code,
+        name=name,
+        level=level,
+        parent_code=parent_code,
+        category=category,
+        source=source,
+        is_active=bool(payload.is_active if payload.is_active is not None else True),
+    )
+    session.add(obj)
+    session.commit()
+    session.refresh(obj)
+    return _serialize(obj)
+
+
+@router.patch("/{account_code:path}")
+def update_account(account_code: str, patch: ChartAccountUpdate, session: Session = Depends(get_session)) -> Dict[str, Any]:
+    code = str(account_code or "").strip()
+    obj = session.exec(select(ChartAccount).where(ChartAccount.code == code).limit(1)).first()
+    if not obj:
+        raise HTTPException(status_code=404, detail="conta nao encontrada")
+
+    data = patch.model_dump(exclude_unset=True)
+
+    if "name" in data:
+        name = str(data.get("name") or "").strip()
+        if not name:
+            raise HTTPException(status_code=422, detail="nome da conta nao pode ser vazio")
+        obj.name = name
+
+    if "category" in data:
+        category = str(data.get("category") or "").strip().upper()
+        if category not in {"RECEITA", "DESPESA", "OUTROS"}:
+            raise HTTPException(status_code=422, detail="categoria invalida")
+        obj.category = category
+
+    if "parent_code" in data:
+        parent_code = str(data.get("parent_code") or "").strip() or None
+        if obj.level > 1:
+            if not parent_code:
+                raise HTTPException(status_code=422, detail="contas acima do nivel 1 exigem conta pai")
+            parent = session.exec(select(ChartAccount).where(ChartAccount.code == parent_code).limit(1)).first()
+            if not parent:
+                raise HTTPException(status_code=422, detail="conta pai nao encontrada")
+            if int(parent.level or 0) != int(obj.level or 0) - 1:
+                raise HTTPException(status_code=422, detail="conta pai deve estar exatamente no nivel anterior")
+            if str(parent.category or "").upper() != str(obj.category or "").upper():
+                raise HTTPException(status_code=422, detail="categoria da conta pai deve ser igual a da conta filha")
+        obj.parent_code = parent_code
+
+    if "is_active" in data:
+        obj.is_active = bool(data.get("is_active"))
+
+    obj.updated_at = datetime.utcnow()
+    session.add(obj)
+    session.commit()
+    session.refresh(obj)
+    return _serialize(obj)
 
 
 @router.get("/tree")

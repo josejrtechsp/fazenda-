@@ -3,7 +3,7 @@
 from app.models.nutrition import NutritionItem, NutritionPurchase
 from app.models.inventory import InventoryItem, InventoryItemPayload, InventoryBulkReplace
 from .event import Event, EventCreate, EventRead, EventUpdate
-from .accounting import ChartAccount
+from .accounting import ChartAccount, ChartAccountCreate, ChartAccountUpdate
 from .people import Person, PersonCreate, PersonUpdate
 from .supplier_catalog import (
     SupplierCategory,
@@ -76,6 +76,8 @@ __all__ = [
     "EventRead",
     "EventUpdate",
     "ChartAccount",
+    "ChartAccountCreate",
+    "ChartAccountUpdate",
     "Person",
     "PersonCreate",
     "PersonUpdate",

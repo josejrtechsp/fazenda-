@@ -941,6 +941,8 @@ export default function Financeiro() {
   const [reconReturnPending, setReconReturnPending] = useState(null);
   const [reconHighlightedRow, setReconHighlightedRow] = useState(null);
   const [reconPersonDraft, setReconPersonDraft] = useState(null);
+  const [launchAccountDraft, setLaunchAccountDraft] = useState(null);
+  const [launchCostCenterDraft, setLaunchCostCenterDraft] = useState(null);
   const [closeBusy, setCloseBusy] = useState(false);
   const [closeSummary, setCloseSummary] = useState(null);
   const [closeHistory, setCloseHistory] = useState([]);
@@ -3441,6 +3443,42 @@ export default function Financeiro() {
     }
   }
 
+  function suggestAccountDraft() {
+    const isCostTab = finTab === "despesa";
+    const noteBase = isCostTab
+      ? finCostForm.category || finCostForm.notes || "Nova conta de despesa"
+      : finRevForm.category || finRevForm.notes || "Nova conta de receita";
+    return {
+      seedKey: `${Date.now()}-launch-account`,
+      code: "",
+      name: String(noteBase || "").trim().slice(0, 120),
+      level: "4",
+      parent_code: "",
+      category: isCostTab ? "DESPESA" : "RECEITA",
+      note: `Cadastro de conta aberto a partir do lançamento atual. Revise código, nome e conta pai antes de salvar.`,
+    };
+  }
+
+  function suggestCostCenterDraft() {
+    const isCostTab = finTab === "despesa";
+    const centerName = String(isCostTab ? finCostForm.center_cost : finRevForm.center_cost || "").trim();
+    const base = centerName || "Fazenda";
+    const normalizedCode = base
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toUpperCase()
+      .replace(/[^A-Z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 24);
+    return {
+      seedKey: `${Date.now()}-launch-center`,
+      code: normalizedCode || "FAZENDA",
+      name: base,
+      parent_id: "",
+      note: `Centro de custo aberto a partir do lançamento atual. Revise o código e o nome antes de salvar.`,
+    };
+  }
+
   function openLaunchPersonCadastro() {
     const isCostTab = finTab === "despesa";
     setReconPersonDraft({
@@ -3464,6 +3502,37 @@ export default function Financeiro() {
       "people",
       `✅ Abrindo Pessoas e empresas para cadastrar ${isCostTab ? "fornecedor" : "cliente"} sem perder o lançamento atual.`
     );
+  }
+
+  function handleLaunchAccountCreated(createdAccount) {
+    const account = createdAccount?.item || createdAccount || null;
+    if (!account?.code) return;
+    const isCostTab = finTab === "despesa";
+    setLancamentosSubtab("lancamentos");
+    if (isCostTab) {
+      setFinCostForm((prev) => ({ ...prev, account_code: String(account.code || "") }));
+    } else {
+      setFinRevForm((prev) => ({ ...prev, account_code: String(account.code || "") }));
+    }
+    setLaunchAccountDraft(null);
+    setFinMsg(`✅ Conta ${String(account.code || "")} - ${String(account.name || "")} vinculada ao lançamento atual.`);
+    if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function handleLaunchCostCenterCreated(createdCenter) {
+    const center = createdCenter?.item || createdCenter || null;
+    if (!center) return;
+    const centerLabel = String(center?.name || center?.code || "").trim();
+    const isCostTab = finTab === "despesa";
+    setLancamentosSubtab("lancamentos");
+    if (isCostTab) {
+      setFinCostForm((prev) => ({ ...prev, center_cost: centerLabel || prev.center_cost }));
+    } else {
+      setFinRevForm((prev) => ({ ...prev, center_cost: centerLabel || prev.center_cost }));
+    }
+    setLaunchCostCenterDraft(null);
+    setFinMsg(`✅ Centro de custo ${centerLabel || String(center?.code || "")} vinculado ao lançamento atual.`);
+    if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   const renderHub = () => (
@@ -3537,6 +3606,10 @@ export default function Financeiro() {
             showPeople
             personDraft={reconPersonDraft}
             onPersonCreated={handleReconciliationPersonCreated}
+            accountDraft={launchAccountDraft}
+            onAccountCreated={handleLaunchAccountCreated}
+            costCenterDraft={launchCostCenterDraft}
+            onCostCenterCreated={handleLaunchCostCenterCreated}
           />
         ) : (
           <>
@@ -3595,13 +3668,14 @@ export default function Financeiro() {
               <button
                 type="button"
                 className="chip"
-                onClick={() =>
+                onClick={() => {
+                  setLaunchAccountDraft(suggestAccountDraft());
                   openLaunchSettingsSection(
                     "accounts",
                     `✅ Abrindo Plano de Contas para revisar ou criar a conta N4 da ${isCostTab ? "despesa" : "receita"}.`,
                     { accCategory: isCostTab ? "DESPESA" : "RECEITA", accLevel: "4" }
-                  )
-                }
+                  );
+                }}
               >
                 Abrir plano de contas
               </button>
@@ -3611,12 +3685,13 @@ export default function Financeiro() {
               <button
                 type="button"
                 className="chip"
-                onClick={() =>
+                onClick={() => {
+                  setLaunchCostCenterDraft(suggestCostCenterDraft());
                   openLaunchSettingsSection(
                     "cost_centers",
                     "✅ Abrindo Centros de custo para cadastrar ou revisar o centro usado neste lançamento."
-                  )
-                }
+                  );
+                }}
               >
                 Abrir centros de custo
               </button>

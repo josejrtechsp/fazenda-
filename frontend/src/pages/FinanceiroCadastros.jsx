@@ -75,6 +75,10 @@ export default function FinanceiroCadastros({
   accountsHiddenByDefault = false,
   personDraft = null,
   onPersonCreated = null,
+  accountDraft = null,
+  onAccountCreated = null,
+  costCenterDraft = null,
+  onCostCenterCreated = null,
 }) {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
@@ -146,6 +150,14 @@ export default function FinanceiroCadastros({
 
   const [categoryForm, setCategoryForm] = useState({ name: "", parent_id: "", is_active: true });
   const [tagForm, setTagForm] = useState({ name: "", is_active: true });
+  const [accountForm, setAccountForm] = useState({
+    code: "",
+    name: "",
+    level: "4",
+    parent_code: "",
+    category: "DESPESA",
+    is_active: true,
+  });
   const [costCenterForm, setCostCenterForm] = useState({ code: "", name: "", parent_id: "", is_active: true });
   const [bankForm, setBankForm] = useState({
     name: "",
@@ -331,6 +343,37 @@ export default function FinanceiroCadastros({
       setLocalMsg("people", String(personDraft.note));
     }
   }, [personDraft]);
+
+  useEffect(() => {
+    if (!accountDraft || typeof accountDraft !== "object") return;
+    setShowAccountsPanel(true);
+    setFocusedSection("accounts");
+    if (accountDraft.category) setAccCategory(String(accountDraft.category));
+    if (accountDraft.level) setAccLevel(String(accountDraft.level));
+    setAccountForm((prev) => ({
+      ...prev,
+      code: String(accountDraft.code || ""),
+      name: String(accountDraft.name || ""),
+      level: String(accountDraft.level || "4"),
+      parent_code: String(accountDraft.parent_code || ""),
+      category: String(accountDraft.category || prev.category || "DESPESA").toUpperCase(),
+      is_active: true,
+    }));
+    if (accountDraft.note) setSeedMsg(String(accountDraft.note));
+  }, [accountDraft]);
+
+  useEffect(() => {
+    if (!costCenterDraft || typeof costCenterDraft !== "object") return;
+    setFocusedSection("cost_centers");
+    setCostCenterForm((prev) => ({
+      ...prev,
+      code: String(costCenterDraft.code || ""),
+      name: String(costCenterDraft.name || ""),
+      parent_id: String(costCenterDraft.parent_id || ""),
+      is_active: true,
+    }));
+    if (costCenterDraft.note) setLocalMsg("costCenter", String(costCenterDraft.note));
+  }, [costCenterDraft]);
 
   const categoriesById = useMemo(() => {
     const map = {};
@@ -587,11 +630,38 @@ export default function FinanceiroCadastros({
     }
   }
 
+  async function createAccount(e) {
+    e?.preventDefault?.();
+    setSeedMsg("");
+    try {
+      const created = await api.post("/accounts", {
+        code: String(accountForm.code || "").trim(),
+        name: String(accountForm.name || "").trim(),
+        level: Number(accountForm.level || 4),
+        parent_code: String(accountForm.parent_code || "").trim() || null,
+        category: String(accountForm.category || "DESPESA").trim().toUpperCase(),
+        is_active: !!accountForm.is_active,
+        source: "MANUAL",
+      });
+      setSeedMsg("Conta cadastrada.");
+      setAccountForm((prev) => ({
+        ...prev,
+        code: "",
+        name: "",
+        parent_code: "",
+      }));
+      await loadAll();
+      if (typeof onAccountCreated === "function") onAccountCreated(created);
+    } catch (e2) {
+      setSeedMsg(e2?.message || "Falha ao cadastrar conta.");
+    }
+  }
+
   async function createCostCenter(e) {
     e?.preventDefault?.();
     setLocalMsg("costCenter", "");
     try {
-      await api.post("/cost-centers", {
+      const created = await api.post("/cost-centers", {
         code: String(costCenterForm.code || "").trim().toUpperCase(),
         name: String(costCenterForm.name || "").trim(),
         parent_id: asId(costCenterForm.parent_id),
@@ -600,6 +670,7 @@ export default function FinanceiroCadastros({
       setLocalMsg("costCenter", "Centro de custo cadastrado.");
       setCostCenterForm({ code: "", name: "", parent_id: "", is_active: true });
       await loadAll();
+      if (typeof onCostCenterCreated === "function") onCostCenterCreated(created);
     } catch (e2) {
       setLocalMsg("costCenter", e2?.message || "Falha ao cadastrar centro de custo.");
     }
@@ -742,6 +813,47 @@ export default function FinanceiroCadastros({
                   <option value="4">Nivel 4</option>
                 </select>
               </div>
+
+              <form onSubmit={createAccount} className="faz-fin-mini-form">
+                <input
+                  className="faz-input"
+                  placeholder="Codigo (ex.: 6.9.9.1)"
+                  value={accountForm.code}
+                  onChange={(e) => setAccountForm((p) => ({ ...p, code: e.target.value }))}
+                  required
+                />
+                <input
+                  className="faz-input"
+                  placeholder="Nome da conta"
+                  value={accountForm.name}
+                  onChange={(e) => setAccountForm((p) => ({ ...p, name: e.target.value }))}
+                  required
+                />
+                <select
+                  className="faz-input"
+                  value={accountForm.category}
+                  onChange={(e) => setAccountForm((p) => ({ ...p, category: e.target.value }))}
+                >
+                  {ACCOUNT_CATEGORY_OPTIONS.map((c) => <option key={c} value={c}>{c}</option>)}
+                </select>
+                <select
+                  className="faz-input"
+                  value={accountForm.level}
+                  onChange={(e) => setAccountForm((p) => ({ ...p, level: e.target.value }))}
+                >
+                  <option value="1">Nivel 1</option>
+                  <option value="2">Nivel 2</option>
+                  <option value="3">Nivel 3</option>
+                  <option value="4">Nivel 4</option>
+                </select>
+                <input
+                  className="faz-input"
+                  placeholder="Conta pai (ex.: 6.9.9)"
+                  value={accountForm.parent_code}
+                  onChange={(e) => setAccountForm((p) => ({ ...p, parent_code: e.target.value }))}
+                />
+                <button type="submit" className="faz-btn">Cadastrar conta</button>
+              </form>
 
               {seedMsg ? <div className="faz-fin-cad-note">{seedMsg}</div> : null}
 

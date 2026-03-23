@@ -25,3 +25,19 @@ class ChartAccount(SQLModel, table=True):
     created_at: datetime = Field(default_factory=datetime.utcnow, index=True)
     updated_at: datetime = Field(default_factory=datetime.utcnow, index=True)
 
+
+class ChartAccountCreate(SQLModel):
+    code: str
+    name: str
+    level: int = 4
+    parent_code: Optional[str] = None
+    category: str = "DESPESA"
+    source: Optional[str] = "MANUAL"
+    is_active: Optional[bool] = True
+
+
+class ChartAccountUpdate(SQLModel):
+    name: Optional[str] = None
+    parent_code: Optional[str] = None
+    category: Optional[str] = None
+    is_active: Optional[bool] = None
