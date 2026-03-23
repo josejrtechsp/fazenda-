@@ -2253,7 +2253,7 @@ if (!inRange && !alreadyConfirmed) {
 
   const editAnimalHistory = useMemo(() => {
     const ear = normEar(editEar);
-    if (!ear) return { weighs: [], timeline: [] };
+    if (!ear) return { weighs: [], timeline: [], clinical: [], reproduction: [] };
     const weighRows = (Array.isArray(weighs?.[ear]) ? weighs[ear] : [])
       .slice()
       .filter((row) => row && row.date)
@@ -2295,6 +2295,66 @@ if (!inRange && !alreadyConfirmed) {
       .sort((a, b) => String(b.date || "").localeCompare(String(a.date || ""), "pt-BR"));
 
     const h = healthFor(ear);
+    const sheet = h?.sheet && typeof h.sheet === "object" ? h.sheet : {};
+    const clinicalRows = [
+      sheet?.clinicalDate
+        ? {
+            key: "clinical-status",
+            main: fmtDateShort(sheet.clinicalDate),
+            sub: `Status ${asText(sheet.clinicalStatus || "Estável")}${sheet?.clinicalNote ? ` • ${sheet.clinicalNote}` : ""}`,
+            value: asText(sheet.clinicalStatus || "Estável"),
+          }
+        : null,
+      Number.isFinite(Number(sheet?.bodyScore))
+        ? {
+            key: "clinical-body-score",
+            main: "Escore corporal",
+            sub: Number.isFinite(Number(sheet?.locomotionScore))
+              ? `Locomoção ${Number(sheet.locomotionScore).toFixed(1)}`
+              : "Sem escore de locomoção",
+            value: Number(sheet.bodyScore).toFixed(1),
+          }
+        : null,
+      sheet?.reproProtocol
+        ? {
+            key: "clinical-protocol",
+            main: "Protocolo associado",
+            sub: asText(sheet.reproProtocol),
+            value: h?.pregStart ? fmtDateShort(h.pregStart) : "Sem data",
+          }
+        : null,
+    ].filter(Boolean);
+
+    const reproductionRows = [
+      h?.pregStart
+        ? {
+            key: "repro-preg",
+            main: String(h?.pregStatus || "").toUpperCase() === "PRENHA" ? "Cobertura / IA registrada" : "Última revisão reprodutiva",
+            sub:
+              String(h?.pregStatus || "").toUpperCase() === "PRENHA"
+                ? `DPP estimada ${fmtDateShort(dppIso(h.pregStart))}`
+                : asText(h?.note || "Sem observação reprodutiva"),
+            value: fmtDateShort(h.pregStart),
+          }
+        : null,
+      sheet?.reproProtocol
+        ? {
+            key: "repro-protocol",
+            main: "Protocolo reprodutivo",
+            sub: asText(sheet.reproProtocol),
+            value: asText(sheet?.situacaoReprodutiva || h?.pregStatus || "ND"),
+          }
+        : null,
+      h?.note
+        ? {
+            key: "repro-note",
+            main: "Observação do manejo",
+            sub: asText(h.note),
+            value: asText(sheet?.numeroMae || "—"),
+          }
+        : null,
+    ].filter(Boolean);
+
     const manualEvents = [
       h?.birth
         ? { key: "birth", type: "birth", date: h.birth, label: "Nascimento informado", detail: fmtDateShort(h.birth) }
@@ -2315,6 +2375,8 @@ if (!inRange && !alreadyConfirmed) {
     return {
       weighs: weighRows.slice(0, 6),
       timeline,
+      clinical: clinicalRows,
+      reproduction: reproductionRows,
     };
   }, [editEar, weighs, opsLog, health]);
 
@@ -4961,6 +5023,25 @@ useEffect(() => {
                         <input className="input" value={editNote} onChange={(e) => setEditNote(e.target.value)} placeholder="Ex.: confirmar prenhez no próximo manejo" />
                       </div>
                     </div>
+
+                    <div className="faz-modalSection">
+                      <div className="faz-modalSectionTitle">Histórico reprodutivo</div>
+                      {editAnimalHistory.reproduction.length ? (
+                        <div className="faz-historyList">
+                          {editAnimalHistory.reproduction.map((row) => (
+                            <div key={row.key} className="faz-historyRow">
+                              <div>
+                                <div className="main">{row.main}</div>
+                                <div className="sub">{row.sub}</div>
+                              </div>
+                              <div className="value">{row.value}</div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="texto-suave">Ainda não há histórico reprodutivo suficiente para este animal.</div>
+                      )}
+                    </div>
                   </div>
                 ) : null}
 
@@ -5059,6 +5140,25 @@ useEffect(() => {
                           placeholder="Ex.: casco sensível, revisar no próximo manejo"
                         />
                       </div>
+                    </div>
+
+                    <div className="faz-modalSection">
+                      <div className="faz-modalSectionTitle">Histórico clínico</div>
+                      {editAnimalHistory.clinical.length ? (
+                        <div className="faz-historyList">
+                          {editAnimalHistory.clinical.map((row) => (
+                            <div key={row.key} className="faz-historyRow">
+                              <div>
+                                <div className="main">{row.main}</div>
+                                <div className="sub">{row.sub}</div>
+                              </div>
+                              <div className="value">{row.value}</div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="texto-suave">Ainda não há histórico clínico registrado para este animal.</div>
+                      )}
                     </div>
                   </div>
                 ) : null}
