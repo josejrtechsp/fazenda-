@@ -74,6 +74,7 @@ export default function FinanceiroCadastros({
   showPeople = true,
   accountsHiddenByDefault = false,
   personDraft = null,
+  onPersonCreated = null,
 }) {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
@@ -515,7 +516,7 @@ export default function FinanceiroCadastros({
     e?.preventDefault?.();
     setLocalMsg("people", "");
     try {
-      await api.post("/people", {
+      const created = await api.post("/people", {
         ...personForm,
         document_type: String(personForm.document_type || "OUTRO").toUpperCase(),
         supplier_category_id: asId(personForm.supplier_category_id),
@@ -545,6 +546,9 @@ export default function FinanceiroCadastros({
         pix_type: "",
       }));
       await loadAll();
+      if (typeof onPersonCreated === "function") {
+        onPersonCreated(created);
+      }
     } catch (e2) {
       setLocalMsg("people", e2?.message || "Falha ao cadastrar pessoa.");
     }

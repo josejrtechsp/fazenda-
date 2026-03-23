@@ -3311,6 +3311,10 @@ export default function Financeiro() {
     const personName = inferPersonNameFromReconciliation(row);
     const roleLabel = direction === "payable" ? "fornecedor" : "cliente";
     const rowIndex = Number(row?.row_index || 0);
+    const movementDate = String(row?.movement_date || todayYMD()).slice(0, 10) || todayYMD();
+    const rawDescription = String(row?.description || "").trim();
+    const rawDoc = String(row?.doc_number || "").trim();
+    const amountValue = Number(row?.amount_brl || 0);
 
     setScreen("lancamentos");
     setLancamentosSubtab("pessoas_empresas");
@@ -3324,11 +3328,80 @@ export default function Financeiro() {
       email: "",
       is_supplier: direction === "payable",
       is_customer: direction !== "payable",
+      direction,
+      row_index: rowIndex,
+      movement_date: movementDate,
+      amount_brl: amountValue,
+      doc_number: rawDoc,
+      description: rawDescription,
       note: `Cadastro aberto a partir da linha ${rowIndex || "—"} do extrato. Revise o nome e conclua o ${roleLabel} antes de voltar para o lançamento.`,
     });
     setReconMsg(
       `✅ Linha ${rowIndex || "—"} enviada para Pessoas e empresas. Cadastre o ${roleLabel} e depois retorne ao lançamento.`
     );
+
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }
+
+  function handleReconciliationPersonCreated(createdPerson) {
+    const person = createdPerson?.item || createdPerson || null;
+    const draft = reconPersonDraft || null;
+    if (!person || !draft) return;
+
+    const direction = String(draft?.direction || "payable");
+    const movementDate = String(draft?.movement_date || todayYMD()).slice(0, 10) || todayYMD();
+    const movementMonth = /^\d{4}-\d{2}-\d{2}$/.test(movementDate) ? movementDate.slice(0, 7) : nowMonthKey();
+    const rawDescription = String(draft?.description || "").trim();
+    const rawDoc = String(draft?.doc_number || "").trim();
+    const amountValue = Number(draft?.amount_brl || 0);
+    const amountText = Number.isFinite(amountValue) && amountValue > 0 ? amountValue.toFixed(2).replace(".", ",") : "";
+    const rowIndex = Number(draft?.row_index || 0);
+    const noteParts = [
+      rawDescription || "Importado do extrato bancário",
+      rawDoc ? `Documento: ${rawDoc}` : "",
+      `Linha do extrato: ${rowIndex || "—"}`,
+    ].filter(Boolean);
+
+    setScreen("lancamentos");
+    setLancamentosSubtab("lancamentos");
+    setMonthKey(movementMonth);
+
+    if (direction === "payable") {
+      setFinTab("despesa");
+      setFinCostForm((prev) => ({
+        ...prev,
+        date: movementDate,
+        due_date: movementDate,
+        competence_month: movementMonth,
+        supplier_id: String(person?.id || ""),
+        status: "open",
+        value_brl: amountText,
+        planned_value_brl: "",
+        doc_number: rawDoc,
+        notes: noteParts.join(" • "),
+      }));
+    } else {
+      setFinTab("receita");
+      setFinRevForm((prev) => ({
+        ...prev,
+        date: movementDate,
+        due_date: movementDate,
+        competence_month: movementMonth,
+        customer_id: String(person?.id || ""),
+        status: "open",
+        value_brl: amountText,
+        planned_value_brl: "",
+        doc_number: rawDoc,
+        notes: noteParts.join(" • "),
+      }));
+    }
+
+    setReconMsg(
+      `✅ ${direction === "payable" ? "Fornecedor" : "Cliente"} cadastrado e selecionado no lançamento da linha ${rowIndex || "—"}. Revise a conta e salve o título.`
+    );
+    setReconPersonDraft(null);
 
     if (typeof window !== "undefined") {
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -3387,7 +3460,14 @@ export default function Financeiro() {
         </div>
 
         {lancamentosSubtab === "pessoas_empresas" ? (
-          <FinanceiroCadastros embedded hideHeader showAccounts={false} showPeople personDraft={reconPersonDraft} />
+          <FinanceiroCadastros
+            embedded
+            hideHeader
+            showAccounts={false}
+            showPeople
+            personDraft={reconPersonDraft}
+            onPersonCreated={handleReconciliationPersonCreated}
+          />
         ) : (
           <>
             <div className={`faz-fin-launch-overview tone-${launchOverviewTone}`}>
