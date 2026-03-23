@@ -2027,6 +2027,12 @@ if (!inRange && !alreadyConfirmed) {
   const [editVacDate, setEditVacDate] = useState("");
   const [editVacNext, setEditVacNext] = useState("");
   const [editNote, setEditNote] = useState("");
+  const [editClinicalStatus, setEditClinicalStatus] = useState("ESTAVEL");
+  const [editBodyScore, setEditBodyScore] = useState("");
+  const [editLocomotionScore, setEditLocomotionScore] = useState("");
+  const [editClinicalDate, setEditClinicalDate] = useState("");
+  const [editClinicalNote, setEditClinicalNote] = useState("");
+  const [editReproProtocol, setEditReproProtocol] = useState("");
   const [editView, setEditView] = useState("resumo");
 
   useEffect(() => {
@@ -2211,10 +2217,17 @@ if (!inRange && !alreadyConfirmed) {
       (pregStatus === "PRENHA" ? "Prenha" : pregStatus === "VAZIA" ? "Vazia" : "")
     );
     const dpp = pregStatus === "PRENHA" ? dppIso(h.pregStart) : "";
+    const bodyScore = Number.isFinite(Number(sheet.bodyScore)) ? Number(sheet.bodyScore) : null;
+    const locomotionScore = Number.isFinite(Number(sheet.locomotionScore)) ? Number(sheet.locomotionScore) : null;
+    const clinicalStatus = asText(sheet.clinicalStatus || "Estável");
+    const clinicalDate = normalizeIsoDate(sheet.clinicalDate || "");
+    const clinicalNote = asText(sheet.clinicalNote || "—");
+    const reproProtocol = asText(sheet.reproProtocol || "—");
     return {
       ear,
       animal,
       health: h,
+      sheet,
       sexoLabel,
       loteLabel,
       pesoKg,
@@ -2229,6 +2242,12 @@ if (!inRange && !alreadyConfirmed) {
       numeroMae: asText(sheet.numeroMae || "—"),
       dpp,
       vacStatus: h.vacNext && isoBefore(h.vacNext, todayIso()) ? "Atrasada" : h.vacDate ? "Em dia" : "Sem vacina",
+      bodyScore,
+      locomotionScore,
+      clinicalStatus,
+      clinicalDate,
+      clinicalNote,
+      reproProtocol,
     };
   }, [activeAnimals, animals, editEar, health, weighs]);
 
@@ -2315,6 +2334,16 @@ if (!inRange && !alreadyConfirmed) {
     setEditVacDate(h.vacDate || "");
     setEditVacNext(h.vacNext || "");
     setEditNote(h.note || "");
+    setEditClinicalStatus(String(h?.sheet?.clinicalStatus || "ESTAVEL").toUpperCase());
+    setEditBodyScore(
+      Number.isFinite(Number(h?.sheet?.bodyScore)) ? String(Number(h.sheet.bodyScore)) : ""
+    );
+    setEditLocomotionScore(
+      Number.isFinite(Number(h?.sheet?.locomotionScore)) ? String(Number(h.sheet.locomotionScore)) : ""
+    );
+    setEditClinicalDate(String(h?.sheet?.clinicalDate || ""));
+    setEditClinicalNote(String(h?.sheet?.clinicalNote || ""));
+    setEditReproProtocol(String(h?.sheet?.reproProtocol || ""));
     setEditView("resumo");
     setEditOpen(true);
   }
@@ -2334,6 +2363,7 @@ if (!inRange && !alreadyConfirmed) {
       return;
     }
     const pregStatus = String(editPreg || "ND").toUpperCase();
+    const baseSheet = editAnimalData?.sheet && typeof editAnimalData.sheet === "object" ? editAnimalData.sheet : {};
     const next = {
       birth: editBirth || "",
       pregStatus: pregStatus === "PRENHA" ? "PRENHA" : pregStatus === "VAZIA" ? "VAZIA" : "ND",
@@ -2343,6 +2373,15 @@ if (!inRange && !alreadyConfirmed) {
         name: (editVacName || "").trim(),
         date: editVacDate || "",
         next: editVacNext || "",
+      },
+      sheet: {
+        ...baseSheet,
+        clinicalStatus: String(editClinicalStatus || "ESTAVEL").toUpperCase(),
+        bodyScore: editBodyScore === "" ? "" : Number(editBodyScore),
+        locomotionScore: editLocomotionScore === "" ? "" : Number(editLocomotionScore),
+        clinicalDate: editClinicalDate || "",
+        clinicalNote: editClinicalNote || "",
+        reproProtocol: editReproProtocol || "",
       },
       updatedAt: todayIso(),
     };
@@ -2355,6 +2394,7 @@ if (!inRange && !alreadyConfirmed) {
         vac_name: next.vac.name,
         vac_date: next.vac.date,
         vac_next: next.vac.next,
+        sheet: next.sheet,
       });
       const savedProfile = res?.profile && typeof res.profile === "object"
         ? res.profile
@@ -4716,6 +4756,9 @@ useEffect(() => {
               <button type="button" className={"faz-subtab" + (editView === "reproducao" ? " is-active" : "")} onClick={() => setEditView("reproducao")}>
                 Reprodução
               </button>
+              <button type="button" className={"faz-subtab" + (editView === "clinica" ? " is-active" : "")} onClick={() => setEditView("clinica")}>
+                Clínica
+              </button>
               <button type="button" className={"faz-subtab" + (editView === "sanidade" ? " is-active" : "")} onClick={() => setEditView("sanidade")}>
                 Sanidade
               </button>
@@ -4843,6 +4886,16 @@ useEffect(() => {
                           <span className={"faz-badge " + (editAnimalData.vacStatus === "Atrasada" ? "is-bad" : "is-ok")}>
                             Vacina: {editAnimalData.vacStatus}
                           </span>
+                          {String(editAnimalData.clinicalStatus || "").toUpperCase() !== "ESTAVEL" ? (
+                            <span className={"faz-badge " + (String(editAnimalData.clinicalStatus || "").toUpperCase() === "TRATAMENTO" ? "is-bad" : "is-warn")}>
+                              Clínica: {editAnimalData.clinicalStatus}
+                            </span>
+                          ) : null}
+                          {editAnimalData.bodyScore != null && editAnimalData.bodyScore < 2.5 ? (
+                            <span className="faz-badge is-warn">
+                              Escore corporal baixo: {editAnimalData.bodyScore.toFixed(1)}
+                            </span>
+                          ) : null}
                           <span className="faz-badge">
                             Última pesagem: {fmtDateShort(editAnimalData.dataPeso)}
                           </span>
@@ -4906,6 +4959,105 @@ useEffect(() => {
                       <div style={{ gridColumn: "1 / -1" }}>
                         <label className="form-label">Observação reprodutiva</label>
                         <input className="input" value={editNote} onChange={(e) => setEditNote(e.target.value)} placeholder="Ex.: confirmar prenhez no próximo manejo" />
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
+
+                {editView === "clinica" ? (
+                  <div className="faz-modalFacts">
+                    <div className="faz-modalSection">
+                      <div className="faz-modalSectionTitle">Leitura clínica</div>
+                      <div className="faz-modalInfoGrid">
+                        <div className="faz-modalInfoItem">
+                          <span className="lbl">Status clínico</span>
+                          <strong>{editAnimalData.clinicalStatus}</strong>
+                        </div>
+                        <div className="faz-modalInfoItem">
+                          <span className="lbl">Escore corporal</span>
+                          <strong>{editAnimalData.bodyScore == null ? "—" : editAnimalData.bodyScore.toFixed(1)}</strong>
+                        </div>
+                        <div className="faz-modalInfoItem">
+                          <span className="lbl">Locomoção</span>
+                          <strong>{editAnimalData.locomotionScore == null ? "—" : editAnimalData.locomotionScore.toFixed(1)}</strong>
+                        </div>
+                        <div className="faz-modalInfoItem">
+                          <span className="lbl">Última avaliação</span>
+                          <strong>{fmtDateShort(editAnimalData.clinicalDate)}</strong>
+                        </div>
+                        <div className="faz-modalInfoItem">
+                          <span className="lbl">Protocolo reprodutivo</span>
+                          <strong>{editAnimalData.reproProtocol}</strong>
+                        </div>
+                        <div className="faz-modalInfoItem">
+                          <span className="lbl">Observação clínica</span>
+                          <strong>{editAnimalData.clinicalNote}</strong>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="faz-modalGrid">
+                      <div>
+                        <label className="form-label">Status clínico</label>
+                        <select className="input" value={editClinicalStatus} onChange={(e) => setEditClinicalStatus(e.target.value)}>
+                          <option value="ESTAVEL">Estável</option>
+                          <option value="ATENCAO">Atenção</option>
+                          <option value="TRATAMENTO">Em tratamento</option>
+                          <option value="DESCARTE">Avaliar descarte</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="form-label">Escore corporal</label>
+                        <input
+                          className="input"
+                          type="number"
+                          min="1"
+                          max="5"
+                          step="0.1"
+                          value={editBodyScore}
+                          onChange={(e) => setEditBodyScore(e.target.value)}
+                          placeholder="1 a 5"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="form-label">Locomoção</label>
+                        <input
+                          className="input"
+                          type="number"
+                          min="1"
+                          max="5"
+                          step="0.1"
+                          value={editLocomotionScore}
+                          onChange={(e) => setEditLocomotionScore(e.target.value)}
+                          placeholder="1 a 5"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="form-label">Data da avaliação</label>
+                        <input className="input" type="date" value={editClinicalDate} onChange={(e) => setEditClinicalDate(e.target.value)} />
+                      </div>
+
+                      <div>
+                        <label className="form-label">Protocolo reprodutivo</label>
+                        <input
+                          className="input"
+                          value={editReproProtocol}
+                          onChange={(e) => setEditReproProtocol(e.target.value)}
+                          placeholder="Ex.: IATF lote A"
+                        />
+                      </div>
+
+                      <div style={{ gridColumn: "1 / -1" }}>
+                        <label className="form-label">Observação clínica</label>
+                        <input
+                          className="input"
+                          value={editClinicalNote}
+                          onChange={(e) => setEditClinicalNote(e.target.value)}
+                          placeholder="Ex.: casco sensível, revisar no próximo manejo"
+                        />
                       </div>
                     </div>
                   </div>
