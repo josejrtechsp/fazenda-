@@ -918,6 +918,7 @@ export default function Financeiro() {
   const [reconMsg, setReconMsg] = useState("");
   const [reconTolerance, setReconTolerance] = useState("0,05");
   const [reconWindowDays, setReconWindowDays] = useState("7");
+  const [reconReturnPending, setReconReturnPending] = useState(null);
   const [closeBusy, setCloseBusy] = useState(false);
   const [closeSummary, setCloseSummary] = useState(null);
   const [closeHistory, setCloseHistory] = useState([]);
@@ -2533,7 +2534,6 @@ export default function Financeiro() {
         approval_note: finCostForm.approval_note || "",
         approval_required_by: finCostForm.approval_required_by || "gestor",
       });
-      setFinMsg("✅ Despesa lançada com sucesso.");
       setFinCostForm((prev) => ({
         ...prev,
         value_brl: "",
@@ -2543,6 +2543,19 @@ export default function Financeiro() {
         approval_note: "",
       }));
       setRefreshTick((v) => v + 1);
+      if (reconReturnPending?.source === "reconciliation_unmatched") {
+        setReconReturnPending(null);
+        setScreen("fluxo_caixa");
+        setLancamentosSubtab("lancamentos");
+        if (typeof window !== "undefined") {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+        await runReconciliationPreview({
+          successPrefix: "Despesa lançada com sucesso. A prévia foi atualizada para revisar se a linha já encontrou um título.",
+        });
+      } else {
+        setFinMsg("✅ Despesa lançada com sucesso.");
+      }
     } catch (err) {
       setFinMsg(err?.data?.detail || err?.message || "Falha ao lançar despesa.");
     } finally {
@@ -2594,7 +2607,6 @@ export default function Financeiro() {
         approval_note: finRevForm.approval_note || "",
         approval_required_by: finRevForm.approval_required_by || "gestor",
       });
-      setFinMsg("✅ Receita lançada com sucesso.");
       setFinRevForm((prev) => ({
         ...prev,
         value_brl: "",
@@ -2605,6 +2617,19 @@ export default function Financeiro() {
         approval_note: "",
       }));
       setRefreshTick((v) => v + 1);
+      if (reconReturnPending?.source === "reconciliation_unmatched") {
+        setReconReturnPending(null);
+        setScreen("fluxo_caixa");
+        setLancamentosSubtab("lancamentos");
+        if (typeof window !== "undefined") {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+        await runReconciliationPreview({
+          successPrefix: "Receita lançada com sucesso. A prévia foi atualizada para revisar se a linha já encontrou um título.",
+        });
+      } else {
+        setFinMsg("✅ Receita lançada com sucesso.");
+      }
     } catch (err) {
       setFinMsg(err?.data?.detail || err?.message || "Falha ao lançar receita.");
     } finally {
@@ -3100,10 +3125,15 @@ export default function Financeiro() {
 
   async function previewReconciliationImport() {
     if (reconBusy) return;
+    await runReconciliationPreview();
+  }
+
+  async function runReconciliationPreview(options = {}) {
+    const { successPrefix = "" } = options;
     const csvText = String(reconCsvText || "").trim();
     if (!csvText) {
       setReconMsg("Cole o extrato CSV ou selecione um arquivo.");
-      return;
+      return null;
     }
 
     const tolerance = parseBRNumber(reconTolerance);
@@ -3121,12 +3151,15 @@ export default function Financeiro() {
       setReconPreview(res || null);
       setReconSelections({});
       const s = res?.summary || {};
+      const baseMsg = `Prévia concluída: ${toNum(s.rows || 0, 0)} linhas, ${toNum(s.matched || 0, 0)} matches, ${toNum(s.ambiguous || 0, 0)} ambíguas, ${toNum(s.unmatched || 0, 0)} sem match.`;
       setReconMsg(
-        `✅ Prévia concluída: ${toNum(s.rows || 0, 0)} linhas, ${toNum(s.matched || 0, 0)} matches, ${toNum(s.ambiguous || 0, 0)} ambíguas, ${toNum(s.unmatched || 0, 0)} sem match.`
+        successPrefix ? `✅ ${successPrefix} ${baseMsg}` : `✅ ${baseMsg}`
       );
+      return res || null;
     } catch (err) {
       setReconPreview(null);
       setReconMsg(err?.data?.detail || err?.message || "Falha na prévia de conciliação.");
+      return null;
     } finally {
       setReconBusy(false);
     }
@@ -3209,6 +3242,13 @@ export default function Financeiro() {
     setScreen("lancamentos");
     setLancamentosSubtab("lancamentos");
     setMonthKey(movementMonth);
+    setReconReturnPending({
+      source: "reconciliation_unmatched",
+      row_index: Number(row?.row_index || 0),
+      direction,
+      movement_date: movementDate,
+      amount_brl: amountValue,
+    });
 
     if (direction === "payable") {
       setFinTab("despesa");
