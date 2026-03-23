@@ -451,6 +451,17 @@
   background: rgba(255,251,235,.92);
 }
 
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-launch-actions{
+  margin: 4px 0 16px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-launch-actions .chip{
+  white-space:nowrap;
+}
+
 .cras-ui-v2 .faz-financeiro-v2 .faz-fin-kpis .kpi{
   border:1px solid transparent;
   border-radius:12px;

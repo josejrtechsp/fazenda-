@@ -66,6 +66,7 @@ const FIN_STATUS_REVENUE = ["open", "received"];
 const LS_LOGIN_USER = "fazenda_login_user_v1";
 const LS_LOGIN_ROLE = "fazenda_login_role_v1";
 const LS_FINANCE_NAV_HINT = "fazenda_nav_finance_open_v1";
+const LS_FINANCE_SETTINGS_HINT = "fazenda_nav_finance_settings_v1";
 const APPROVER_ROLE_LABEL = {
   gestor: "Gestor",
   admin: "Admin",
@@ -232,6 +233,14 @@ function inferPersonNameFromReconciliation(row) {
     .trim();
   if (!name) name = raw;
   return name.slice(0, 120);
+}
+
+function pushFinanceSettingsHint(hint) {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(LS_FINANCE_SETTINGS_HINT, JSON.stringify(hint || {}));
+    window.dispatchEvent(new Event(LS_FINANCE_SETTINGS_HINT));
+  } catch {}
 }
 
 function monthLabel(monthKey) {
@@ -3405,14 +3414,56 @@ export default function Financeiro() {
       }));
     }
 
-    setReconMsg(
-      `✅ ${direction === "payable" ? "Fornecedor" : "Cliente"} cadastrado e selecionado no lançamento da linha ${rowIndex || "—"}. Revise a conta e salve o título.`
-    );
+    const launchMsg = `✅ ${direction === "payable" ? "Fornecedor" : "Cliente"} cadastrado e selecionado no lançamento${
+      rowIndex ? ` da linha ${rowIndex}` : ""
+    }. Revise a conta e salve o título.`;
+    setFinMsg(launchMsg);
+    setReconMsg(launchMsg);
     setReconPersonDraft(null);
 
     if (typeof window !== "undefined") {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
+  }
+
+  function openLaunchSettingsSection(focusSection, message, extraHint = {}) {
+    pushFinanceSettingsHint({
+      focusSection,
+      showAccountsPanel: focusSection === "accounts",
+      peopleTab: focusSection === "people" ? "cadastro" : "",
+      ...(extraHint || {}),
+    });
+    setScreen("lancamentos");
+    setLancamentosSubtab(focusSection === "people" ? "pessoas_empresas" : "configuracoes");
+    setFinMsg(message || "");
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }
+
+  function openLaunchPersonCadastro() {
+    const isCostTab = finTab === "despesa";
+    setReconPersonDraft({
+      seedKey: `${Date.now()}-launch-person`,
+      name: "",
+      legal_name: "",
+      document_type: "OUTRO",
+      document: "",
+      phone: "",
+      email: "",
+      is_supplier: isCostTab,
+      is_customer: !isCostTab,
+      direction: isCostTab ? "payable" : "receivable",
+      movement_date: isCostTab ? finCostForm.date : finRevForm.date,
+      amount_brl: parseBRNumber(isCostTab ? finCostForm.value_brl : finRevForm.value_brl),
+      doc_number: isCostTab ? finCostForm.doc_number : finRevForm.doc_number,
+      description: isCostTab ? finCostForm.notes : finRevForm.notes,
+      note: `Cadastro aberto a partir do lançamento atual. Depois de salvar, o ${isCostTab ? "fornecedor" : "cliente"} volta selecionado no formulário.`,
+    });
+    openLaunchSettingsSection(
+      "people",
+      `✅ Abrindo Pessoas e empresas para cadastrar ${isCostTab ? "fornecedor" : "cliente"} sem perder o lançamento atual.`
+    );
   }
 
   const renderHub = () => (
@@ -3464,6 +3515,9 @@ export default function Financeiro() {
           <button type="button" className={`chip ${lancamentosSubtab === "pessoas_empresas" ? "rec" : ""}`} onClick={() => setLancamentosSubtab("pessoas_empresas")}>
             Pessoas e empresas
           </button>
+          <button type="button" className={`chip ${lancamentosSubtab === "configuracoes" ? "rec" : ""}`} onClick={() => setLancamentosSubtab("configuracoes")}>
+            Configurações
+          </button>
         </div>
 
         {lancamentosSubtab === "pessoas_empresas" ? (
@@ -3471,6 +3525,15 @@ export default function Financeiro() {
             embedded
             hideHeader
             showAccounts={false}
+            showPeople
+            personDraft={reconPersonDraft}
+            onPersonCreated={handleReconciliationPersonCreated}
+          />
+        ) : lancamentosSubtab === "configuracoes" ? (
+          <FinanceiroCadastros
+            embedded
+            hideHeader
+            showAccounts
             showPeople
             personDraft={reconPersonDraft}
             onPersonCreated={handleReconciliationPersonCreated}
@@ -3526,6 +3589,37 @@ export default function Financeiro() {
                 <span>Valor informado</span>
                 <b>{toBRL(parseBRNumber(isCostTab ? finCostForm.value_brl : finRevForm.value_brl))}</b>
               </div>
+            </div>
+
+            <div className="faz-fin-launch-actions">
+              <button
+                type="button"
+                className="chip"
+                onClick={() =>
+                  openLaunchSettingsSection(
+                    "accounts",
+                    `✅ Abrindo Plano de Contas para revisar ou criar a conta N4 da ${isCostTab ? "despesa" : "receita"}.`,
+                    { accCategory: isCostTab ? "DESPESA" : "RECEITA", accLevel: "4" }
+                  )
+                }
+              >
+                Abrir plano de contas
+              </button>
+              <button type="button" className="chip" onClick={openLaunchPersonCadastro}>
+                Cadastrar {isCostTab ? "fornecedor" : "cliente"}
+              </button>
+              <button
+                type="button"
+                className="chip"
+                onClick={() =>
+                  openLaunchSettingsSection(
+                    "cost_centers",
+                    "✅ Abrindo Centros de custo para cadastrar ou revisar o centro usado neste lançamento."
+                  )
+                }
+              >
+                Abrir centros de custo
+              </button>
             </div>
 
             <div className="faz-fin-switches">
