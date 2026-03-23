@@ -4992,6 +4992,43 @@ useEffect(() => {
                           <strong>{fmtDateShort(editPregStart ? dppIso(editPregStart) : "")}</strong>
                         </div>
                       </div>
+
+                      <div className="faz-rowActions" style={{ justifyContent: "flex-start", marginTop: 12 }}>
+                        <button
+                          className="faz-btn"
+                          type="button"
+                          onClick={() => {
+                            setEditPreg("PRENHA");
+                            if (!editPregStart) setEditPregStart(todayIso());
+                          }}
+                        >
+                          Marcar prenha
+                        </button>
+                        <button
+                          className="faz-btn"
+                          type="button"
+                          onClick={() => {
+                            setEditPreg("VAZIA");
+                            setEditPregStart("");
+                          }}
+                        >
+                          Marcar vazia
+                        </button>
+                        <button
+                          className="faz-btn"
+                          type="button"
+                          onClick={() => {
+                            if (!editReproProtocol) setEditReproProtocol("IATF");
+                            if (!editPregStart) setEditPregStart(todayIso());
+                            setEditView("clinica");
+                          }}
+                        >
+                          Abrir protocolo
+                        </button>
+                      </div>
+                      <div className="texto-suave" style={{ marginTop: 8 }}>
+                        Esses atalhos preparam a ficha para o manejo reprodutivo sem obrigar o operador a preencher tudo do zero.
+                      </div>
                     </div>
 
                     <div className="faz-modalGrid">
@@ -5074,6 +5111,49 @@ useEffect(() => {
                           <span className="lbl">Observação clínica</span>
                           <strong>{editAnimalData.clinicalNote}</strong>
                         </div>
+                      </div>
+
+                      <div className="faz-rowActions" style={{ justifyContent: "flex-start", marginTop: 12 }}>
+                        <button
+                          className="faz-btn"
+                          type="button"
+                          onClick={() => {
+                            setEditClinicalStatus("ATENCAO");
+                            if (!editClinicalDate) setEditClinicalDate(todayIso());
+                          }}
+                        >
+                          Marcar atenção
+                        </button>
+                        <button
+                          className="faz-btn"
+                          type="button"
+                          onClick={() => {
+                            setEditClinicalStatus("TRATAMENTO");
+                            if (!editClinicalDate) setEditClinicalDate(todayIso());
+                          }}
+                        >
+                          Registrar tratamento
+                        </button>
+                        <button
+                          className="faz-btn danger"
+                          type="button"
+                          onClick={() => {
+                            setEditClinicalStatus("DESCARTE");
+                            if (!editClinicalDate) setEditClinicalDate(todayIso());
+                          }}
+                        >
+                          Avaliar descarte
+                        </button>
+                        <button
+                          className="faz-btn"
+                          type="button"
+                          onClick={() => setEditView("sanidade")}
+                        >
+                          Abrir sanidade
+                        </button>
+                      </div>
+                      <div className="texto-suave" style={{ marginTop: 8 }}>
+                        Use os atalhos para registrar o contexto clínico primeiro e ajustar o detalhe fino logo abaixo.
                       </div>
                     </div>
 
