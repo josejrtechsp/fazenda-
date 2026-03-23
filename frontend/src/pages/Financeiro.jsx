@@ -919,6 +919,7 @@ export default function Financeiro() {
   const [reconTolerance, setReconTolerance] = useState("0,05");
   const [reconWindowDays, setReconWindowDays] = useState("7");
   const [reconReturnPending, setReconReturnPending] = useState(null);
+  const [reconHighlightedRow, setReconHighlightedRow] = useState(null);
   const [closeBusy, setCloseBusy] = useState(false);
   const [closeSummary, setCloseSummary] = useState(null);
   const [closeHistory, setCloseHistory] = useState([]);
@@ -2544,6 +2545,7 @@ export default function Financeiro() {
       }));
       setRefreshTick((v) => v + 1);
       if (reconReturnPending?.source === "reconciliation_unmatched") {
+        const rowIndex = Number(reconReturnPending?.row_index || 0);
         setReconReturnPending(null);
         setScreen("fluxo_caixa");
         setLancamentosSubtab("lancamentos");
@@ -2551,7 +2553,8 @@ export default function Financeiro() {
           window.scrollTo({ top: 0, behavior: "smooth" });
         }
         await runReconciliationPreview({
-          successPrefix: "Despesa lançada com sucesso. A prévia foi atualizada para revisar se a linha já encontrou um título.",
+          successPrefix: `Despesa lançada com sucesso. A linha ${rowIndex || "do extrato"} foi reprocessada na prévia.`,
+          highlightRowIndex: rowIndex,
         });
       } else {
         setFinMsg("✅ Despesa lançada com sucesso.");
@@ -2618,6 +2621,7 @@ export default function Financeiro() {
       }));
       setRefreshTick((v) => v + 1);
       if (reconReturnPending?.source === "reconciliation_unmatched") {
+        const rowIndex = Number(reconReturnPending?.row_index || 0);
         setReconReturnPending(null);
         setScreen("fluxo_caixa");
         setLancamentosSubtab("lancamentos");
@@ -2625,7 +2629,8 @@ export default function Financeiro() {
           window.scrollTo({ top: 0, behavior: "smooth" });
         }
         await runReconciliationPreview({
-          successPrefix: "Receita lançada com sucesso. A prévia foi atualizada para revisar se a linha já encontrou um título.",
+          successPrefix: `Receita lançada com sucesso. A linha ${rowIndex || "do extrato"} foi reprocessada na prévia.`,
+          highlightRowIndex: rowIndex,
         });
       } else {
         setFinMsg("✅ Receita lançada com sucesso.");
@@ -3117,6 +3122,7 @@ export default function Financeiro() {
       setReconCsvText(String(text || ""));
       setReconPreview(null);
       setReconSelections({});
+      setReconHighlightedRow(null);
       setReconMsg(`Arquivo carregado: ${file.name}`);
     } catch {
       setReconMsg("Falha ao ler arquivo CSV.");
@@ -3129,7 +3135,7 @@ export default function Financeiro() {
   }
 
   async function runReconciliationPreview(options = {}) {
-    const { successPrefix = "" } = options;
+    const { successPrefix = "", highlightRowIndex = null } = options;
     const csvText = String(reconCsvText || "").trim();
     if (!csvText) {
       setReconMsg("Cole o extrato CSV ou selecione um arquivo.");
@@ -3150,6 +3156,7 @@ export default function Financeiro() {
       });
       setReconPreview(res || null);
       setReconSelections({});
+      setReconHighlightedRow(Number.isFinite(Number(highlightRowIndex)) ? Number(highlightRowIndex) : null);
       const s = res?.summary || {};
       const baseMsg = `Prévia concluída: ${toNum(s.rows || 0, 0)} linhas, ${toNum(s.matched || 0, 0)} matches, ${toNum(s.ambiguous || 0, 0)} ambíguas, ${toNum(s.unmatched || 0, 0)} sem match.`;
       setReconMsg(
@@ -4985,11 +4992,12 @@ export default function Financeiro() {
                   {reconPreview.items.slice(0, 120).map((row) => {
                     const st = String(row?.status || "unmatched");
                     const chipClass = st === "matched" ? "ok" : st === "ambiguous" ? "warn" : "bad";
-                    const options = Array.isArray(row?.alternatives) ? row.alternatives : [];
-                    const selectedKey = reconSelections[String(row?.row_index || "")] || "";
-                    const selectedParsed = parseReconMatchKey(selectedKey);
-                    return (
-                      <tr key={`recon-${row.row_index}`}>
+                  const options = Array.isArray(row?.alternatives) ? row.alternatives : [];
+                  const selectedKey = reconSelections[String(row?.row_index || "")] || "";
+                  const selectedParsed = parseReconMatchKey(selectedKey);
+                  const isHighlighted = Number(row?.row_index || 0) === Number(reconHighlightedRow || 0) && Number(reconHighlightedRow || 0) > 0;
+                  return (
+                      <tr key={`recon-${row.row_index}`} className={isHighlighted ? "faz-fin-recon-row-highlight" : ""}>
                         <td>{row.row_index}</td>
                         <td>{row.movement_date || "—"}</td>
                         <td>{toBRL(row.amount_brl)}</td>
