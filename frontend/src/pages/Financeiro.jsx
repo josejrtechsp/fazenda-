@@ -223,6 +223,17 @@ function parseBRNumber(input) {
   return Number.isFinite(n) ? n : NaN;
 }
 
+function inferPersonNameFromReconciliation(row) {
+  const raw = String(row?.description || "").replace(/\s+/g, " ").trim();
+  if (!raw) return "";
+  let name = raw
+    .replace(/^(pix|ted|doc|transferencia|transferência|transf|boleto|pagamento|recebimento|debito|débito|credito|crédito)\s*[:\- ]*/i, "")
+    .replace(/\b(doc|documento|nf|nfe|ref|referencia|referência)\b.*$/i, "")
+    .trim();
+  if (!name) name = raw;
+  return name.slice(0, 120);
+}
+
 function monthLabel(monthKey) {
   const [y, m] = String(monthKey || "").split("-");
   const mm = Number(m);
@@ -920,6 +931,7 @@ export default function Financeiro() {
   const [reconWindowDays, setReconWindowDays] = useState("7");
   const [reconReturnPending, setReconReturnPending] = useState(null);
   const [reconHighlightedRow, setReconHighlightedRow] = useState(null);
+  const [reconPersonDraft, setReconPersonDraft] = useState(null);
   const [closeBusy, setCloseBusy] = useState(false);
   const [closeSummary, setCloseSummary] = useState(null);
   const [closeHistory, setCloseHistory] = useState([]);
@@ -3294,6 +3306,35 @@ export default function Financeiro() {
     }
   }
 
+  function openReconciliationAsPerson(row) {
+    const direction = String(row?.direction || "payable");
+    const personName = inferPersonNameFromReconciliation(row);
+    const roleLabel = direction === "payable" ? "fornecedor" : "cliente";
+    const rowIndex = Number(row?.row_index || 0);
+
+    setScreen("lancamentos");
+    setLancamentosSubtab("pessoas_empresas");
+    setReconPersonDraft({
+      seedKey: `${Date.now()}-${rowIndex}`,
+      name: personName,
+      legal_name: "",
+      document_type: "OUTRO",
+      document: "",
+      phone: "",
+      email: "",
+      is_supplier: direction === "payable",
+      is_customer: direction !== "payable",
+      note: `Cadastro aberto a partir da linha ${rowIndex || "—"} do extrato. Revise o nome e conclua o ${roleLabel} antes de voltar para o lançamento.`,
+    });
+    setReconMsg(
+      `✅ Linha ${rowIndex || "—"} enviada para Pessoas e empresas. Cadastre o ${roleLabel} e depois retorne ao lançamento.`
+    );
+
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }
+
   const renderHub = () => (
     <section className="faz-fin-hub">
       {REPORTS.map((r) => (
@@ -3346,7 +3387,7 @@ export default function Financeiro() {
         </div>
 
         {lancamentosSubtab === "pessoas_empresas" ? (
-          <FinanceiroCadastros embedded hideHeader showAccounts={false} showPeople />
+          <FinanceiroCadastros embedded hideHeader showAccounts={false} showPeople personDraft={reconPersonDraft} />
         ) : (
           <>
             <div className={`faz-fin-launch-overview tone-${launchOverviewTone}`}>
@@ -5037,13 +5078,22 @@ export default function Financeiro() {
                           ) : st === "matched" ? (
                             <span className="chip ok">Automático</span>
                           ) : st === "unmatched" ? (
-                            <button
-                              type="button"
-                              className="btn-back faz-fin-recon-action"
-                              onClick={() => openReconciliationAsLaunch(row)}
-                            >
-                              Criar título
-                            </button>
+                            <div className="faz-fin-recon-actions">
+                              <button
+                                type="button"
+                                className="btn-back faz-fin-recon-action"
+                                onClick={() => openReconciliationAsLaunch(row)}
+                              >
+                                Criar título
+                              </button>
+                              <button
+                                type="button"
+                                className="btn-back faz-fin-recon-action"
+                                onClick={() => openReconciliationAsPerson(row)}
+                              >
+                                {row.direction === "payable" ? "Cadastrar fornecedor" : "Cadastrar cliente"}
+                              </button>
+                            </div>
                           ) : (
                             "—"
                           )}

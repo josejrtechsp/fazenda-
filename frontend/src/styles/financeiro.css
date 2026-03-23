@@ -1622,6 +1622,12 @@
   white-space: nowrap;
 }
 
+.cras-ui-v2 .faz-financeiro-v2 .faz-fin-recon-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+
 .cras-ui-v2 .faz-financeiro-v2 .faz-fin-table tbody tr.faz-fin-recon-row-highlight{
   background: rgba(59,130,246,.10);
   box-shadow: inset 3px 0 0 rgba(37,99,235,.9);

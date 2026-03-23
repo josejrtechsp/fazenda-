@@ -73,6 +73,7 @@ export default function FinanceiroCadastros({
   showAccounts = true,
   showPeople = true,
   accountsHiddenByDefault = false,
+  personDraft = null,
 }) {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
@@ -303,6 +304,32 @@ export default function FinanceiroCadastros({
       window.clearTimeout(clearTimer);
     };
   }, [focusedSection, peopleTab, showAccountsPanel]);
+
+  useEffect(() => {
+    if (!personDraft || typeof personDraft !== "object") return;
+    setPeopleTab("cadastro");
+    setFocusedSection("people");
+    setPersonForm((prev) => ({
+      ...prev,
+      name: String(personDraft.name || ""),
+      legal_name: String(personDraft.legal_name || ""),
+      document_type: String(personDraft.document_type || prev.document_type || "OUTRO").toUpperCase(),
+      document: String(personDraft.document || ""),
+      phone: String(personDraft.phone || ""),
+      email: String(personDraft.email || ""),
+      supplier_category_id: "",
+      supplier_tags_csv: "",
+      is_customer: !!personDraft.is_customer,
+      is_supplier: !!personDraft.is_supplier,
+      is_employee: false,
+      is_carrier: false,
+      is_owner: false,
+      is_active: true,
+    }));
+    if (personDraft.note) {
+      setLocalMsg("people", String(personDraft.note));
+    }
+  }, [personDraft]);
 
   const categoriesById = useMemo(() => {
     const map = {};
