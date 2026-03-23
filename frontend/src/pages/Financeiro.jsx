@@ -3367,6 +3367,13 @@ export default function Financeiro() {
     setScreen("lancamentos");
     setLancamentosSubtab("lancamentos");
     setMonthKey(movementMonth);
+    setReconReturnPending({
+      source: "reconciliation_unmatched",
+      row_index: rowIndex,
+      direction,
+      movement_date: movementDate,
+      amount_brl: amountValue,
+    });
 
     if (direction === "payable") {
       setFinTab("despesa");
